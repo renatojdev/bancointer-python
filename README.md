@@ -1,4 +1,8 @@
 #  Banco Inter Python
+Este projeto utiliza a API do Banco Inter PJ de boletos registrados.
+
+    [Portal do desenvolvedor](https://developers.bancointer.com.br/)
+    [Refrência da API](https://developers.bancointer.com.br/reference)
 
 ##  Funcionalidades disponíveis
 * Emissão de boletos
