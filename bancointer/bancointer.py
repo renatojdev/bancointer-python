@@ -9,28 +9,19 @@ class BancoInter(object):
 
     Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
     """
+
     # Class attributes
     _BASE_URL = "https://apis.bancointer.com.br/openbanking/v1/certificado/"
     _SEM_DESCONTO = {
         "codigoDesconto": "NAOTEMDESCONTO",
         "taxa": 0,
         "valor": 0,
-        "data": ""
+        "data": "",
     }
-    _ISENTO_MULTA = {
-        "codigoMulta": "NAOTEMMULTA",
-        "valor": 0,
-        "taxa": 0
-    }
-    _ISENTO_MORA = {
-        "codigoMora": "ISENTO",
-        "valor": 0,
-        "taxa": 0
-    }
+    _ISENTO_MULTA = {"codigoMulta": "NAOTEMMULTA", "valor": 0, "taxa": 0}
+    _ISENTO_MORA = {"codigoMora": "ISENTO", "valor": 0, "taxa": 0}
 
-    def __init__(
-        self, cpf_cnpj_beneficiario, x_inter_conta_corrente, cert
-    ):
+    def __init__(self, cpf_cnpj_beneficiario, x_inter_conta_corrente, cert):
         """Metodo construtor da classe.
 
         Args:
@@ -137,9 +128,7 @@ class BancoInter(object):
 
     @property
     def headers(self):
-        return {
-            'x-inter-conta-corrente': self.inter_conta_corrente
-        }
+        return {"x-inter-conta-corrente": self.inter_conta_corrente}
 
     def _request(self, method, path, json, **kwargs):
         """Executa as requisicoes na API do Banco Inter conforme os parametros de entrada.
@@ -152,7 +141,7 @@ class BancoInter(object):
         Returns:
             dict or int: Retorna json response caso exista ou status code do response.
         """
-        if method == 'get' or json == None:
+        if method == "get" or json == None:
             request = requests.request(
                 method=method,
                 url=self._get_url(path),
@@ -170,9 +159,8 @@ class BancoInter(object):
         )
         try:
             return request.json()
-        except ValueError: # empty response
+        except ValueError:  # empty response
             return request.status_code
-
 
     def boleto(
         self, pagador, mensagem, dataEmissao, dataVencimento, seuNumero, valorNominal
@@ -230,13 +218,12 @@ class BancoInter(object):
             "desconto3": self.desconto3,
             "seuNumero": seuNumero,
             "valorNominal": valorNominal,
-            "mensagem": mensagem
+            "mensagem": mensagem,
         }
 
         response = self._request(method="post", path=path, json=json, cert=self.cert)
 
         return response
-
 
     def _response_save(self, response, file_path):
         if response.content:
@@ -246,10 +233,9 @@ class BancoInter(object):
                     out_file.write(codecs.decode(response.content, "base64"))
                 out_file.close()
             except Exception as e:
-                print("bancointer.Except: ",e)
+                print("bancointer.Except: ", e)
                 return False
             return True
-
 
     def download(self, nosso_numero, download_path):
         """Metodo para download de boletos emitidos.
@@ -263,14 +249,13 @@ class BancoInter(object):
         """
         path = f"boletos/{nosso_numero}/pdf"
 
-        json=None
+        json = None
 
         response = self._request(method="get", path=path, json=json, cert=self.cert)
 
         file_path = download_path + os.sep + nosso_numero + ".pdf"
 
         return self._response_save(response, file_path)
-
 
     def baixa(self, nosso_numero, motivo: Baixa):
         """Metodo para baixa de boleto emitido.
@@ -293,10 +278,8 @@ class BancoInter(object):
             (response): Response da requisicao
         """
         path = f"boletos/{nosso_numero}/baixas"
-        print(motivo)
-        json={
-            "codigoBaixa": motivo.value
-        }
+
+        json = {"codigoBaixa": motivo.value}
 
         response = self._request(method="post", path=path, json=json, cert=self.cert)
 

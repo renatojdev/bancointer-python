@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Baixa(Enum):
     ACERTOS = "ACERTOS"
     PROTESTADO = "PROTESTADO"
