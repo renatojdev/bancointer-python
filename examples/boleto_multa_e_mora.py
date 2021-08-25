@@ -16,7 +16,7 @@ pagador = {
     "complemento":"proximo ao pagador",
     "bairro":"Bairro do Pagador",
     "cidade":"Cidade do Pagador",
-    "uf":"MG",
+    "uf":"PR",
     "endereco":"Logradouro do Pagador",
     "ddd":"99",
     "tipoPessoa": "FISICA",
