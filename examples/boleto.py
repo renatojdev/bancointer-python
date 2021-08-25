@@ -7,27 +7,27 @@ cert = (config("PUBLIC_KEY"), config("PRIVATE_KEY"))
 bi = BancoInter(config("CPFCNPJ_BENEF"), config("X-INTER-CONTA-CORRENTE"), cert)
 
 pagador = {
-    "cnpjCpf": "53982619599",
-    "nome": "JOAO DA SILVA",
-    "email": "email@pagador.com",
-    "telefone": "999999999",
-    "cep": "99999999",
-    "numero": "999",
-    "complemento": "",
-    "bairro": "BAIRRO",
-    "endereco": "ENDERECO",
-    "cidade": "CIDADE",
-    "uf": "PR",
-    "ddd": "99",
+    "cnpjCpf":"99999999999",
+    "nome":"Nome do Pagador",
+    "email":"pagador@gmail.com",
+    "telefone":"999999999",
+    "cep":"99999999",
+    "numero":"00",
+    "complemento":"proximo ao pagador",
+    "bairro":"Bairro do Pagador",
+    "cidade":"Cidade do Pagador",
+    "uf":"MG",
+    "endereco":"Logradouro do Pagador",
+    "ddd":"99",
     "tipoPessoa": "FISICA",
 }
 
 mensagem = {
-    "linha1": "linha1",
-    "linha2": "linha2",
-    "linha3": "linha3",
-    "linha4": "linha4",
-    "linha5": "linha5",
+    "linha1": "mensagem da linha1",
+    "linha2": "mensagem da linha2",
+    "linha3": "mensagem da linha3",
+    "linha4": "mensagem da linha4",
+    "linha5": "mensagem da linha5",
 }
 
 reponse = bi.boleto(
