@@ -91,66 +91,46 @@ class TestBancoInter(unittest.TestCase):
     def test_consulta(self, request_mock):
         url = self.bancointer._get_url(path=f"boletos/000007")
         json = {
-            "nomeBeneficiario":"BANCO INTER",
-            "cnpjCpfBeneficiario":"00000000000000",
-            "tipoPessoaBeneficiario":"JURIDICA",
-            "dataHoraSituacao":"01/01/2020 00:00",
-            "codigoBarras":"00000000000000000000000000000000000000000000",
-            "linhaDigitavel":"00000000000000000000000000000000000000000000000",
-            "dataVencimento":"30/01/2020",
-            "dataEmissao":"01/01/2020",
-            "descricao":"",
-            "seuNumero":"0000",
-            "valorNominal":10,
-            "nomePagador":"Nome do Pagador",
-            "emailPagador":"pagador@email.com.br",
-            "dddPagador":"00",
-            "telefonePagador":"900000000",
-            "tipoPessoaPagador":"FISICA",
-            "cnpjCpfPagador":"00000000000",
-            "codigoEspecie":"OUTROS",
-            "dataLimitePagamento":"01/03/2020",
-            "valorAbatimento":0,
-            "situacaoPagamento":"BAIXADO",
-            "situacao":"PAGO",
-            "valorTotalRecebimento":10,
-            "mensagem":{
-                "linha1":"mensagem na linha 1",
-                "linha2":"mensagem na linha 2",
-                "linha3":"mensagem na linha 3",
-                "linha4":"mensagem na linha 4",
-                "linha5":"mensagem na linha 5"
+            "nomeBeneficiario": "BANCO INTER",
+            "cnpjCpfBeneficiario": "00000000000000",
+            "tipoPessoaBeneficiario": "JURIDICA",
+            "dataHoraSituacao": "01/01/2020 00:00",
+            "codigoBarras": "00000000000000000000000000000000000000000000",
+            "linhaDigitavel": "00000000000000000000000000000000000000000000000",
+            "dataVencimento": "30/01/2020",
+            "dataEmissao": "01/01/2020",
+            "descricao": "",
+            "seuNumero": "0000",
+            "valorNominal": 10,
+            "nomePagador": "Nome do Pagador",
+            "emailPagador": "pagador@email.com.br",
+            "dddPagador": "00",
+            "telefonePagador": "900000000",
+            "tipoPessoaPagador": "FISICA",
+            "cnpjCpfPagador": "00000000000",
+            "codigoEspecie": "OUTROS",
+            "dataLimitePagamento": "01/03/2020",
+            "valorAbatimento": 0,
+            "situacaoPagamento": "BAIXADO",
+            "situacao": "PAGO",
+            "valorTotalRecebimento": 10,
+            "mensagem": {
+                "linha1": "mensagem na linha 1",
+                "linha2": "mensagem na linha 2",
+                "linha3": "mensagem na linha 3",
+                "linha4": "mensagem na linha 4",
+                "linha5": "mensagem na linha 5",
             },
-            "desconto1":{
-                "codigo":"NAOTEMDESCONTO",
-                "taxa":0,
-                "valor":0
-            },
-            "desconto2":{
-                "codigo":"NAOTEMDESCONTO",
-                "taxa":0,
-                "valor":0
-            },
-            "desconto3":{
-                "codigo":"NAOTEMDESCONTO",
-                "taxa":0,
-                "valor":0
-            },
-            "multa":{
-                "codigo":"NAOTEMMULTA",
-                "taxa":0,
-                "valor":0
-            },
-            "mora":{
-                "codigo":"ISENTO",
-                "taxa":0,
-                "valor":0
-            }
+            "desconto1": {"codigo": "NAOTEMDESCONTO", "taxa": 0, "valor": 0},
+            "desconto2": {"codigo": "NAOTEMDESCONTO", "taxa": 0, "valor": 0},
+            "desconto3": {"codigo": "NAOTEMDESCONTO", "taxa": 0, "valor": 0},
+            "multa": {"codigo": "NAOTEMMULTA", "taxa": 0, "valor": 0},
+            "mora": {"codigo": "ISENTO", "taxa": 0, "valor": 0},
         }
         request_mock.get(url=url, json=json)
         consulta = self.bancointer.consulta(nosso_numero="000007")
         self.assertEqual(consulta, json)
-        self.assertEqual(consulta['situacao'], "PAGO")
+        self.assertEqual(consulta["situacao"], "PAGO")
 
 
 if __name__ == "__main__":

@@ -8,5 +8,4 @@ bi = BancoInter(config("CPFCNPJ_BENEF"), config("X-INTER-CONTA-CORRENTE"), cert)
 
 reponse = bi.consulta(nosso_numero="00709421471")
 
-print(reponse['situacao'])
-
+print(reponse["situacao"])

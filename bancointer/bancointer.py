@@ -285,7 +285,6 @@ class BancoInter(object):
 
         return response
 
-
     def consulta(self, nosso_numero):
         """Recupera as informações detalhadas de um boleto através do `nosso_numero`.
 
