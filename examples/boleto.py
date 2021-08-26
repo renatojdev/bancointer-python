@@ -7,18 +7,18 @@ cert = (config("PUBLIC_KEY"), config("PRIVATE_KEY"))
 bi = BancoInter(config("CPFCNPJ_BENEF"), config("X-INTER-CONTA-CORRENTE"), cert)
 
 pagador = {
-    "cnpjCpf":"99999999999",
-    "nome":"Nome do Pagador",
-    "email":"pagador@gmail.com",
-    "telefone":"999999999",
-    "cep":"99999999",
-    "numero":"00",
-    "complemento":"proximo ao pagador",
-    "bairro":"Bairro do Pagador",
-    "cidade":"Cidade do Pagador",
-    "uf":"PR",
-    "endereco":"Logradouro do Pagador",
-    "ddd":"99",
+    "cnpjCpf": "99999999999",
+    "nome": "Nome do Pagador",
+    "email": "pagador@gmail.com",
+    "telefone": "999999999",
+    "cep": "99999999",
+    "numero": "00",
+    "complemento": "proximo ao pagador",
+    "bairro": "Bairro do Pagador",
+    "cidade": "Cidade do Pagador",
+    "uf": "PR",
+    "endereco": "Logradouro do Pagador",
+    "ddd": "99",
     "tipoPessoa": "FISICA",
 }
 
