@@ -1,5 +1,11 @@
 #  Banco Inter Python
-Este projeto utiliza a API do Banco Inter PJ de boletos registrados.
+Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso a documentação precisa estar logado no internet banking do Banco Inter. Para criar seu aplicativo, siga estas etapas simples:
+
+* Faça login no Internet Banking (Banco Inter).
+* Navegue até a seção APIs:
+* Conta Digital > Aplicações > <em>**Nova Aplicação**</em>
+
+**Referências:**
 
 * Portal do desenvolvedor: https://developers.bancointer.com.br/
 * Refrência da API: https://developers.bancointer.com.br/reference
@@ -27,26 +33,26 @@ config("CPFCNPJ_BENEF"),
 config("X-INTER-CONTA-CORRENTE"), cert)
 
 pagador = {
-"cnpjCpf": "53982619599",
-"nome": "JOAO DA SILVA",
+"cnpjCpf": "99999999999999",
+"nome": "Nome do Pagador",
 "email": "email@pagador.com",
 "telefone": "999999999",
 "cep": "99999999",
 "numero": "999",
 "complemento": "",
-"bairro": "BAIRRO",
-"endereco": "ENDERECO",
-"cidade": "CIDADE",
+"bairro": "Bairro do Pagador",
+"endereco": "Endereço do Pagador",
+"cidade": "Cidade do Pagador",
 "uf": "PR",
 "ddd": "99",
 "tipoPessoa": "FISICA"
 }
 mensagem = {
-"linha1": "linha1",
-"linha2": "linha2",
-"linha3": "linha3",
-"linha4": "linha4",
-"linha5": "linha5",
+"linha1": "Mensagem da linha1",
+"linha2": "Mensagem da linha2",
+"linha3": "Mensagem da linha3",
+"linha4": "Mensagem da linha4",
+"linha5": "Mensagem da linha5",
 }
 
 reponse = bi.boleto(pagador=pagador, mensagem=mensagem, dataEmissao="2021-08-19", dataVencimento="2021-08-23", seuNumero="00001", valorNominal=9.9)
