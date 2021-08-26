@@ -284,3 +284,21 @@ class BancoInter(object):
         response = self._request(method="post", path=path, json=json, cert=self.cert)
 
         return response
+
+
+    def consulta(self, nosso_numero):
+        """Recupera as informações detalhadas de um boleto através do `nosso_numero`.
+
+        Args:
+            nosso_numero (str): Nosso numero de identificação do boleto a ser recuperado
+
+        Returns:
+            dict: json-encoded of a response, `response.json()` dict com os dados do boleto.
+        """
+        path = f"boletos/{nosso_numero}"
+
+        json = None
+
+        response = self._request(method="get", path=path, json=json, cert=self.cert)
+
+        return response.json()
