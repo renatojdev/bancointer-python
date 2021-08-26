@@ -14,7 +14,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 * Emissão de boletos
 * Download de boletos
 * Baixa de boletos
-* Consulta detalhada de boletos através do nosso número
+* Consulta detalhada de boletos
 
 ##  Instalação para utilização
 
