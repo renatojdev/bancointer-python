@@ -47,7 +47,10 @@ if API_VERSION == 1:
     print(reponse)
 
 elif API_VERSION == 2:
-    bi = BancoInter(config("CPFCNPJ_BENEF"), config("X-INTER-CONTA-CORRENTE"), cert)
+    bi.set_client_id(value=config("CLIENT_ID"))
+    bi.set_client_secret(value=config("CLIENT_SECRET"))
+    bi.set_base_url(value=config("API_URL_COBRA_V2"))
+    bi.set_base_url_token(value=config("API_URL_TOKEN_V2"))
 
     pagador = {
         "cpfCnpj": "19103298000",

@@ -13,10 +13,12 @@ class TestBancoInter(unittest.TestCase):
             config("X-INTER-CONTA-CORRENTE"),
             (config("PUBLIC_KEY_V1"), config("PRIVATE_KEY_V1")),
         )
+        self.bancointer.set_api_version(1)
+        self.bancointer.set_base_url("https://apis.bancointer.com.br/openbanking/v1/certificado/")
 
     def test_get_url(self):
         self.assertEqual(
-            self.bancointer._get_url("/test"), f"{self.bancointer._BASE_URL}/test"
+            self.bancointer._get_url("/test"), f"{self.bancointer.base_url}/test"
         )
 
     def test_headers(self):

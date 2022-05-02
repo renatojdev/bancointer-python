@@ -2,8 +2,8 @@ import os
 import requests
 import codecs
 from .baixa import Baixa
-from decouple import config
 import json
+from pathlib import Path
 from datetime import datetime, timedelta
 
 class BancoInter(object):
@@ -13,7 +13,6 @@ class BancoInter(object):
 
     # Class attributes
     _API_VERSION = 2
-    _BASE_URL = config("API_URL_COBRA_V"+str(_API_VERSION))
     _SEM_DESCONTO = {
         "codigoDesconto": "NAOTEMDESCONTO",
         "taxa": 0,
@@ -23,8 +22,7 @@ class BancoInter(object):
     _ISENTO_MULTA = {"codigoMulta": "NAOTEMMULTA", "valor": 0, "taxa": 0}
     _ISENTO_MORA = {"codigoMora": "ISENTO", "valor": 0, "taxa": 0}
     _BEARER_TOKEN = None
-    _SSL_DIR_BASE = config("SSL_DIR_BASE")
-    _TOKEN_FILE_PATH = config("TOKEN_FILE_PATH")+"token.json"
+    _TOKEN_FILE_PATH = os.path.dirname(os.path.realpath(__file__)) + os.sep +"token.json"
 
     def __init__(self, cpf_cnpj_beneficiario, x_inter_conta_corrente, cert):
         """Metodo construtor da classe.
@@ -42,18 +40,27 @@ class BancoInter(object):
         self.desconto3 = self._SEM_DESCONTO
         self.multa = self._ISENTO_MULTA
         self.mora = self._ISENTO_MORA
+        self.client_id = None
+        self.client_secret = None
+        self.base_url = None
+        self.base_url_token = None
 
     @property
     def api_version(self):
         return self._API_VERSION
 
+    def set_base_url(self, value):
+        self.base_url = value
+
+    def set_base_url_token(self, value):
+        self.base_url_token = value
+
     def set_api_version(self, api_version = 2):
         """Set API version, DEFAULT is API version 2."""
         self._API_VERSION = api_version
-        self._BASE_URL = config("API_URL_COBRA_V"+str(api_version))
 
     def _get_url(self, path):
-        return f"{self._BASE_URL}{path}"
+        return f"{self.base_url}{path}"
 
     def set_desconto1(self, desconto1):
         """Dict para desconto no boleto.
@@ -139,6 +146,12 @@ class BancoInter(object):
             mora (dict): Dict para configuracao de juros de mora
         """
         self.mora = mora
+
+    def set_client_id(self, value):
+        self.client_id = value
+
+    def set_client_secret(self, value):
+        self.client_secret = value
 
     @property
     def bearer_token(self):
@@ -363,9 +376,9 @@ class BancoInter(object):
 
     def _get_api_token(self):
         """Get a new token from Banco Inter Cobranca API V2"""
-        url = config("API_URL_TOKEN_V2")
+        url = self.base_url_token
 
-        payload = "grant_type=client_credentials&client_id="+ config("CLIENT_ID") +"&client_secret="+ config("CLIENT_SECRET") +"&scope=boleto-cobranca.read%20boleto-cobranca.write"
+        payload = "grant_type=client_credentials&client_id="+ self.client_id +"&client_secret="+ self.client_secret +"&scope=boleto-cobranca.read%20boleto-cobranca.write"
 
         headers = {
             "Accept": "application/json",
@@ -387,7 +400,7 @@ class BancoInter(object):
             # Closing file
             f.close()
         except Exception as e:
-            print("bancointer.Except: ", e)
+            print("bancointer.read_token.Except: ", e)
             return {}
         return data
 
@@ -415,7 +428,7 @@ class BancoInter(object):
         token_data['expires_at'] = str(expires_at)
 
         # Directly from dictionary
-        with open(self._TOKEN_FILE_PATH, 'w') as outfile:
+        with open(self._TOKEN_FILE_PATH, 'w+') as outfile:
             json.dump(token_data, outfile)
         outfile.close()
 
