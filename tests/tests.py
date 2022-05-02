@@ -11,7 +11,7 @@ class TestBancoInter(unittest.TestCase):
         self.bancointer = BancoInter(
             config("CPFCNPJ_BENEF"),
             config("X-INTER-CONTA-CORRENTE"),
-            (config("PUBLIC_KEY"), config("PRIVATE_KEY")),
+            (config("PUBLIC_KEY_V1"), config("PRIVATE_KEY_V1")),
         )
 
     def test_get_url(self):
@@ -20,12 +20,22 @@ class TestBancoInter(unittest.TestCase):
         )
 
     def test_headers(self):
-        self.assertEqual(
-            self.bancointer.headers,
-            {
-                "x-inter-conta-corrente": self.bancointer.inter_conta_corrente,
-            },
-        )
+        if self.bancointer.api_version == 2:
+            self.assertEqual(
+                self.bancointer.headers,
+                {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + self.bancointer.bearer_token
+                }
+            )
+        else:
+            self.assertEqual(
+                self.bancointer.headers,
+                {
+                    "x-inter-conta-corrente": self.bancointer.inter_conta_corrente,
+                },
+            )
 
     @requests_mock.Mocker()
     def test_boleto(self, request_mock):
@@ -81,7 +91,9 @@ class TestBancoInter(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_baixa(self, request_mock):
-        url = self.bancointer._get_url(path=f"boletos/00005/baixas")
+        path = f"boletos/00005/baixas"
+        if self.bancointer.api_version == 2: path = f"boletos/00005/cancelar"
+        url = self.bancointer._get_url(path=path)
         json = {}
         request_mock.post(url=url, json=json)
         drop = self.bancointer.baixa(nosso_numero="00005", motivo=Baixa.ACERTOS)

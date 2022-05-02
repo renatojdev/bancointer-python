@@ -5,6 +5,27 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 * Navegue até a seção APIs:
 * Conta Digital > Aplicações > <em>**Nova Aplicação**</em>
 
+**Atualizado para a API versão 2**
+
+* Crie um arquivo `.env` com os seguitntes atributos:
+
+```
+    CPFCNPJ_BENEF='Número CPF OU CNPJ da conta no banco inter'
+    X-INTER-CONTA-CORRENTE='Numero da conta corrente'
+    API_URL_TOKEN_V2=https://cdpj.partners.bancointer.com.br/oauth/v2/token
+    API_URL_COBRA_V2=https://cdpj.partners.bancointer.com.br/cobranca/v2/
+    API_URL_COBRA_V1=https://apis.bancointer.com.br/openbanking/v1/certificado/
+    SSL_DIR_BASE='Diretorio base dos arquivos SSL'
+    PUBLIC_KEY_V1='Path do arquivo public key da versão 1'
+    PRIVATE_KEY_V1='Path do Arquivo private key da versão 1'
+    PUBLIC_KEY_V2='Path do arquivo public key da versão 2'
+    PRIVATE_KEY_V2='Path do Arquivo private key da versão 2'
+    DOWNLOAD_PATH='Path do diretorio que os arquivos PDF de download serão salvos'
+    TOKEN_FILE_PATH='Path do diretorio onde sera salvo o arquivo de token'
+    CLIENT_ID='Chave client id da sua app no banco inter'
+    CLIENT_SECRET='Chave client secret da sua app no banco inter'
+```
+
 **Referências:**
 
 * Portal do desenvolvedor: https://developers.bancointer.com.br/

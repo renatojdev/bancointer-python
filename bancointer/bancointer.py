@@ -2,16 +2,18 @@ import os
 import requests
 import codecs
 from .baixa import Baixa
-
+from decouple import config
+import json
+from datetime import datetime, timedelta
 
 class BancoInter(object):
     """Classe para transacoes (emissao, baixa, download) de boletos na API do Banco Inter PJ.
-
-    Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
+       Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
     """
 
     # Class attributes
-    _BASE_URL = "https://apis.bancointer.com.br/openbanking/v1/certificado/"
+    _API_VERSION = 2
+    _BASE_URL = config("API_URL_COBRA_V"+str(_API_VERSION))
     _SEM_DESCONTO = {
         "codigoDesconto": "NAOTEMDESCONTO",
         "taxa": 0,
@@ -20,6 +22,9 @@ class BancoInter(object):
     }
     _ISENTO_MULTA = {"codigoMulta": "NAOTEMMULTA", "valor": 0, "taxa": 0}
     _ISENTO_MORA = {"codigoMora": "ISENTO", "valor": 0, "taxa": 0}
+    _BEARER_TOKEN = None
+    _SSL_DIR_BASE = config("SSL_DIR_BASE")
+    _TOKEN_FILE_PATH = config("TOKEN_FILE_PATH")+"token.json"
 
     def __init__(self, cpf_cnpj_beneficiario, x_inter_conta_corrente, cert):
         """Metodo construtor da classe.
@@ -37,6 +42,15 @@ class BancoInter(object):
         self.desconto3 = self._SEM_DESCONTO
         self.multa = self._ISENTO_MULTA
         self.mora = self._ISENTO_MORA
+
+    @property
+    def api_version(self):
+        return self._API_VERSION
+
+    def set_api_version(self, api_version = 2):
+        """Set API version, DEFAULT is API version 2."""
+        self._API_VERSION = api_version
+        self._BASE_URL = config("API_URL_COBRA_V"+str(api_version))
 
     def _get_url(self, path):
         return f"{self._BASE_URL}{path}"
@@ -127,8 +141,28 @@ class BancoInter(object):
         self.mora = mora
 
     @property
+    def bearer_token(self):
+        return self._BEARER_TOKEN
+
+    @bearer_token.setter
+    def bearer_token(self, value):
+        self._BEARER_TOKEN = value
+
+
+    @property
     def headers(self):
-        return {"x-inter-conta-corrente": self.inter_conta_corrente}
+        if self._API_VERSION == 2:
+            if(self._BEARER_TOKEN == None):
+                token = self._get_token()
+                self.bearer_token = token['access_token']
+            return {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"{token['token_type']} {self.bearer_token}"
+            }
+        elif self._API_VERSION == 1:
+            return {"x-inter-conta-corrente": self.inter_conta_corrente}
+        else: return {}
 
     def _request(self, method, path, json, **kwargs):
         """Executa as requisicoes na API do Banco Inter conforme os parametros de entrada.
@@ -204,12 +238,9 @@ class BancoInter(object):
         path = "boletos"
 
         json = {
-            "cnpjCPFBeneficiario": self.cpf_cnpj_beneficiario,
             "pagador": pagador,
-            "dataEmissao": dataEmissao,
             "dataVencimento": dataVencimento,
-            "dataLimite": "TRINTA",
-            "numDiasAgenda": "TRINTA",
+            "numDiasAgenda": "30",
             "multa": self.multa,
             "mora": self.mora,
             "valorAbatimento": 0,
@@ -220,17 +251,40 @@ class BancoInter(object):
             "valorNominal": valorNominal,
             "mensagem": mensagem,
         }
+        if self._API_VERSION == 1:
+            json = {
+                "cnpjCPFBeneficiario": self.cpf_cnpj_beneficiario,
+                "pagador": pagador,
+                "dataEmissao": dataEmissao,
+                "dataVencimento": dataVencimento,
+                "dataLimite": "TRINTA",
+                "numDiasAgenda": "TRINTA",
+                "multa": self.multa,
+                "mora": self.mora,
+                "valorAbatimento": 0,
+                "desconto1": self.desconto1,
+                "desconto2": self.desconto2,
+                "desconto3": self.desconto3,
+                "seuNumero": seuNumero,
+                "valorNominal": valorNominal,
+                "mensagem": mensagem,
+            }
 
         response = self._request(method="post", path=path, json=json, cert=self.cert)
-
+        # print(json)
+        # response=self.headers
         return response
 
     def _response_save(self, response, file_path):
         if response.content:
+            pdf = response.content
+            if self._API_VERSION == 2:
+                content = json.loads(response.content)
+                pdf = bytes(content['pdf'], 'UTF-8')
 
             try:
                 with open(file_path, "wb") as out_file:
-                    out_file.write(codecs.decode(response.content, "base64"))
+                    out_file.write(codecs.decode(pdf, "base64"))
                 out_file.close()
             except Exception as e:
                 print("bancointer.Except: ", e)
@@ -277,9 +331,14 @@ class BancoInter(object):
         Returns:
             (response): Response da requisicao
         """
-        path = f"boletos/{nosso_numero}/baixas"
+        act = "cancelar"
+        json = {"motivoCancelamento": motivo.value}
 
-        json = {"codigoBaixa": motivo.value}
+        if self._API_VERSION == 1:
+            act = "baixas"
+            json = {"codigoBaixa": motivo.value}
+
+        path = f"boletos/{nosso_numero}/{act}"
 
         response = self._request(method="post", path=path, json=json, cert=self.cert)
 
@@ -301,3 +360,62 @@ class BancoInter(object):
         response = self._request(method="get", path=path, json=json, cert=self.cert)
 
         return response.json()
+
+    def _get_api_token(self):
+        """Get a new token from Banco Inter Cobranca API V2"""
+        url = config("API_URL_TOKEN_V2")
+
+        payload = "grant_type=client_credentials&client_id="+ config("CLIENT_ID") +"&client_secret="+ config("CLIENT_SECRET") +"&scope=boleto-cobranca.read%20boleto-cobranca.write"
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+
+        response = requests.post(url, data=payload, headers=headers, cert=self.cert)
+
+        return response.json()
+
+    def _read_token_from_file(self):
+        """Read a token value and return a dict from file"""
+        try:
+            # Opening JSON file
+            f = open(self._TOKEN_FILE_PATH)
+            # returns JSON object as
+            # a dictionary
+            data = json.load(f)
+            # Closing file
+            f.close()
+        except Exception as e:
+            print("bancointer.Except: ", e)
+            return {}
+        return data
+
+
+    def _get_token(self):
+        """Get token if valid from file or get new token from API.
+           Token is valid if current date less then token expires at.
+        """
+        token_data = self._read_token_from_file()
+        if token_data == {}:
+            token_data = self._get_api_token()
+            self._save_token(token_data=token_data)
+
+        current_date = datetime.now()
+        if current_date > datetime.fromisoformat(token_data['expires_at']):
+            token_data = self._get_api_token()
+            self._save_token(token_data=token_data)
+
+        return token_data
+
+
+    def _save_token(self, token_data={}):
+        """Save a token to file. Add expires_at token, value date now + expires in seconds"""
+        expires_at = datetime.now() + timedelta(seconds=token_data['expires_in'])
+        token_data['expires_at'] = str(expires_at)
+
+        # Directly from dictionary
+        with open(self._TOKEN_FILE_PATH, 'w') as outfile:
+            json.dump(token_data, outfile)
+        outfile.close()
+
