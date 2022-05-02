@@ -7,7 +7,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 **Atualizado para a API versão 2**
 
-* Crie um arquivo `.env` com os seguitntes atributos:
+* Crie um arquivo `.env` com os seguitntes atributos na aplicação que irá usar este projeto. Veja a pasta examples:
 
 ```
     CPFCNPJ_BENEF='Número CPF OU CNPJ da conta no banco inter'
