@@ -21,7 +21,6 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
     PUBLIC_KEY_V2='Path do arquivo public key da versão 2'
     PRIVATE_KEY_V2='Path do Arquivo private key da versão 2'
     DOWNLOAD_PATH='Path do diretorio que os arquivos PDF de download serão salvos'
-    TOKEN_FILE_PATH='Path do diretorio onde sera salvo o arquivo de token'
     CLIENT_ID='Chave client id da sua app no banco inter'
     CLIENT_SECRET='Chave client secret da sua app no banco inter'
 ```
