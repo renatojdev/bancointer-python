@@ -165,8 +165,8 @@ class BancoInter(object):
     @property
     def headers(self):
         if self._API_VERSION == 2:
+            token = self._get_token()
             if(self._BEARER_TOKEN == None):
-                token = self._get_token()
                 self.bearer_token = token['access_token']
             return {
                 "Accept": "application/json",

@@ -6,9 +6,9 @@ dir_base_ssl = config("SSL_DIR_BASE")
 
 cert = (dir_base_ssl + config("PUBLIC_KEY_V"+ str(API_VERSION)), dir_base_ssl + config("PRIVATE_KEY_V"+ str(API_VERSION)))
 
-if API_VERSION == 1:
-    bi = BancoInter(config("CPFCNPJ_BENEF"), config("X-INTER-CONTA-CORRENTE"), cert)
+bi = BancoInter(config("CPFCNPJ_BENEF"), config("X-INTER-CONTA-CORRENTE"), cert)
 
+if API_VERSION == 1:
     bi.set_api_version(API_VERSION)
 
     pagador = {

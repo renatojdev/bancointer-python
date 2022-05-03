@@ -3,7 +3,7 @@ from bancointer.baixa import Baixa
 from decouple import config
 
 
-API_VERSION = 1
+API_VERSION = 2
 dir_base_ssl = config("SSL_DIR_BASE")
 
 cert = (dir_base_ssl + config("PUBLIC_KEY_V"+ str(API_VERSION)), dir_base_ssl + config("PRIVATE_KEY_V"+ str(API_VERSION)))
@@ -20,6 +20,6 @@ if API_VERSION == 1:
     bi.set_api_version(API_VERSION)
     bi.set_base_url(value=config("API_URL_COBRA_V1"))
 
-reponse = bi.baixa(nosso_numero="00813028679", motivo=Baixa.ACERTOS)
+reponse = bi.baixa(nosso_numero="00813359066", motivo=Baixa.ACERTOS)
 
 print(reponse)

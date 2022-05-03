@@ -19,6 +19,6 @@ if API_VERSION == 1:
     bi.set_api_version(API_VERSION)
     bi.set_base_url(value=config("API_URL_COBRA_V1"))
 
-reponse = bi.download(nosso_numero="00813029727", download_path=config("DOWNLOAD_PATH"))
+reponse = bi.download(nosso_numero="00813359066", download_path=config("DOWNLOAD_PATH"))
 
 print(reponse)
