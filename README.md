@@ -1,6 +1,10 @@
 #  Banco Inter Python
 Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso a documentação precisa estar logado no internet banking do Banco Inter. Para criar seu aplicativo, siga estas etapas simples:
 
+**Atualizado para a API versão 3**
+
+
+
 * Faça login no Internet Banking (Banco Inter).
 * Navegue até a seção APIs:
 * Conta Digital > Aplicações > <em>**Nova Aplicação**</em>
