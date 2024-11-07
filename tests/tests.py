@@ -9,12 +9,13 @@ from decouple import config
 class TestBancoInter(unittest.TestCase):
     def setUp(self):
         self.bancointer = BancoInter(
-            config("CPFCNPJ_BENEF"),
-            config("X-INTER-CONTA-CORRENTE"),
-            (config("PUBLIC_KEY_V1"), config("PRIVATE_KEY_V1")),
+            config("API_URL_COBRA_V2"),
+            config("API_URL_TOKEN_V2"),
+            config("CLIENT_ID"),
+            config("CLIENT_SECRET"),
+            (config("SSL_DIR_BASE")+ config("PUBLIC_KEY_V2"),
+            config("SSL_DIR_BASE")+ config("PRIVATE_KEY_V2")),
         )
-        self.bancointer.set_api_version(1)
-        self.bancointer.set_base_url("https://apis.bancointer.com.br/openbanking/v1/certificado/")
 
     def test_get_url(self):
         self.assertEqual(
