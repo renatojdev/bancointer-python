@@ -1,23 +1,22 @@
 #  Banco Inter Python
 Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso a documentação precisa estar logado no internet banking do Banco Inter. Para criar seu aplicativo, siga estas etapas simples:
 
-**Atualizado para a API versão 3**
-
-
-
 * Faça login no Internet Banking (Banco Inter).
 * Navegue até a seção APIs:
 * Conta Digital > Aplicações > <em>**Nova Aplicação**</em>
 
-**Atualizado para a API versão 2**
+**Atualizado para a API versão 3**
 
 * Crie um arquivo `.env` com os seguitntes atributos na aplicação que irá usar este projeto. Veja a pasta examples:
 
 ```
     CPFCNPJ_BENEF='Número CPF OU CNPJ da conta no banco inter'
     X_INTER_CONTA_CORRENTE='Numero da conta corrente'
-    API_URL_TOKEN_V2=https://cdpj.partners.bancointer.com.br/oauth/v2/token
+    # SANDBOX
+    API_SBX_TOKEN_V2=https://cdpj-sandbox.partners.uatinter.co/oauth/v2/token
     API_SBX_COBRA_V3=https://cdpj-sandbox.partners.uatinter.co/cobranca/v3/
+    # PRODUCTION
+    API_URL_TOKEN_V2=https://cdpj.partners.bancointer.com.br/oauth/v2/token
     API_URL_COBRA_V3=https://cdpj.partners.bancointer.com.br/cobranca/v3/
     API_URL_COBRA_V2=https://cdpj.partners.bancointer.com.br/cobranca/v2/
     API_URL_COBRA_V1=https://apis.bancointer.com.br/openbanking/v1/certificado/
@@ -51,7 +50,7 @@ ou
 ```python setup.py install```
 
 ##  Exemplos de Uso
-Exemplos de utilização da API do Banco Inter para emissão, download e baixa de títulos bancários.
+Exemplos de utilização da API do Banco Inter (SANDBOX) para emissão, download e baixa de títulos bancários.
 
 ###  Emissão de Boleto
 ```
