@@ -6,6 +6,7 @@ import codecs
 from datetime import datetime, timedelta
 from decouple import config
 
+
 class Util(object):
     _TOKEN_FILE_PATH = (
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
@@ -141,7 +142,6 @@ class Util(object):
         with open(self._TOKEN_FILE_PATH, "w+") as outfile:
             json.dump(token_data, outfile)
         outfile.close()
-
 
     @staticmethod
     def file_save(response, file_path):

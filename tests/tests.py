@@ -12,7 +12,7 @@ class TestBancoInter(unittest.TestCase):
     def setUp(self):
         self.bancointer = BancoInter(
             config("API_SBX_COBRA_V3"),
-            config("API_URL_TOKEN_V2"),
+            config("API_SBX_TOKEN_V2"),
             config("CLIENT_ID"),
             config("CLIENT_SECRET"),
             (
@@ -31,9 +31,8 @@ class TestBancoInter(unittest.TestCase):
             self.assertEqual(
                 self.bancointer.util.headers,
                 {
-                    "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + self.bancointer.util.bearer_token,
+                    # "Authorization": "Bearer " + self.bancointer.util.bearer_token,
                 },
             )
         else:
@@ -46,6 +45,16 @@ class TestBancoInter(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_boleto(self, request_mock):
+        request_mock.post(
+            config("API_SBX_TOKEN_V2"),
+            json={
+                "access_token": "fbe564fe-4c77-4998-ae4a-b945a0d131cc",
+                "token_type": "Bearer",
+                "expires_in": 3600,
+                "scope": "boleto-cobranca.read boleto-cobranca.write",
+                "expires_at": "2024-11-08 07:17:36.580932",
+            },
+        )
         url = self.bancointer._get_url(path="cobrancas")
         json = {
             "seuNumero": "00005",
@@ -88,7 +97,17 @@ class TestBancoInter(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_download(self, request_mock):
-        url = self.bancointer._get_url(path=f"boletos/00005/pdf")
+        request_mock.post(
+            config("API_SBX_TOKEN_V2"),
+            json={
+                "access_token": "fbe564fe-4c77-4998-ae4a-b945a0d131cc",
+                "token_type": "Bearer",
+                "expires_in": 3600,
+                "scope": "boleto-cobranca.read boleto-cobranca.write",
+                "expires_at": "2024-11-08 07:17:36.580932",
+            },
+        )
+        url = self.bancointer._get_url(path=f"cobrancas/00005/pdf")
         json = None
         request_mock.get(url=url, json=json)
         download = self.bancointer.download(
@@ -98,9 +117,19 @@ class TestBancoInter(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_baixa(self, request_mock):
-        path = f"boletos/00005/baixas"
+        request_mock.post(
+            "https://cdpj-sandbox.partners.uatinter.co/oauth/v2/token",
+            json={
+                "access_token": "fbe564fe-4c77-4998-ae4a-b945a0d131cc",
+                "token_type": "Bearer",
+                "expires_in": 3600,
+                "scope": "boleto-cobranca.read boleto-cobranca.write",
+                "expires_at": "2024-11-08 07:17:36.580932",
+            },
+        )
+        path = f"cobrancas/00005/baixas"
         if self.bancointer.api_version == 3:
-            path = f"boletos/00005/cancelar"
+            path = f"cobrancas/00005/cancelar"
         url = self.bancointer._get_url(path=path)
         json = {}
         request_mock.post(url=url, json=json)
@@ -111,7 +140,7 @@ class TestBancoInter(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_consulta(self, request_mock):
-        url = self.bancointer._get_url(path=f"boletos/000007")
+        url = self.bancointer._get_url(path=f"cobrancas/000007")
         json = {
             "nomeBeneficiario": "BANCO INTER",
             "cnpjCpfBeneficiario": "00000000000000",

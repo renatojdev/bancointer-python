@@ -30,7 +30,7 @@ class BancoInter(object):
             client_secret (str): Client Secret obtido no detalhe da tela de aplicações no IB.
             cert (tuple): (cert_file_path, key_file_path) PEM path do certificado digital e PEM path da chave publica.
         """
-        self.base_url = None
+        self.base_url = base_url
         self._API_VERSION = 3
         self.desconto = self._SEM_DESCONTO
         self.multa = self._ISENTO_MULTA
@@ -185,7 +185,6 @@ class BancoInter(object):
         file_path = download_path + os.sep + codigo_solicitacao + ".pdf"
 
         return self.util.file_save(response, file_path)
-
 
     def baixa(self, codigo_solicitacao, motivo_cancelamento: Baixa):
         """Metodo para baixa (Cancelamento) de boleto emitido.
