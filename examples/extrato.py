@@ -13,9 +13,8 @@ headers = {
     "Authorization": "Bearer 4ca89e20-fa9d-4e68-9a1b-f4a432d341d5"
 }
 
-escopos = ['extrato.read', 'boleto.read']
+escopos = ['extrato.read', 'boleto.read', 'boleto.write']
 
-escopos.append('boleto.write')
 escopos.remove('extrato.read')
 
 str_escopos = ' '.join(escopos)

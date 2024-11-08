@@ -6,6 +6,8 @@ class Banking(object):
     """
 
     def __init__(self, cert):
+        self.set_dt_end = None
+        self.set_dt_ini = None
         self.cert=cert
         self.headers = {
             "Accept": "application/json",

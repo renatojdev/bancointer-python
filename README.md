@@ -15,8 +15,10 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 ```
     CPFCNPJ_BENEF='Número CPF OU CNPJ da conta no banco inter'
-    X-INTER-CONTA-CORRENTE='Numero da conta corrente'
+    X_INTER_CONTA_CORRENTE='Numero da conta corrente'
     API_URL_TOKEN_V2=https://cdpj.partners.bancointer.com.br/oauth/v2/token
+    API_SBX_COBRA_V3=https://cdpj-sandbox.partners.uatinter.co/cobranca/v3/
+    API_URL_COBRA_V3=https://cdpj.partners.bancointer.com.br/cobranca/v3/
     API_URL_COBRA_V2=https://cdpj.partners.bancointer.com.br/cobranca/v2/
     API_URL_COBRA_V1=https://apis.bancointer.com.br/openbanking/v1/certificado/
     SSL_DIR_BASE='Diretorio base dos arquivos SSL'
@@ -31,8 +33,8 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 **Referências:**
 
-* Portal do desenvolvedor: https://developers.bancointer.com.br/
-* Refrência da API: https://developers.bancointer.com.br/reference
+* Portal do desenvolvedor: https://developers.inter.co/
+* Refrência da API: https://developers.inter.co/references/token
 
 ##  Funcionalidades disponíveis
 * Emissão de boletos
@@ -55,7 +57,7 @@ Exemplos de utilização da API do Banco Inter para emissão, download e baixa d
 ```
 bi = BancoInter(
 config("CPFCNPJ_BENEF"),
-config("X-INTER-CONTA-CORRENTE"), cert)
+config("X_INTER_CONTA_CORRENTE"), cert)
 
 pagador = {
 "cnpjCpf": "99999999999999",
@@ -88,7 +90,7 @@ print(reponse)
 ```
 bi = BancoInter(
 config("CPFCNPJ_BENEF"),
-config("X-INTER-CONTA-CORRENTE"), cert)
+config("X_INTER_CONTA_CORRENTE"), cert)
 
 reponse = bi.download(nosso_numero="00714151811", download_path=config("DOWNLOAD_PATH"))
 
@@ -98,7 +100,7 @@ print(reponse)
 ```
 bi = BancoInter(
 config("CPFCNPJ_BENEF"),
-config("X-INTER-CONTA-CORRENTE"), cert)
+config("X_INTER_CONTA_CORRENTE"), cert)
 
 reponse = bi.baixa(nosso_numero="00714656116", motivo=Baixa.ACERTOS)
 

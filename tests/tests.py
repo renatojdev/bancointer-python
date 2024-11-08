@@ -7,9 +7,10 @@ from decouple import config
 
 
 class TestBancoInter(unittest.TestCase):
+    """Use sandbox API for test purposes"""
     def setUp(self):
         self.bancointer = BancoInter(
-            config("API_URL_COBRA_V2"),
+            config("API_SBX_COBRA_V3"),
             config("API_URL_TOKEN_V2"),
             config("CLIENT_ID"),
             config("CLIENT_SECRET"),
@@ -23,7 +24,7 @@ class TestBancoInter(unittest.TestCase):
         )
 
     def test_headers(self):
-        if self.bancointer.api_version == 2:
+        if self.bancointer.api_version == 3:
             self.assertEqual(
                 self.bancointer.headers,
                 {
@@ -42,7 +43,7 @@ class TestBancoInter(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_boleto(self, request_mock):
-        url = self.bancointer._get_url(path="boletos")
+        url = self.bancointer._get_url(path="cobrancas")
         json = {
             "seuNumero": "00005",
             "nossoNumero": "00713491373",
@@ -88,7 +89,7 @@ class TestBancoInter(unittest.TestCase):
         json = None
         request_mock.get(url=url, json=json)
         download = self.bancointer.download(
-            nosso_numero="00005", download_path="/tmp/downloads"
+            codigo_solicitacao="00005", download_path="./docs"
         )
         self.assertEqual(download, json)
 
@@ -99,7 +100,7 @@ class TestBancoInter(unittest.TestCase):
         url = self.bancointer._get_url(path=path)
         json = {}
         request_mock.post(url=url, json=json)
-        drop = self.bancointer.baixa(nosso_numero="00005", motivo=Baixa.ACERTOS)
+        drop = self.bancointer.baixa(codigo_solicitacao="00005", motivo_cancelamento=Baixa.ACERTOS)
         self.assertEqual(drop, json)
 
     @requests_mock.Mocker()
