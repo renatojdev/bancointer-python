@@ -8,13 +8,13 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="bancointer-python",
-    version="0.7",
+    version="0.9",
     description="Emita boletos bancários utilizando a API do Banco Inter PJ.",
     long_description_content_type="text/markdown",
     long_description=long_description,
     url="https://github.com/renatojdev/bancointer-python",
     author="Renato P. Eduardo Jr",
-    author_email="renato@paulaeduardo.com",
+    author_email="renatojdev@outlook.com",
     license="MIT",
     packages=["bancointer"],
     install_requires=["requests"],

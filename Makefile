@@ -1,5 +1,5 @@
 install:
-	pipenv run python setup.py install
+	pipenv run python setup.py sdist bdist_wheel
 
 black:
 	pipenv run black . --check

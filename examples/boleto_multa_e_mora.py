@@ -1,18 +1,24 @@
 from bancointer.bancointer import BancoInter
 from decouple import config
+from datetime import datetime, timedelta
+
+
+# Due Date
+# Get time
+data_act = datetime.now()
+# Add 10 days
+new_date = data_act + timedelta(days=10)
+due_date = new_date.strftime("%Y-%m-%d")
 
 
 dir_base_ssl = config("SSL_DIR_BASE")
 
 bi = BancoInter(
-    config("API_URL_COBRA_V2"),
-    config("API_URL_TOKEN_V2"),
+    config("API_SBX_COBRA_V3"),
+    config("API_SBX_TOKEN_V2"),
     config("CLIENT_ID"),
     config("CLIENT_SECRET"),
-    (
-        dir_base_ssl + config("PUBLIC_KEY_V2"),
-        dir_base_ssl + config("PRIVATE_KEY_V2")
-    )
+    (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2")),
 )
 
 pagador = {
@@ -39,9 +45,9 @@ mensagem = {
     "linha5": "mensagem da linha5",
 }
 
-MULTA = {"codigoMulta": "PERCENTUAL", "valor": 0, "taxa": 2.0, "data": "2022-05-12"}
+MULTA = {"codigo": "PERCENTUAL", "valor": 0, "taxa": 2.0}
 
-MORA = {"codigoMora": "TAXAMENSAL", "valor": 0, "taxa": 1.0, "data": "2022-05-12"}
+MORA = {"codigo": "TAXAMENSAL", "valor": 0, "taxa": 1.0}
 
 bi.set_multa(multa=MULTA)
 
@@ -50,9 +56,9 @@ bi.set_mora(mora=MORA)
 reponse = bi.boleto(
     pagador=pagador,
     mensagem=mensagem,
-    dataEmissao="2022-05-02",
-    dataVencimento="2022-05-11",
-    seuNumero="00001",
+    dataEmissao=None,
+    dataVencimento=due_date,
+    seuNumero="00002",
     valorNominal=9.9,
 )
 

@@ -1,19 +1,23 @@
 from bancointer.bancointer import BancoInter
 from decouple import config
+from datetime import datetime, timedelta
 
-dir_base_ssl = config("SSL_DIR_BASE")
+
+# Due Date
+data_act = datetime.now()
+# Add 10 days
+new_date = data_act + timedelta(days=10)
+due_date = new_date.strftime("%Y-%m-%d")
+
 
 dir_base_ssl = config("SSL_DIR_BASE")
 
 bi = BancoInter(
-    config("API_URL_COBRA_V2"),
-    config("API_URL_TOKEN_V2"),
+    config("API_SBX_COBRA_V3"),
+    config("API_SBX_TOKEN_V2"),
     config("CLIENT_ID"),
     config("CLIENT_SECRET"),
-    (
-        dir_base_ssl + config("PUBLIC_KEY_V2"),
-        dir_base_ssl + config("PRIVATE_KEY_V2")
-    )
+    (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2")),
 )
 
 pagador = {
@@ -21,7 +25,7 @@ pagador = {
     "nome": "Nome do Pagador",
     "email": "pagador@gmail.com",
     "telefone": "999999999",
-    "cep": "99999999",
+    "cep": "80030000",
     "numero": "00",
     "complemento": "proximo ao pagador",
     "bairro": "Bairro do Pagador",
@@ -43,8 +47,8 @@ mensagem = {
 reponse = bi.boleto(
     pagador=pagador,
     mensagem=mensagem,
-    dataEmissao="2022-05-03",
-    dataVencimento="2022-05-10",
+    dataEmissao=None,
+    dataVencimento=due_date,
     seuNumero="00001",
     valorNominal=5,
 )

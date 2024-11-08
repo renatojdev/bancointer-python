@@ -1,38 +1,38 @@
 import os
-import requests
-import codecs
+
 from .baixa import Baixa
 from .util import Util
-import json
-from pathlib import Path
-from datetime import datetime, timedelta
+
 
 class BancoInter(object):
     """Classe para transacoes (emissao, baixa, download) de boletos na API do Banco Inter PJ.
-       Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
+    Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
     """
 
     # Class attributes
     _SEM_DESCONTO = {
-        "codigoDesconto": "NAOTEMDESCONTO",
+        "codigo": "PERCENTUALDATAINFORMADA",
         "taxa": 0,
         "valor": 0,
-        "data": "",
+        "quantidadeDias": 0,
+        "data": "2024-11-17",
     }
-    _ISENTO_MULTA = {"codigoMulta": "NAOTEMMULTA", "valor": 0, "taxa": 0}
-    _ISENTO_MORA = {"codigoMora": "ISENTO", "valor": 0, "taxa": 0}
+    _ISENTO_MULTA = {"codigo": "VALORFIXO", "valor": 0, "taxa": 0}
+    _ISENTO_MORA = {"codigo": "TAXAMENSAL", "valor": 0, "taxa": 0}
 
     def __init__(self, base_url, base_url_token, client_id, client_secret, cert):
         """Metodo construtor da classe.
 
         Args:
-            cpf_cnpj_beneficiario (str): cpf/cnpj do beneficiario do boleto
-            x_inter_conta_corrente (str): numero da conta corrente do beneficiario do boleto.
+            base_url (str): URL base da api de cobranca.
+            base_url_token (str): URL base da api de cobranca para gerar o token de acesso.
+            client_id (str): Client Id obtido no detalhe da tela de aplicações no IB.
+            client_secret (str): Client Secret obtido no detalhe da tela de aplicações no IB.
             cert (tuple): (cert_file_path, key_file_path) PEM path do certificado digital e PEM path da chave publica.
         """
-        self.desconto1 = self._SEM_DESCONTO
-        self.desconto2 = self._SEM_DESCONTO
-        self.desconto3 = self._SEM_DESCONTO
+        self.base_url = base_url
+        self._API_VERSION = 3
+        self.desconto = self._SEM_DESCONTO
         self.multa = self._ISENTO_MULTA
         self.mora = self._ISENTO_MORA
         self.client_id = client_id
@@ -42,12 +42,12 @@ class BancoInter(object):
             base_url_token=base_url_token,
             client_id=client_id,
             client_secret=client_secret,
-            cert=cert
+            cert=cert,
         )
 
-    # @property
-    # def api_version(self):
-    #     return self._API_VERSION
+    @property
+    def api_version(self):
+        return self._API_VERSION
 
     # def set_base_url(self, value):
     #     self.base_url = value
@@ -55,14 +55,14 @@ class BancoInter(object):
     # def set_base_url_token(self, value):
     #     self.base_url_token = value
 
-    # def set_api_version(self, api_version = 2):
-    #     """Set API version, DEFAULT is API version 2."""
-    #     self._API_VERSION = api_version
+    def set_api_version(self, api_version=3):
+        """Set API version, DEFAULT is API version 3."""
+        self._API_VERSION = api_version
 
-    # def _get_url(self, path):
-    #     return f"{self.base_url}{path}"
+    def _get_url(self, path):
+        return f"{self.base_url}{path}"
 
-    def set_desconto1(self, desconto1):
+    def set_desconto(self, desconto):
         """Dict para desconto no boleto.
         Código de Desconto do título.
 
@@ -73,55 +73,16 @@ class BancoInter(object):
         VALORANTECIPACAODIAUTIL - Valor por antecipação (dia útil).
         PERCENTUALVALORNOMINALDIACORRIDO - Percentual sobre o valor nominal por dia corrido.
         PERCENTUALVALORNOMINALDIAUTIL - Percentual sobre o valor nominal por dia útil.
-        desconto1 = {
+        desconto = {
             "codigoDesconto": "ISENTO",
             "valor": 0,
             "taxa": 0
         }
 
         Args:
-            desconto1 (dict): Dict de desconto a ser aplicado no boleto.
+            desconto (dict): Dict de desconto a ser aplicado no boleto.
         """
-        self.desconto1 = desconto1
-
-    def set_desconto2(self, desconto2):
-        """Dict para desconto no boleto.
-        Código de Desconto do título.
-
-        NAOTEMDESCONTO - Não tem desconto.
-        VALORFIXODATAINFORMADA - Valor fixo até data informada.
-        PERCENTUALDATAINFORMADA - Percentual até data informada.
-        VALORANTECIPACAODIACORRIDO - Valor por antecipação (dia corrido).
-        VALORANTECIPACAODIAUTIL - Valor por antecipação (dia útil).
-        PERCENTUALVALORNOMINALDIACORRIDO - Percentual sobre o valor nominal por dia corrido.
-        PERCENTUALVALORNOMINALDIAUTIL - Percentual sobre o valor nominal por dia útil.
-        desconto2 = {
-            "codigoDesconto": "ISENTO",
-            "valor": 0,
-            "taxa": 0
-        }
-
-        Args:
-            desconto2 (dict): Dict de desconto a ser aplicado no boleto.
-        """
-        self.desconto2 = desconto2
-
-    def set_desconto3(self, desconto3):
-        """Dict para desconto no boleto.
-        Codigo de Desconto do título.
-
-        NAOTEMDESCONTO - Não tem desconto.
-        VALORFIXODATAINFORMADA - Valor fixo até data informada.
-        PERCENTUALDATAINFORMADA - Percentual até data informada.
-        VALORANTECIPACAODIACORRIDO - Valor por antecipação (dia corrido).
-        VALORANTECIPACAODIAUTIL - Valor por antecipação (dia útil).
-        PERCENTUALVALORNOMINALDIACORRIDO - Percentual sobre o valor nominal por dia corrido.
-        PERCENTUALVALORNOMINALDIAUTIL - Percentual sobre o valor nominal por dia útil.
-
-        Args:
-            desconto3 (dict): Dict de desconto a ser aplicado no boleto.
-        """
-        self.desconto3 = desconto3
+        self.desconto = desconto
 
     def set_multa(self, multa):
         """Codigo de Multa do título.
@@ -147,13 +108,12 @@ class BancoInter(object):
         """
         self.mora = mora
 
-
     def boleto(
         self, pagador, mensagem, dataEmissao, dataVencimento, seuNumero, valorNominal
     ):
         """Metodo para emissao de boletos bancarios na API do Banco Inter.
 
-           Saiba mais em: https://developers.bancointer.com.br/reference
+           Saiba mais em: https://developers.inter.co/references/token
 
         Args:
             pagador (dict): {
@@ -186,50 +146,48 @@ class BancoInter(object):
             response: Corpo do response retornado pela API.
         """
 
-        path = "boletos"
+        path = "cobrancas"
 
-        json = {
-            "pagador": pagador,
-            "dataVencimento": dataVencimento,
-            "numDiasAgenda": "30",
-            "multa": self.multa,
-            "mora": self.mora,
-            "valorAbatimento": 0,
-            "desconto1": self.desconto1,
-            "desconto2": self.desconto2,
-            "desconto3": self.desconto3,
+        payload = {
             "seuNumero": seuNumero,
             "valorNominal": valorNominal,
+            "dataVencimento": dataVencimento,
+            "numDiasAgenda": 30,
+            "pagador": pagador,
+            "desconto": self.desconto,
+            "multa": self.multa,
+            "mora": self.mora,
             "mensagem": mensagem,
         }
 
-        response = self.util.make_request_with_token(method="post", path=path, json=json)
+        response = self.util.make_request_with_token(
+            method="post", path=path, _json=payload
+        )
 
         return response
 
-    def download(self, nosso_numero, download_path):
+    def download(self, codigo_solicitacao, download_path):
         """Metodo para download de boletos emitidos.
 
         Args:
-            nosso_numero (str): Nosso numero de identificacao do boleto
-            download_path (str): Path completo para salvar o boleto. Ex: `C:\downloads`
+            codigo_solicitacao (string <uuid>): Codigo unico da cobrança
+            download_path (str): Path completo para salvar o boleto. Ex: `/tmp/downloads`
 
         Returns:
             (bool): True em caso de sucesso ou False caso contrario.
         """
-        path = f"boletos/{nosso_numero}/pdf"
+        path = f"cobrancas/{codigo_solicitacao}/pdf"
 
         json = None
 
         response = self.util.make_request_with_token(method="get", path=path, json=json)
 
-        file_path = download_path + os.sep + nosso_numero + ".pdf"
+        file_path = download_path + os.sep + codigo_solicitacao + ".pdf"
 
         return self.util.file_save(response, file_path)
 
-
-    def baixa(self, nosso_numero, motivo: Baixa):
-        """Metodo para baixa de boleto emitido.
+    def baixa(self, codigo_solicitacao, motivo_cancelamento: Baixa):
+        """Metodo para baixa (Cancelamento) de boleto emitido.
         Dominio que descreve o tipo de baixa sendo solicitado.
 
         ACERTOS - Baixa por acertos
@@ -242,36 +200,35 @@ class BancoInter(object):
         APEDIDODOCLIENTE - Baixado a pedido do cliente
 
         Args:
-            nosso_numero (str): Nosso numero de identificacao do boleto para baixa
-            motivo (Baixa): Baixa Emum referente ao motivo da baixa do documento
-
+            codigo_solicitacao (string <uuid>): Codigo unico da cobrança
+            motivo_cancelamento (string <= 50 characters): 	Motivo pelo qual a cobrança está sendo cancelada
         Returns:
             (response): Response da requisicao
         """
         act = "cancelar"
-        json = {"motivoCancelamento": motivo.value}
+        payload = {"motivoCancelamento": motivo_cancelamento.value}
 
-        path = f"boletos/{nosso_numero}/{act}"
+        path = f"cobrancas/{codigo_solicitacao}/{act}"
 
-        response = self.util.make_request_with_token(method="post", path=path, json=json)
+        response = self.util.make_request_with_token(
+            method="post", path=path, _json=payload
+        )
 
         return response
 
-    def consulta(self, nosso_numero):
+    def consulta(self, codigo_solicitacao):
         """Recupera as informações detalhadas de um boleto através do `nosso_numero`.
 
         Args:
-            nosso_numero (str): Nosso numero de identificação do boleto a ser recuperado
+            codigo_solicitacao (string <uuid>): Codigo unico da cobrança.
 
         Returns:
             dict: json-encoded of a response, `response.json()` dict com os dados do boleto.
         """
-        path = f"boletos/{nosso_numero}"
+        path = f"cobrancas/{codigo_solicitacao}"
 
-        json = None
-
-        response = self.util.make_request_with_token(method="get", path=path, json=json)
+        response = self.util.make_request_with_token(
+            method="get", path=path, _json=None
+        )
 
         return response.json()
-
-
