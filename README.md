@@ -7,7 +7,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 **Atualizado para a API versão 3**
 
-* Crie um arquivo `.env` com os seguitntes atributos na aplicação que irá usar este projeto. Veja a pasta examples:
+* Crie um arquivo `.env` com os seguitntes atributos na aplicação que irá usar este projeto.
 
 ```
     CPFCNPJ_BENEF='Número CPF OU CNPJ da conta no banco inter'
@@ -33,13 +33,20 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 **Referências:**
 
 * Portal do desenvolvedor: https://developers.inter.co/
-* Refrência da API: https://developers.inter.co/references/token
+* Referência da API: https://developers.inter.co/references/token
 
 ##  Funcionalidades disponíveis
-* Emissão de boletos
-* Download de boletos
-* Baixa de boletos
-* Consulta detalhada de boletos
+    * API Cobrança (Boleto com Pix)
+        - Emissão de boletos
+        - Download de boletos
+        - Baixa de boletos
+        - Consulta detalhada de boletos
+
+###  Novas funcionalidades a serem implementadas
+    * Recursos da Api Banking
+        * Extrato
+            - Consultar extrato
+    * Recursos da Api Pix
 
 ##  Instalação para utilização
 
@@ -50,14 +57,28 @@ ou
 ```python setup.py install```
 
 ##  Exemplos de Uso
-Exemplos de utilização da API do Banco Inter (SANDBOX) para emissão, download e baixa de títulos bancários.
+Exemplos de utilização da API do Banco Inter (SANDBOX) para emissão, download e baixa de títulos bancários. Veja a pasta `examples/`.
+
+- Importe as dependências necessárias:
+
+```
+from bancointer.bancointer import BancoInter
+from decouple import config
+
+dir_base_ssl = config("SSL_DIR_BASE")
+
+# Objeto Banco Inter para operações na API
+bi = BancoInter(
+    config("API_SBX_COBRA_V3"),
+    config("API_SBX_TOKEN_V2"),
+    config("CLIENT_ID"),
+    config("CLIENT_SECRET"),
+    (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2")),
+)
+```
 
 ###  Emissão de Boleto
 ```
-bi = BancoInter(
-config("CPFCNPJ_BENEF"),
-config("X_INTER_CONTA_CORRENTE"), cert)
-
 pagador = {
 "cnpjCpf": "99999999999999",
 "nome": "Nome do Pagador",
@@ -81,32 +102,26 @@ mensagem = {
 "linha5": "Mensagem da linha5",
 }
 
-reponse = bi.boleto(pagador=pagador, mensagem=mensagem, dataEmissao="2021-08-19", dataVencimento="2021-08-23", seuNumero="00001", valorNominal=9.9)
+reponse = bi.boleto(pagador=pagador, mensagem=mensagem, dataEmissao=None, dataVencimento="2024-11-21", seuNumero="00001", valorNominal=2.5)
 
 print(reponse)
 ```
 ### Download de Boleto
 ```
-bi = BancoInter(
-config("CPFCNPJ_BENEF"),
-config("X_INTER_CONTA_CORRENTE"), cert)
-
-reponse = bi.download(nosso_numero="00714151811", download_path=config("DOWNLOAD_PATH"))
+reponse = bi.download(codigo_solicitacao="ea209b84-2625-42fe-b6d5-820b496d4cc1", download_path=config("DOWNLOAD_PATH"))
 
 print(reponse)
 ```
 ### Baixa de Boleto
 ```
-bi = BancoInter(
-config("CPFCNPJ_BENEF"),
-config("X_INTER_CONTA_CORRENTE"), cert)
-
-reponse = bi.baixa(nosso_numero="00714656116", motivo=Baixa.ACERTOS)
+reponse = bi.baixa(codigo_solicitacao="ea209b84-2625-42fe-b6d5-820b496d4cc1", motivo=Baixa.ACERTOS)
 
 print(reponse)
 ```
 ## Contribua com este projeto
+
 Clone o repositório do projeto
+
 > $ git clone https://github.com/renatojdev/bancointer-python.git
 
 Se não tiver o pipenv instalado, para instalar:
