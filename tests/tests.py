@@ -8,14 +8,17 @@ from decouple import config
 
 class TestBancoInter(unittest.TestCase):
     """Use sandbox API for test purposes"""
+
     def setUp(self):
         self.bancointer = BancoInter(
             config("API_SBX_COBRA_V3"),
             config("API_URL_TOKEN_V2"),
             config("CLIENT_ID"),
             config("CLIENT_SECRET"),
-            (config("SSL_DIR_BASE")+ config("PUBLIC_KEY_V2"),
-            config("SSL_DIR_BASE")+ config("PRIVATE_KEY_V2")),
+            (
+                config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
+                config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
+            ),
         )
 
     def test_get_url(self):
@@ -26,18 +29,18 @@ class TestBancoInter(unittest.TestCase):
     def test_headers(self):
         if self.bancointer.api_version == 3:
             self.assertEqual(
-                self.bancointer.headers,
+                self.bancointer.util.headers,
                 {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + self.bancointer.bearer_token
-                }
+                    "Authorization": "Bearer " + self.bancointer.util.bearer_token,
+                },
             )
         else:
             self.assertEqual(
-                self.bancointer.headers,
+                self.bancointer.util.headers,
                 {
-                    "x-inter-conta-corrente": self.bancointer.inter_conta_corrente,
+                    "x-inter-conta-corrente": self.bancointer.util.inter_conta_corrente,
                 },
             )
 
@@ -96,11 +99,14 @@ class TestBancoInter(unittest.TestCase):
     @requests_mock.Mocker()
     def test_baixa(self, request_mock):
         path = f"boletos/00005/baixas"
-        if self.bancointer.api_version == 2: path = f"boletos/00005/cancelar"
+        if self.bancointer.api_version == 3:
+            path = f"boletos/00005/cancelar"
         url = self.bancointer._get_url(path=path)
         json = {}
         request_mock.post(url=url, json=json)
-        drop = self.bancointer.baixa(codigo_solicitacao="00005", motivo_cancelamento=Baixa.ACERTOS)
+        drop = self.bancointer.baixa(
+            codigo_solicitacao="00005", motivo_cancelamento=Baixa.ACERTOS
+        )
         self.assertEqual(drop, json)
 
     @requests_mock.Mocker()
@@ -144,7 +150,7 @@ class TestBancoInter(unittest.TestCase):
             "mora": {"codigo": "ISENTO", "taxa": 0, "valor": 0},
         }
         request_mock.get(url=url, json=json)
-        consulta = self.bancointer.consulta(nosso_numero="000007")
+        consulta = self.bancointer.consulta(codigo_solicitacao="000007")
         self.assertEqual(consulta, json)
         self.assertEqual(consulta["situacao"], "PAGO")
 

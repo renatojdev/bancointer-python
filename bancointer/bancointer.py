@@ -1,5 +1,4 @@
 import os
-import json
 
 from .baixa import Baixa
 from .util import Util
@@ -7,7 +6,7 @@ from .util import Util
 
 class BancoInter(object):
     """Classe para transacoes (emissao, baixa, download) de boletos na API do Banco Inter PJ.
-       Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
+    Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
     """
 
     # Class attributes
@@ -16,7 +15,7 @@ class BancoInter(object):
         "taxa": 0,
         "valor": 0,
         "quantidadeDias": 0,
-        "data": "2024-11-17"
+        "data": "2024-11-17",
     }
     _ISENTO_MULTA = {"codigo": "VALORFIXO", "valor": 0, "taxa": 0}
     _ISENTO_MORA = {"codigo": "TAXAMENSAL", "valor": 0, "taxa": 0}
@@ -43,7 +42,7 @@ class BancoInter(object):
             base_url_token=base_url_token,
             client_id=client_id,
             client_secret=client_secret,
-            cert=cert
+            cert=cert,
         )
 
     @property
@@ -56,7 +55,7 @@ class BancoInter(object):
     # def set_base_url_token(self, value):
     #     self.base_url_token = value
 
-    def set_api_version(self, api_version = 3):
+    def set_api_version(self, api_version=3):
         """Set API version, DEFAULT is API version 3."""
         self._API_VERSION = api_version
 
@@ -108,7 +107,6 @@ class BancoInter(object):
             mora (dict): Dict para configuracao de juros de mora
         """
         self.mora = mora
-
 
     def boleto(
         self, pagador, mensagem, dataEmissao, dataVencimento, seuNumero, valorNominal
@@ -162,7 +160,9 @@ class BancoInter(object):
             "mensagem": mensagem,
         }
 
-        response = self.util.make_request_with_token(method="post", path=path, _json=payload)
+        response = self.util.make_request_with_token(
+            method="post", path=path, _json=payload
+        )
 
         return response
 
@@ -211,7 +211,9 @@ class BancoInter(object):
 
         path = f"cobrancas/{codigo_solicitacao}/{act}"
 
-        response = self.util.make_request_with_token(method="post", path=path, _json=payload)
+        response = self.util.make_request_with_token(
+            method="post", path=path, _json=payload
+        )
 
         return response
 
@@ -226,8 +228,8 @@ class BancoInter(object):
         """
         path = f"cobrancas/{codigo_solicitacao}"
 
-        response = self.util.make_request_with_token(method="get", path=path, _json=None)
+        response = self.util.make_request_with_token(
+            method="get", path=path, _json=None
+        )
 
         return response.json()
-
-

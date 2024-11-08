@@ -18,10 +18,7 @@ bi = BancoInter(
     config("API_SBX_TOKEN_V2"),
     config("CLIENT_ID"),
     config("CLIENT_SECRET"),
-    (
-        dir_base_ssl + config("PUBLIC_KEY_V2"),
-        dir_base_ssl + config("PRIVATE_KEY_V2")
-    )
+    (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2")),
 )
 
 pagador = {
