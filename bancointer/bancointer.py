@@ -203,7 +203,7 @@ class BancoInter(object):
             codigo_solicitacao (string <uuid>): Codigo unico da cobrança
             motivo_cancelamento (string <= 50 characters): 	Motivo pelo qual a cobrança está sendo cancelada
         Returns:
-            (response): Response da requisicao
+            Response code (string): Response da requisicao. 202 se foi cancelada.
         """
         act = "cancelar"
         payload = {"motivoCancelamento": motivo_cancelamento.value}
