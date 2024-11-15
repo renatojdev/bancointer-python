@@ -105,6 +105,7 @@ beneficiario_final = Pessoa(
 cobranca = Cobranca.criar_sobranca_simples("0001", 2.5, "2024-11-22", payer)
 cobranca.multa = multa
 cobranca.desconto = discount
+cobranca.beneficiarioFinal = beneficiario_final
 
 sol_new_cobranca = SolicitacaoEmitirCobranca(cobranca)
 
