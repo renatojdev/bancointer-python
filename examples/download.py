@@ -1,3 +1,5 @@
+# download.py
+
 from bancointer.bancointer import BancoInter
 from decouple import config
 
@@ -14,8 +16,10 @@ bi = BancoInter(
 
 request_code = "ea209b84-2625-42fe-b6d5-820b496d4cc1"
 
-reponse = bi.download(
+# Ver recuperar_cobranca_pdf.py
+
+response = bi.download(
     codigo_solicitacao=request_code, download_path=config("DOWNLOAD_PATH")
 )
 
-print(reponse)
+print(response)

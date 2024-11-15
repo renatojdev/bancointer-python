@@ -1,3 +1,5 @@
+# util.py
+
 import os
 import sys
 import requests
@@ -146,15 +148,17 @@ class Util(object):
     @staticmethod
     def file_save(response, file_path):
         """Method to file save to disk"""
-        if response.content:
+        if hasattr(response, "content") and response.content is not None:
             content = json.loads(response.content)
-            pdf = bytes(content["pdf"], "UTF-8")
+        else:
+            content = response
 
-            try:
-                with open(file_path, "wb") as out_file:
-                    out_file.write(codecs.decode(pdf, "base64"))
-                out_file.close()
-            except Exception as e:
-                print("bancointer.file_save.Except: ", str(e))
-                return False
-            return True
+        pdf = bytes(content["pdf"], "UTF-8")
+
+        try:
+            with open(file_path, "wb") as out_file:
+                out_file.write(codecs.decode(pdf, "base64"))
+        except Exception as e:
+            print("bancointer.file_save.Except: ", str(e))
+            return False
+        return True

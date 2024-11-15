@@ -16,7 +16,16 @@ setup(
     author="Renato P. Eduardo Jr",
     author_email="renatojdev@outlook.com",
     license="MIT",
-    packages=["bancointer"],
-    install_requires=["requests"],
+    packages=[
+        "bancointer",
+        "bancointer.banking",
+        "bancointer.banking.extrato",
+        "bancointer.banking.models",
+        "bancointer.cobranca_v3",
+        "bancointer.cobranca_v3.cobranca",
+        "bancointer.cobranca_v3.models",
+        "bancointer.utils",
+    ],
+    install_requires=["requests", "certifi"],
     zip_safe=False,
 )

@@ -1,4 +1,7 @@
+# bancointer.py
+
 import os
+import warnings
 
 from .baixa import Baixa
 from .util import Util
@@ -111,6 +114,11 @@ class BancoInter(object):
     def boleto(
         self, pagador, mensagem, dataEmissao, dataVencimento, seuNumero, valorNominal
     ):
+        warnings.warn(
+            "old_method is deprecated and will be removed in future versions. "
+            "Use EmiteCobranca.emitir(SolicitacaoEmitirCobranca)",
+            DeprecationWarning,
+        )
         """Metodo para emissao de boletos bancarios na API do Banco Inter.
 
            Saiba mais em: https://developers.inter.co/references/token
@@ -167,6 +175,11 @@ class BancoInter(object):
         return response
 
     def download(self, codigo_solicitacao, download_path):
+        warnings.warn(
+            "old_method is deprecated and will be removed in future versions."
+            "Use RecuperaCobrancaPDF.recuperar_pdf(codigo_solicitacao, download_path) instead",
+            DeprecationWarning,
+        )
         """Metodo para download de boletos emitidos.
 
         Args:
@@ -187,6 +200,11 @@ class BancoInter(object):
         return self.util.file_save(response, file_path)
 
     def baixa(self, codigo_solicitacao, motivo_cancelamento: Baixa):
+        warnings.warn(
+            "old_method is deprecated and will be removed in future versions. "
+            "Use CancelaCobranca.cancela(codigo_solicitacao, motivo_cancelamento) instead",
+            DeprecationWarning,
+        )
         """Metodo para baixa (Cancelamento) de boleto emitido.
         Dominio que descreve o tipo de baixa sendo solicitado.
 
@@ -217,6 +235,11 @@ class BancoInter(object):
         return response
 
     def consulta(self, codigo_solicitacao):
+        warnings.warn(
+            "old_method is deprecated and will be removed in future versions. "
+            "Use RecuperaCobranca.recuperar(codigo_solicitacao) instead",
+            DeprecationWarning,
+        )
         """Recupera as informações detalhadas de um boleto através do `nosso_numero`.
 
         Args:

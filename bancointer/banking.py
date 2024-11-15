@@ -1,3 +1,5 @@
+# banking.py
+
 class Banking(object):
     """Classe para transacoes API BANKING do Banco Inter PJ.
     Consulta de extrato da conta.
