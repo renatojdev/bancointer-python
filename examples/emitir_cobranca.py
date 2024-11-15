@@ -3,9 +3,7 @@
 from datetime import datetime, timedelta
 
 from bancointer.cobranca_v3.cobranca import EmiteCobranca
-from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import (
-    SolicitacaoEmitirCobranca,
-)
+from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import SolicitacaoEmitirCobranca
 
 from bancointer.cobranca_v3.models.cobranca import Cobranca
 from bancointer.cobranca_v3.models.desconto import Desconto
