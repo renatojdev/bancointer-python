@@ -2,10 +2,10 @@
 
 import os
 import warnings
-from warnings import deprecated
 
-from .baixa import Baixa
-from .util import Util
+from bancointer.baixa import Baixa
+from bancointer.deprecated import deprecated
+from bancointer.util import Util
 
 
 @deprecated(
@@ -115,13 +115,14 @@ class BancoInter(object):
         """
         self.mora = mora
 
-    @deprecated(
-        "This method has been deprecated and will be removed in future versions. "
-        "Use emiteCobranca.emitir(SolicitacaoEmitirCobranca) instead"
-    )
     def boleto(
         self, pagador, mensagem, dataEmissao, dataVencimento, seuNumero, valorNominal
     ):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use EmiteCobranca.emitir(SolicitacaoEmitirCobranca)",
+            DeprecationWarning,
+        )
         """Metodo para emissao de boletos bancarios na API do Banco Inter.
 
            Saiba mais em: https://developers.inter.co/references/token
@@ -177,11 +178,12 @@ class BancoInter(object):
 
         return response
 
-    @deprecated(
-        "This method has been deprecated and will be removed in future versions. "
-        "Use recuperaCobrancaPDF.recuperar_pdf(codigo_solicitacao, download_path) instead"
-    )
     def download(self, codigo_solicitacao, download_path):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use RecuperaCobrancaPDF.recuperar_pdf(codigo_solicitacao, download_path) instead",
+            DeprecationWarning,
+        )
         """Metodo para download de boletos emitidos.
 
         Args:
@@ -201,11 +203,12 @@ class BancoInter(object):
 
         return self.util.file_save(response, file_path)
 
-    @deprecated(
-        "This method has been deprecated and will be removed in future versions. "
-        "Use cancelaCobranca.cancela(codigo_solicitacao, motivo_cancelamento) instead"
-    )
     def baixa(self, codigo_solicitacao, motivo_cancelamento: Baixa):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use CancelaCobranca.cancela(codigo_solicitacao, motivo_cancelamento) instead",
+            DeprecationWarning,
+        )
         """Metodo para baixa (Cancelamento) de boleto emitido.
         Dominio que descreve o tipo de baixa sendo solicitado.
 
@@ -235,11 +238,12 @@ class BancoInter(object):
 
         return response
 
-    @deprecated(
-        "This method has been deprecated and will be removed in future versions. "
-        "Use recuperaCobranca.recuperar(codigo_solicitacao) instead"
-    )
     def consulta(self, codigo_solicitacao):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use RecuperaCobranca.recuperar(codigo_solicitacao) instead",
+            DeprecationWarning,
+        )
         """Recupera as informações detalhadas de um boleto através do `nosso_numero`.
 
         Args:
