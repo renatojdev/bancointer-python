@@ -1,5 +1,6 @@
 # exceptions.py
 
+
 class ErroApi(Exception):
     def __init__(self, title, detail, timestamp, violacoes=None, *args, **kwargs):
         self.title = title

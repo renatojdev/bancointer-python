@@ -102,9 +102,9 @@ class TestRecuperaCobranca(unittest.TestCase):
 
         resposta = RespostaRecuperarCobranca(**json.loads(response_json))
 
-        self.assertEqual(data['cobranca'], resposta.cobranca)
-        self.assertEqual(data['boleto'], resposta.boleto)
-        self.assertEqual(data['pix'], resposta.pix)
+        self.assertEqual(data["cobranca"], resposta.cobranca)
+        self.assertEqual(data["boleto"], resposta.boleto)
+        self.assertEqual(data["pix"], resposta.pix)
 
 
 if __name__ == "__main__":

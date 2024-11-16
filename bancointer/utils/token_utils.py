@@ -24,14 +24,14 @@ def token_file_is_exist():
     if token_file_path.exists():
         """Checks if the token file exists, returns True and if the content is invalid, returns False"""
         print(f"O arquivo TOKEN existe!")
-        with token_file_path.open(mode='r', encoding='utf-8') as token_file:
+        with token_file_path.open(mode="r", encoding="utf-8") as token_file:
             conteudo: str = token_file.read()
-            if conteudo == 'null':
+            if conteudo == "null":
                 return False
             else:
                 data = json.loads(conteudo)
                 try:
-                    if data['expires_in']:
+                    if data["expires_in"]:
                         return True
                 except KeyError as ke:
                     print(f"token_file_is_exist.Exception: {ke}")

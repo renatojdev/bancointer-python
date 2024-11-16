@@ -47,6 +47,4 @@ class EmiteCobranca(object):
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.EmiteCobranca: {e}")
-            raise BancoInterException(
-                "Ocorreu um erro no SDK", Erro(502, e)
-            )
+            raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))

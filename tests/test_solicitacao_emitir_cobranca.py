@@ -5,7 +5,9 @@ import unittest
 
 from bancointer.cobranca_v3.models import Cobranca
 from bancointer.cobranca_v3.models import Desconto
-from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import SolicitacaoEmitirCobranca
+from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import (
+    SolicitacaoEmitirCobranca,
+)
 from bancointer.cobranca_v3.models import Message
 from bancointer.cobranca_v3.models import Mora
 from bancointer.cobranca_v3.models import Multa
@@ -37,7 +39,9 @@ class TestSolicitacaoEmitirCobranca(unittest.TestCase):
         self.message = Message("message 1", "message 2", "message 3", "", "message 5")
         self.beneficiarioFinal = self.payer
 
-        new_cobranca = Cobranca.criar_sobranca_simples("54321", 2.5, "2024-12-03", self.payer)
+        new_cobranca = Cobranca.criar_sobranca_simples(
+            "54321", 2.5, "2024-12-03", self.payer
+        )
         new_cobranca.desconto = self.desconto
         new_cobranca.mensagem = self.message
         new_cobranca.beneficiarioFinal = self.beneficiarioFinal

@@ -6,7 +6,7 @@ import json
 from bancointer.cobranca_v3.models.multa import Multa
 
 
-class Testmulta(unittest.TestCase):
+class TestMulta(unittest.TestCase):
 
     def setUp(self):
         """Message object for test purposes."""

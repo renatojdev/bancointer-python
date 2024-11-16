@@ -12,7 +12,9 @@ from bancointer.cobranca_v3.models.mora import Mora
 from bancointer.cobranca_v3.models.multa import Multa
 from bancointer.cobranca_v3.models.pessoa import Pessoa
 from bancointer.cobranca_v3.models.tipo_pessoa import PersonType
-from bancointer.cobranca_v3.models.resposta_emitir_cobranca import RespostaEmitirCobranca
+from bancointer.cobranca_v3.models.resposta_emitir_cobranca import (
+    RespostaEmitirCobranca,
+)
 from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import (
     SolicitacaoEmitirCobranca,
 )
