@@ -8,7 +8,6 @@ from bancointer.utils.http_utils import HttpUtils
 
 
 class EmiteCobranca(object):
-    http_util = HttpUtils(HOST_SANDBOX, "", "", "")
 
     def __init__(self, client_id, client_secret, cert):
         """Metodo construtor da classe.
