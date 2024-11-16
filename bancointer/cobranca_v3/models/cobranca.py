@@ -66,14 +66,12 @@ class Cobranca(object):
             and self.valorNominal == other.valorNominal
         )
 
-    # def add_desconto(self, desconto):
-    #     self.descontos.append(desconto)
-
     def to_dict(self):
         required_fields = ["seuNumero", "valorNominal", "dataVencimento", "pagador"]
         for campo in required_fields:
-            if not hasattr(self, campo) or getattr(self, campo) is None:
-                erro = Erro(404, f"O atributo '{campo}' é obrigatório.")
+            campo_value = getattr(self, campo)
+            if not hasattr(self, campo) or campo_value is None:
+                erro = Erro(404, f"O atributo 'cobranca.{campo}' é obrigatório.")
                 raise BancoInterException("Ocorreu um erro no SDK", erro)
 
         result = {

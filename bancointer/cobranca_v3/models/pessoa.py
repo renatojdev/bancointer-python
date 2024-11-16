@@ -3,6 +3,7 @@
 import json
 
 from bancointer.cobranca_v3.models.tipo_pessoa import PersonType
+from bancointer.utils.exceptions import Erro, BancoInterException
 
 
 class Pessoa(object):
@@ -25,40 +26,46 @@ class Pessoa(object):
         *args,
         **kwargs
     ):
-        self.cpf_cnpj = cpfCnpj
-        self.name = nome
-        self.address = endereco
+        self.cpfCnpj = cpfCnpj
+        self.nome = nome
+        self.endereco = endereco
         self.number = numero
         self.complement = complemento
         self.neighborhood = bairro
-        self.city = cidade
+        self.cidade = cidade
         self.uf = uf
         self.email = email
         self.phone = telefone
-        self.zipCode = cep
+        self.cep = cep
         self.ddd = ddd
-        self.person_type = tipoPessoa
+        self.tipoPessoa = tipoPessoa
 
     def __eq__(self, other):
         if not isinstance(other, Pessoa):
             return NotImplemented
-        return self.cpf_cnpj == other.cpf_cnpj and self.name == other.name
+        return self.cpfCnpj == other.cpfCnpj and self.nome == other.nome
 
     def to_dict(self):
+        required_fields = ["cpfCnpj", "tipoPessoa", "nome", "endereco", "cidade", "uf", "cep"]
+        for campo in required_fields:
+            if not hasattr(self, campo) or getattr(self, campo) is None:
+                erro = Erro(404, f"O atributo 'pessoa.{campo}' é obrigatório.")
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
+
         return {
-            "cpfCnpj": self.cpf_cnpj,
-            "nome": self.name,
-            "endereco": self.address,
+            "cpfCnpj": self.cpfCnpj,
+            "nome": self.nome,
+            "endereco": self.endereco,
             "numero": self.number,
             "complemento": self.complement,
             "bairro": self.neighborhood,
-            "cidade": self.city,
+            "cidade": self.cidade,
             "uf": self.uf,
             "email": self.email,
             "telefone": self.phone,
-            "cep": self.zipCode,
+            "cep": self.cep,
             "ddd": self.ddd,
-            "tipoPessoa": self.person_type.get_person_type_name(),
+            "tipoPessoa": self.tipoPessoa.get_person_type_name(),
         }
 
     def to_json(self):
