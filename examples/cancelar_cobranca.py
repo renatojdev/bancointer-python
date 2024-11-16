@@ -4,8 +4,8 @@ import sys
 
 from decouple import config
 
-from bancointer import Baixa
-from bancointer.cobranca_v3.cobranca.cancela_cobranca import CancelaCobranca
+from bancointer import TipoBaixa
+from bancointer.cobranca_v3.cobranca import CancelaCobranca
 
 dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
@@ -26,6 +26,6 @@ if request_code_param is not None:
 
 cancela_cobranca = CancelaCobranca(client_id, client_secret, cert)
 
-response = cancela_cobranca.cancelar(request_code, Baixa.ACERTOS.value)
+response = cancela_cobranca.cancelar(request_code, TipoBaixa.ACERTOS.value)
 
 print(f"Response from API: {response}")

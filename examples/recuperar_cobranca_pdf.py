@@ -4,7 +4,7 @@ import sys
 
 from decouple import config
 
-from bancointer.cobranca_v3.cobranca.recupera_cobranca_pdf import RecuperaCobrancaPDF
+from bancointer.cobranca_v3.cobranca import RecuperaCobrancaPDF
 
 dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))

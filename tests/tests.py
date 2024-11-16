@@ -1,7 +1,7 @@
 import unittest
 import requests_mock
 
-from bancointer.baixa import Baixa
+from bancointer.cobranca_v3.models.tipo_baixa import TipoBaixa
 from bancointer.bancointer import BancoInter
 from decouple import config
 
@@ -136,7 +136,7 @@ class TestBancoInter(unittest.TestCase):
         json = {}
         request_mock.post(url=url, json=json)
         drop = self.bancointer.baixa(
-            codigo_solicitacao="00005", motivo_cancelamento=Baixa.ACERTOS
+            codigo_solicitacao="00005", motivo_cancelamento=TipoBaixa.ACERTOS
         )
         self.assertEqual(drop, json)
 

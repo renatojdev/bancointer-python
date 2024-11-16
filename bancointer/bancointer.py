@@ -3,7 +3,7 @@
 import os
 import warnings
 
-from bancointer.baixa import Baixa
+from bancointer.cobranca_v3.models.tipo_baixa import TipoBaixa
 from bancointer.deprecated import deprecated
 from bancointer.util import Util
 
@@ -203,7 +203,7 @@ class BancoInter(object):
 
         return self.util.file_save(response, file_path)
 
-    def baixa(self, codigo_solicitacao, motivo_cancelamento: Baixa):
+    def baixa(self, codigo_solicitacao, motivo_cancelamento: TipoBaixa):
         warnings.warn(
             "This method has been deprecated and will be removed in future versions. "
             "Use CancelaCobranca.cancela(codigo_solicitacao, motivo_cancelamento) instead",

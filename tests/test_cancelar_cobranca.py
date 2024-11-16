@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 from decouple import config
 
-from bancointer import Baixa
+from bancointer import TipoBaixa
 from bancointer.cobranca_v3.cobranca.cancela_cobranca import CancelaCobranca
 from bancointer.utils.token_utils import token_file_is_exist
 
@@ -46,7 +46,7 @@ class TestCancelaCobranca(unittest.TestCase):
         cancela_cobranca = CancelaCobranca(client_id, client_secret, cert)
 
         data = cancela_cobranca.cancelar(
-            "4a30390a-9242-4740-bd30-d941d3678a38", Baixa.ACERTOS.value
+            "4a30390a-9242-4740-bd30-d941d3678a38", TipoBaixa.ACERTOS.value
         )
 
         self.assertEqual(data, {})
@@ -76,7 +76,7 @@ class TestCancelaCobranca(unittest.TestCase):
         cancela_cobranca = CancelaCobranca(client_id, client_secret, cert)
 
         data = cancela_cobranca.cancelar(
-            "1783d19f-ab81-4a54-92a3-a0064f9b26ee", Baixa.ACERTOS.value
+            "1783d19f-ab81-4a54-92a3-a0064f9b26ee", TipoBaixa.ACERTOS.value
         )
 
         # Verifica se a exceção é levantada corretamente

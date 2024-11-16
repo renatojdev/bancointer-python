@@ -3,7 +3,7 @@
 from enum import Enum
 
 
-class Baixa(Enum):
+class TipoBaixa(Enum):
     ACERTOS = "ACERTOS"
     PROTESTADO = "PROTESTADO"
     DEVOLUCAO = "DEVOLUCAO"

@@ -10,9 +10,8 @@ from bancointer.cobranca_v3.models.mora import Mora
 from bancointer.cobranca_v3.models.multa import Multa
 from bancointer.cobranca_v3.models.pessoa import Pessoa
 from bancointer.cobranca_v3.models.tipo_pessoa import PersonType
-from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import (
-    SolicitacaoEmitirCobranca,
-)
+from bancointer.cobranca_v3.models import SolicitacaoEmitirCobranca
+
 from decouple import config
 
 dir_base_ssl = config("SSL_DIR_BASE")
