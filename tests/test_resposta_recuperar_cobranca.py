@@ -1,6 +1,5 @@
 # test_resposta_recuperar_cobranca.py
 
-import json
 import unittest
 
 from bancointer.cobranca_v3.models import RespostaRecuperarCobranca
