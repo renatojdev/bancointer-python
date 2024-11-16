@@ -1,5 +1,9 @@
 # download.py
 
+##################################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: recuperar_cobranca_pdf.py
+##################################################################
+
 from bancointer.bancointer import BancoInter
 from decouple import config
 

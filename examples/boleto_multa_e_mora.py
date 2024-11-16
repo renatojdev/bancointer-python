@@ -1,5 +1,9 @@
 # boleto_multa_e_mora.py
 
+########################################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: emitir_cobranca_multa_e_mora.py
+########################################################################
+
 from bancointer.bancointer import BancoInter
 from decouple import config
 from datetime import datetime, timedelta

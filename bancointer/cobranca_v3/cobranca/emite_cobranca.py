@@ -30,7 +30,7 @@ class EmiteCobranca(object):
         try:
             # Converting the request to JSON
             payload = solicitacao_emitir_cobranca.to_dict()
-            print(f"payload.. {payload}")
+
             response = self.http_util.make_post(PATH_COBRANCAS, payload)
 
             if "title" in response:
@@ -43,7 +43,7 @@ class EmiteCobranca(object):
             print(f"Exception.API: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"Exception.Emitecobranca: {e.erro}")
+            print(f"BancoInterException.Emitecobranca.emitir: {e}")
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.EmiteCobranca: {e}")

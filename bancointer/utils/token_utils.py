@@ -8,6 +8,10 @@ from pathlib import Path
 import certifi
 import ssl
 from datetime import datetime, timedelta
+
+from bancointer.utils.exceptions import BancoInterException
+
+from bancointer.utils.exceptions import Erro
 from decouple import config
 
 from bancointer.utils.constants import (
@@ -68,6 +72,7 @@ class TokenUtils(object):
             "Content-Type": "application/x-www-form-urlencoded",
         }
 
+        connection = None
         try:
             # Define the client certificate settings for https connection
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -86,15 +91,22 @@ class TokenUtils(object):
             # Print the HTTP response from the IOT service endpoint
             response = connection.getresponse()
             print(response.status, response.reason)
-            token_data = response.read()
+            data_response = response.read().decode("utf-8")
 
-            decoded_data = token_data.decode("utf-8")
-            token_data_dict = json.loads(decoded_data)
-            connection.close()
+            if response.status < 200 or response.status > 299:
+                erro = Erro(response.status, data_response)
+                raise BancoInterException("Request token error", erro)
+
+            token_data_dict = json.loads(data_response)
+
             return token_data_dict
+        except BancoInterException as e:
+            raise BancoInterException(e, e.erro)
         except Exception as e:
-            print(f"REQUEST TOKEN ERROR: {e}")
-            # sys.exit(1)
+            print(f"__request_api_token.Exception: {e}")
+        finally:
+            if connection is not None:
+                connection.close()
 
     def __read_token_from_file(self):
         """Read a token value and return a dict from file"""
@@ -132,7 +144,7 @@ class TokenUtils(object):
 
         if token_data is None or token_data == {}:
             token_data = self.__request_api_token()
-            if token_data != {}:
+            if token_data is not None and token_data != {}:
                 # self.bearer_token = token_data
                 self.save_token_to_file(token_data=token_data)
             else:

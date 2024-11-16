@@ -65,20 +65,20 @@ class HttpUtils(object):
         # Print the HTTP response from the IOT service endpoint
         response = self.connection.getresponse()
         print(response.status, response.reason)
+        data_response = response.read().decode("utf-8")
 
-        if response.status == 401:
-            self.token_util.save_token_to_file()
-            erro = Erro(401, "Unauthorized.")
-            raise BancoInterException("Ocorreu um erro no SDK", erro)
-        elif response.status == 403:
-            erro = Erro(403, "Forbidden.")
-            raise BancoInterException("Ocorreu um erro no SDK", erro)
+        if response.status < 200 or response.status > 299: # ! Error 200, SUCCESS
+            erro = Erro(response.status, data_response)
+            if response.status > 399 or response.status < 500: # Error 400
+                self.token_util.save_token_to_file()
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
+            else:
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
 
-        data = response.read().decode("utf-8")
         # Convert bytes to JSON
         json_data = {}
         try:
-            json_data = json.loads(data)  # Decodes the bytes and loads them as JSON
+            json_data = json.loads(data_response)  # Decodes the bytes and loads them as JSON
 
             if "title" in json_data:
                 raise ErroApi(**json_data)

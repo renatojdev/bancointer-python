@@ -81,7 +81,8 @@ class Util(object):
         )
 
         headers = {
-            "Accept": "application/json",
+            # "Accept": "application/json",
+            "x-conta-corrente": str(self._X_CONTA_CORRENTE),
             "Content-Type": "application/x-www-form-urlencoded",
         }
 
@@ -89,10 +90,18 @@ class Util(object):
             response = requests.post(
                 self.base_url_token, data=payload, headers=headers, cert=self.cert
             )
-
+            print()
+            print(
+                f"Headers: {headers}" f"base: {self.base_url_token}",
+                f"Payload: {payload}",
+            )
+            print()
             response.raise_for_status()
 
             return response.json()
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTPError ERROR: {e}")
+            sys.exit(1)
         except requests.exceptions.SSLError as e:
             print(f"SSL ERROR: {e}")
             sys.exit(1)

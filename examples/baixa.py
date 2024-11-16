@@ -1,5 +1,9 @@
 # baixa.py
 
+#############################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: cancelar_cobranca.py
+#############################################################
+
 from bancointer.bancointer import BancoInter
 from bancointer.baixa import Baixa
 from decouple import config
