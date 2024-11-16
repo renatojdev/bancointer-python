@@ -8,7 +8,10 @@ import codecs
 from datetime import datetime, timedelta
 from decouple import config
 
+from bancointer.deprecated import deprecated
 
+
+@deprecated("Use Class HttpUtils instead")
 class Util(object):
     _TOKEN_FILE_PATH = (
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
@@ -90,12 +93,7 @@ class Util(object):
             response = requests.post(
                 self.base_url_token, data=payload, headers=headers, cert=self.cert
             )
-            print()
-            print(
-                f"Headers: {headers}" f"base: {self.base_url_token}",
-                f"Payload: {payload}",
-            )
-            print()
+
             response.raise_for_status()
 
             return response.json()
