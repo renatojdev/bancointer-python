@@ -1,13 +1,14 @@
 # recupera_cobranca.py
 
 from bancointer.cobranca_v3.models import RespostaRecuperarCobranca
-from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX
+from bancointer.utils.ambiente import Ambiente
+from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
 
 class RecuperaCobranca(object):
-    def __init__(self, client_id, client_secret, cert):
+    def __init__(self, ambiente: Ambiente, client_id, client_secret, cert):
         """Metodo construtor da classe RecuperaCobranca.
 
         Args:
@@ -18,7 +19,9 @@ class RecuperaCobranca(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
-        self.http_util = HttpUtils(HOST_SANDBOX, client_id, client_secret, cert)
+        self.http_util = HttpUtils(HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert)
+        print(f"AMBIENTE: {ambiente.value}")
+
 
     def recuperar(self, codigo_solicitacao) -> dict | ErroApi:
         """Recupera as informações detalhadas de um boleto atraves do `codigo_solicitacao`.

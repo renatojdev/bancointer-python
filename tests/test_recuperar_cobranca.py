@@ -7,6 +7,7 @@ from decouple import config
 
 from bancointer.cobranca_v3.cobranca import RecuperaCobranca
 from bancointer.cobranca_v3.models import RespostaRecuperarCobranca
+from bancointer.utils.ambiente import Ambiente
 from bancointer.utils.token_utils import token_file_is_exist
 
 client_id = config("CLIENT_ID")
@@ -96,7 +97,7 @@ class TestRecuperaCobranca(unittest.TestCase):
                 mock_data_response,
             ]
 
-        recupera_cobranca = RecuperaCobranca(client_id, client_secret, cert)
+        recupera_cobranca = RecuperaCobranca(Ambiente.SANDBOX, client_id, client_secret, cert)
 
         data = recupera_cobranca.recuperar("4a30390a-9242-4740-bd30-d941d3678a38")
 

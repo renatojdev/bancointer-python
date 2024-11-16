@@ -7,6 +7,7 @@ from decouple import config
 
 from bancointer.cobranca_v3.cobranca.recupera_cobranca_pdf import RecuperaCobrancaPDF
 from bancointer.utils.token_utils import token_file_is_exist
+from bancointer.utils.ambiente import Ambiente
 
 client_id = config("CLIENT_ID")
 client_secret = config("CLIENT_SECRET")
@@ -43,7 +44,7 @@ class TestRecuperaCobrancaPDF(unittest.TestCase):
                 mock_data_response,
             ]
 
-        recupera_cobranca = RecuperaCobrancaPDF(client_id, client_secret, cert)
+        recupera_cobranca = RecuperaCobrancaPDF(Ambiente.SANDBOX, client_id, client_secret, cert)
 
         response_success = recupera_cobranca.recuperar_pdf(
             "4a30390a-9242-4740-bd30-d941d3678a38", config("DOWNLOAD_PATH")

@@ -18,6 +18,7 @@ from bancointer.cobranca_v3.models.resposta_emitir_cobranca import (
 from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import (
     SolicitacaoEmitirCobranca,
 )
+from bancointer.utils.ambiente import Ambiente
 from bancointer.utils.token_utils import token_file_is_exist
 
 client_id = config("CLIENT_ID")
@@ -95,7 +96,7 @@ class TestEmitirCobranca(unittest.TestCase):
             ]
 
         # Instancia a classe EmiteCobranca (aqui pode ser necessário usar a classe real)
-        emite_cobranca = EmiteCobranca(client_id, client_secret, cert)
+        emite_cobranca = EmiteCobranca(Ambiente.SANDBOX, client_id, client_secret, cert)
 
         # Chama o metodo emitir
         data = emite_cobranca.emitir(sol_cobranca)
@@ -120,7 +121,7 @@ class TestEmitirCobranca(unittest.TestCase):
         )
 
         # Instancia a classe DataFetcher
-        emite_cobranca = EmiteCobranca(client_id, client_secret, cert)
+        emite_cobranca = EmiteCobranca(Ambiente.SANDBOX, client_id, client_secret, cert)
 
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:

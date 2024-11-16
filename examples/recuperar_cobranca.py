@@ -5,6 +5,7 @@ import sys
 from decouple import config
 
 from bancointer.cobranca_v3.cobranca import RecuperaCobranca
+from bancointer.utils.ambiente import Ambiente
 
 dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
@@ -22,7 +23,7 @@ if len(sys.argv) > 1:
 if request_code_param is not None:
     request_code = request_code_param
 
-recupera_cobranca = RecuperaCobranca(client_id, client_secret, cert)
+recupera_cobranca = RecuperaCobranca(Ambiente.SANDBOX, client_id, client_secret, cert)
 
 response = recupera_cobranca.recuperar(request_code)
 

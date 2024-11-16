@@ -3,16 +3,17 @@
 from bancointer.banking.models.resposta_consultar_extrato import (
     RespostaConsultarExtrato,
 )
+from bancointer.utils.ambiente import Ambiente
 from bancointer.utils.date_utils import DateUtils
 from bancointer.utils.exceptions import Erro
 from bancointer.utils import HttpUtils
-from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO
+from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
 class ConsultaExtrato(object):
-    def __init__(self, client_id, client_secret, cert):
+    def __init__(self, ambiente: Ambiente, client_id, client_secret, cert):
         """Metodo construtor da classe RecuperaCobranca.
 
         Args:
@@ -23,7 +24,8 @@ class ConsultaExtrato(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
-        self.http_util = HttpUtils(HOST_SANDBOX, client_id, client_secret, cert)
+        self.http_util = HttpUtils(HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert)
+        print(f"AMBIENTE: {ambiente.value}")
 
     def consultar(self, data_inicio, data_fim) -> dict | ErroApi:
         """Recupera as informações do extrato do cliente durante um periodo de datas em

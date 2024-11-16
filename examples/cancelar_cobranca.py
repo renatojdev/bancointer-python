@@ -6,6 +6,7 @@ from decouple import config
 
 from bancointer import TipoBaixa
 from bancointer.cobranca_v3.cobranca import CancelaCobranca
+from bancointer.utils.ambiente import Ambiente
 
 dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
@@ -24,7 +25,7 @@ if len(sys.argv) > 1:
 if request_code_param is not None:
     request_code = request_code_param
 
-cancela_cobranca = CancelaCobranca(client_id, client_secret, cert)
+cancela_cobranca = CancelaCobranca(Ambiente.SANDBOX, client_id, client_secret, cert)
 
 response = cancela_cobranca.cancelar(request_code, TipoBaixa.ACERTOS.value)
 

@@ -2,11 +2,14 @@
 
 """Arquivo para armazenar constantes utilizadas na aplicação."""
 
-# HOST SANDBOX
+# SANDBOX
 HOST_SANDBOX = "cdpj-sandbox.partners.uatinter.co"
+URL_BASE_SANDBOX = "https://cdpj-sandbox.partners.uatinter.co"
 
-# URL Base
-URL_BASE = "https://cdpj-sandbox.partners.uatinter.co"
+# Host and URL Base
+HOST = "cdpj.partners.bancointer.com.br"
+URL_BASE = "https://cdpj.partners.bancointer.com.br"
+
 
 # Documentação do Certificado
 DOC_CERTIFICADO = (

@@ -3,14 +3,15 @@
 import os
 
 from bancointer import Util
+from bancointer.utils.ambiente import Ambiente
 
-from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX
+from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
 
 class RecuperaCobrancaPDF(object):
-    def __init__(self, client_id, client_secret, cert):
+    def __init__(self, ambiente: Ambiente, client_id, client_secret, cert):
         """Metodo construtor da classe.
 
         Args:
@@ -21,7 +22,8 @@ class RecuperaCobrancaPDF(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
-        self.http_util = HttpUtils(HOST_SANDBOX, client_id, client_secret, cert)
+        self.http_util = HttpUtils(HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert)
+        print(f"AMBIENTE: {ambiente.value}")
 
     def recuperar_pdf(self, codigo_solicitacao, download_path) -> bool:
         """Metodo para download de cobranças emitidas no formato PDF.
