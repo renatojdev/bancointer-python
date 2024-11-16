@@ -43,12 +43,11 @@ class CancelaCobranca(object):
 
             return response
         except ErroApi as e:
-            print(f"Exception.API: {e.title}: {e.detail} - violacoes: {e.violacoes}")
+            print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"Exception.CancelaCobranca: {e.erro}")
+            print(f"BancoInterException.CancelaCobranca.cancelar: {e}")
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.CancelaCobranca: {e}")
-            erro = Erro(502, "Erro Interno.")
-            raise BancoInterException("Ocorreu um erro no SDK", erro)
+            raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))

@@ -40,7 +40,7 @@ class EmiteCobranca(object):
             # Converting the JSON response to an IssueCollectionResponse object
             return RespostaEmitirCobranca(**response)
         except ErroApi as e:
-            print(f"Exception.API: {e.title}: {e.detail} - violacoes: {e.violacoes}")
+            print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
             print(f"BancoInterException.Emitecobranca.emitir: {e}")

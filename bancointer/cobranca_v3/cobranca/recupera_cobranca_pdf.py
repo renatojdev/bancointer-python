@@ -48,9 +48,10 @@ class RecuperaCobrancaPDF(object):
 
             return Util.file_save(response, file_path)
         except ErroApi as e:
-            print(f"Exception.API: {e.title}: {e.detail} - violacoes: {e.violacoes}")
+            print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
+            return e.to_dict()
         except BancoInterException as e:
-            print(f"Exception.RecuperaCobrancaPDF: {e.erro}")
+            print(f"BancoInterException.RecuperaCobrancaPDF.recuperar_pdf: {e}")
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.RecuperaCobrancaPDF: {e}")

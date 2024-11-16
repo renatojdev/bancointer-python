@@ -71,9 +71,9 @@ class HttpUtils(object):
             erro = Erro(response.status, data_response)
             if response.status > 399 or response.status < 500: # Error 400
                 self.token_util.save_token_to_file()
-                raise BancoInterException("Ocorreu um erro no SDK", erro)
+                raise BancoInterException("BancoInterException.HttpUtils.make_request", erro)
             else:
-                raise BancoInterException("Ocorreu um erro no SDK", erro)
+                raise BancoInterException("BancoInterException.HttpUtils.make_request", erro)
 
         # Convert bytes to JSON
         json_data = {}
