@@ -7,7 +7,7 @@ from decouple import config
 
 from bancointer import TipoBaixa
 from bancointer.cobranca_v3.cobranca.cancela_cobranca import CancelaCobranca
-from bancointer.utils.ambient import Ambient
+from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
 client_id = config("CLIENT_ID")
@@ -45,11 +45,11 @@ class TestCancelaCobranca(unittest.TestCase):
             ]
 
         cancela_cobranca = CancelaCobranca(
-            Ambient.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert
         )
 
         data = cancela_cobranca.cancelar(
-            "4a30390a-9242-4740-bd30-d941d3678a38", TipoBaixa.ACERTOS.value
+            "4a30390a-9242-4740-bd30-d941d3678a38", TipoBaixa.DEVOLUCAO
         )
 
         self.assertEqual(data, {})
@@ -67,7 +67,7 @@ class TestCancelaCobranca(unittest.TestCase):
         )
 
         # Cria um mock para a resposta
-        response_json = '{"title": "Requisição inválida", "detail": "A cobrança não pode ser cancelada, pois se encontra na situação CANCELADO", "timestamp": "2024-11-13T15:00:56.191475203-03:00"}'
+        response_json = '{"title": "Requisição inválida", "detail": "A cobrança não pode ser cancelada, pois se encontra na situação CANCELADO", "timestamp": "2024-11-13T15:00:56.191475203-03:00","violacoes": [{}]}'
 
         mock_data_response = MagicMock()
         mock_data_response.read.return_value = response_json.encode("UTF-8")
@@ -77,11 +77,11 @@ class TestCancelaCobranca(unittest.TestCase):
         mock_https_connection.return_value.getresponse.return_value = mock_data_response
 
         cancela_cobranca = CancelaCobranca(
-            Ambient.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert
         )
 
         data = cancela_cobranca.cancelar(
-            "1783d19f-ab81-4a54-92a3-a0064f9b26ee", TipoBaixa.ACERTOS.value
+            "1783d19f-ab81-4a54-92a3-a0064f9b26ee", TipoBaixa.ACERTOS
         )
 
         # Verifica se a exceção é levantada corretamente
@@ -92,8 +92,9 @@ class TestCancelaCobranca(unittest.TestCase):
 
         assert mock_https_connection.return_value.getresponse.call_count == 1
 
+        self.assertEqual(400, data['codigo'])
         self.assertEqual(
-            data,
+            data['descricao'],
             {
                 "title": "Requisição inválida",
                 "detail": "A cobrança não pode ser cancelada, pois se encontra na situação CANCELADO",

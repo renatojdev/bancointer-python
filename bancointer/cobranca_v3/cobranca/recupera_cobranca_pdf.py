@@ -3,7 +3,7 @@
 import os
 
 from bancointer import Util
-from bancointer.utils.ambient import Ambient
+from bancointer.utils.environment import Environment
 
 from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
@@ -11,7 +11,7 @@ from bancointer.utils.http_utils import HttpUtils
 
 
 class RecuperaCobrancaPDF(object):
-    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
         """Metodo construtor da classe.
 
         Args:
@@ -27,7 +27,7 @@ class RecuperaCobrancaPDF(object):
         )
         print(f"AMBIENTE: {ambiente.value}")
 
-    def recuperar_pdf(self, codigo_solicitacao, download_path) -> bool:
+    def recuperar_pdf(self, codigo_solicitacao, download_path:str='/tmp') -> bool:
         """Metodo para download de cobranças emitidas no formato PDF.
 
         Args:
@@ -41,6 +41,11 @@ class RecuperaCobrancaPDF(object):
         path = f"{PATH_COBRANCAS}/{codigo_solicitacao}/pdf"
 
         try:
+            if (codigo_solicitacao is None or type(codigo_solicitacao) is not str
+                    or codigo_solicitacao == ""):
+                erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
+
             response = self.http_util.make_get(path)
 
             if "title" in response:

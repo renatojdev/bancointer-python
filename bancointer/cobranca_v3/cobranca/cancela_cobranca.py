@@ -1,12 +1,14 @@
 # recupera_cobranca.py
-from bancointer.utils.ambient import Ambient
+from bancointer.baixa import Baixa
+
+from bancointer.utils.environment import Environment
 from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
 
 class CancelaCobranca(object):
-    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
         """Metodo construtor da classe.
 
         Args:
@@ -22,8 +24,9 @@ class CancelaCobranca(object):
         )
         print(f"AMBIENTE: {ambiente.value}")
 
-    def cancelar(self, codigo_solicitacao, motivo_cancelamento):
-        """Cancela uma cobrança emitida atraves do seu `codigo_solicitacao`.
+    def cancelar(self, codigo_solicitacao, motivo_cancelamento:Baixa=Baixa.ACERTOS):
+        """Cancela uma cobrança emitida atraves do seu `codigo_solicitacao` e
+            um motivo de cancelamento(valor padrão: Baixa.ACERTOS).
 
         Args:
             codigo_solicitacao (string <uuid>): Codigo unico da cobrança.
@@ -34,8 +37,13 @@ class CancelaCobranca(object):
         """
 
         path = f"{PATH_COBRANCAS}/{codigo_solicitacao}/cancelar"
-        payload = {"motivoCancelamento": motivo_cancelamento}
+        payload = {"motivoCancelamento": motivo_cancelamento.value}
         try:
+            if (codigo_solicitacao is None or type(codigo_solicitacao) is not str
+                    or codigo_solicitacao == ""):
+                erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
+
             # Converting the request to JSON
             response = self.http_util.make_post(path, payload)
 

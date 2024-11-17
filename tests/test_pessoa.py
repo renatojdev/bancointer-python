@@ -89,20 +89,20 @@ class TestPessoa(unittest.TestCase):
         self.assertIsInstance(new_person, Pessoa)
 
         # Verifica se os atributos do novo objeto correspondem aos originais
-        self.assertEqual(new_person.cpf_cnpj, self.person.cpf_cnpj)
-        self.assertEqual(new_person.name, self.person.name)
-        self.assertEqual(new_person.address, self.person.address)
+        self.assertEqual(new_person.cpfCnpj, self.person.cpfCnpj)
+        self.assertEqual(new_person.nome, self.person.nome)
+        self.assertEqual(new_person.endereco, self.person.endereco)
         self.assertEqual(new_person.number, self.person.number)
         self.assertEqual(new_person.complement, self.person.complement)
         self.assertEqual(new_person.neighborhood, self.person.neighborhood)
-        self.assertEqual(new_person.city, self.person.city)
+        self.assertEqual(new_person.cidade, self.person.cidade)
         self.assertEqual(new_person.uf, self.person.uf)
-        self.assertEqual(new_person.zipCode, self.person.zipCode)
+        self.assertEqual(new_person.cep, self.person.cep)
         self.assertEqual(new_person.email, self.person.email)
         self.assertEqual(new_person.ddd, self.person.ddd)
         self.assertEqual(new_person.phone, self.person.phone)
         self.assertEqual(
-            new_person.person_type, self.person.person_type.get_person_type_name()
+            new_person.tipoPessoa, self.person.tipoPessoa.get_person_type_name()
         )
 
 

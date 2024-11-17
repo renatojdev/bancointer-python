@@ -3,7 +3,7 @@
 from bancointer.banking.models.resposta_consultar_extrato import (
     RespostaConsultarExtrato,
 )
-from bancointer.utils.ambient import Ambient
+from bancointer.utils.environment import Environment
 from bancointer.utils.date_utils import DateUtils
 from bancointer.utils import HttpUtils
 from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST
@@ -12,7 +12,7 @@ from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
 class ConsultaExtrato(object):
-    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
         """Metodo construtor da classe RecuperaCobranca.
 
         Args:

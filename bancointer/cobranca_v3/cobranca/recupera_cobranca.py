@@ -1,14 +1,14 @@
 # recupera_cobranca.py
 
 from bancointer.cobranca_v3.models import RespostaRecuperarCobranca
-from bancointer.utils.ambient import Ambient
+from bancointer.utils.environment import Environment
 from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
 
 class RecuperaCobranca(object):
-    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
         """Metodo construtor da classe RecuperaCobranca.
 
         Args:
@@ -37,6 +37,11 @@ class RecuperaCobranca(object):
         path = f"{PATH_COBRANCAS}/{codigo_solicitacao}"
 
         try:
+            if (codigo_solicitacao is None or type(codigo_solicitacao) is not str
+                    or codigo_solicitacao == ""):
+                erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
+
             # Converting the request to JSON
             response = self.http_util.make_get(path)
 

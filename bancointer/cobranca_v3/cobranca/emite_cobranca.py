@@ -2,7 +2,7 @@
 
 from bancointer.cobranca_v3.models import RespostaEmitirCobranca
 from bancointer.cobranca_v3.models import SolicitacaoEmitirCobranca
-from bancointer.utils.ambient import Ambient
+from bancointer.utils.environment import Environment
 from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
@@ -10,7 +10,7 @@ from bancointer.utils.http_utils import HttpUtils
 
 class EmiteCobranca(object):
 
-    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
         """Metodo construtor da classe.
 
         Args:
