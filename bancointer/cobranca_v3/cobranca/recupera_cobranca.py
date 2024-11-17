@@ -1,14 +1,14 @@
 # recupera_cobranca.py
 
 from bancointer.cobranca_v3.models import RespostaRecuperarCobranca
-from bancointer.utils.ambiente import Ambiente
+from bancointer.utils.ambient import Ambient
 from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
 
 class RecuperaCobranca(object):
-    def __init__(self, ambiente: Ambiente, client_id, client_secret, cert):
+    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
         """Metodo construtor da classe RecuperaCobranca.
 
         Args:

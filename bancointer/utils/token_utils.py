@@ -66,6 +66,8 @@ class TokenUtils(object):
             + self.client_secret
             + f"&scope={ESCOPO_BOLETO_COBRANCA_READ}%20{ESCOPO_BOLETO_COBRANCA_WRITE}"
         )
+        print(f"payload_token={payload}")
+        print(f"host={HOST_SANDBOX}{PATH_TOKEN}")
 
         headers = {
             "x-conta-corrente": str(self.X_CONTA_CORRENTE),

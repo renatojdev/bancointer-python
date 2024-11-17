@@ -14,7 +14,8 @@ from bancointer.cobranca_v3.models import SolicitacaoEmitirCobranca
 
 from decouple import config
 
-from bancointer.utils.ambiente import Ambiente
+from bancointer.utils.ambient import Ambient
+from bancointer.utils.date_utils import DateUtils
 
 dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
@@ -22,10 +23,7 @@ client_id = config("CLIENT_ID")
 client_secret = config("CLIENT_SECRET")
 
 # Due Date
-data_act = datetime.now()
-# Add 10 days
-new_date = data_act + timedelta(days=10)
-due_date = new_date.strftime("%Y-%m-%d")
+due_date = DateUtils.add_days_to_date_from_now(10)
 
 payer = Pessoa(
     "9" * 11,  # valido
@@ -62,6 +60,6 @@ new_cobra.mensagem = message
 new_cobra.beneficiarioFinal = beneficiario_final
 
 new_cobranca = SolicitacaoEmitirCobranca(new_cobra)
-emite_cobranca = EmiteCobranca(Ambiente.SANDBOX, client_id, client_secret, cert)
+emite_cobranca = EmiteCobranca(Ambient.SANDBOX, client_id, client_secret, cert)
 resposta = emite_cobranca.emitir(new_cobranca)
 print(f"Response from API: {resposta}")

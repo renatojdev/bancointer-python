@@ -1,4 +1,4 @@
-# Pix.py
+# pix.py
 
 import json
 from json import JSONEncoder

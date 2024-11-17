@@ -1,11 +1,12 @@
 # date_utils.py
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class DateUtils(object):
 
-    def periodo_dates_extrato_e_valido(self, data_inicio, data_fim):
+    @staticmethod
+    def periodo_dates_extrato_e_valido(cls, data_inicio, data_fim):
         # Definindo as datas de início e fim
         # data_inicio = '2024-01-01'  # Formato: 'YYYY-MM-DD'
         # data_fim = '2024-03-01'
@@ -24,3 +25,12 @@ class DateUtils(object):
         else:
             print("O periodo entre as datas excede 90 dias.")
             return False
+
+    @classmethod
+    def add_days_to_date_from_now(cls, days: int):
+        """Adding days to a specific date (now)."""
+        data_act = datetime.now()
+        # Add N days (int)
+        new_date = data_act + timedelta(days)
+        added_date = new_date.strftime("%Y-%m-%d")
+        return added_date

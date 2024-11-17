@@ -3,9 +3,8 @@
 from bancointer.banking.models.resposta_consultar_extrato import (
     RespostaConsultarExtrato,
 )
-from bancointer.utils.ambiente import Ambiente
+from bancointer.utils.ambient import Ambient
 from bancointer.utils.date_utils import DateUtils
-from bancointer.utils.exceptions import Erro
 from bancointer.utils import HttpUtils
 from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST
 
@@ -13,7 +12,7 @@ from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
 class ConsultaExtrato(object):
-    def __init__(self, ambiente: Ambiente, client_id, client_secret, cert):
+    def __init__(self, ambiente: Ambient, client_id, client_secret, cert):
         """Metodo construtor da classe RecuperaCobranca.
 
         Args:
@@ -57,13 +56,11 @@ class ConsultaExtrato(object):
 
             return RespostaConsultarExtrato(**response).to_dict()
         except ErroApi as e:
-            print(
-                f"Exception.ConsultaExtrato.API: {e.title}: {e.detail} - violacoes: {e.violacoes}"
-            )
+            print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"Exception.ConsultaExtrato: {e}")
+            print(f"BancoInterException.ConsultaExtrato.emitir: {e}")
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.ConsultaExtrato: {e}")
-            return Erro(502, e).to_dict()
+            raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))
