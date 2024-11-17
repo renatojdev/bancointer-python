@@ -22,7 +22,9 @@ class RecuperaCobrancaPDF(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
-        self.http_util = HttpUtils(HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert)
+        self.http_util = HttpUtils(
+            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert
+        )
         print(f"AMBIENTE: {ambiente.value}")
 
     def recuperar_pdf(self, codigo_solicitacao, download_path) -> bool:

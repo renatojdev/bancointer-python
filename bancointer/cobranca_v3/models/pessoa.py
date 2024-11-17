@@ -24,7 +24,7 @@ class Pessoa(object):
         numero="",
         complemento="",
         *args,
-        **kwargs
+        **kwargs,
     ):
         self.cpfCnpj = cpfCnpj
         self.nome = nome
@@ -46,7 +46,15 @@ class Pessoa(object):
         return self.cpfCnpj == other.cpfCnpj and self.nome == other.nome
 
     def to_dict(self):
-        required_fields = ["cpfCnpj", "tipoPessoa", "nome", "endereco", "cidade", "uf", "cep"]
+        required_fields = [
+            "cpfCnpj",
+            "tipoPessoa",
+            "nome",
+            "endereco",
+            "cidade",
+            "uf",
+            "cep",
+        ]
         for campo in required_fields:
             if not hasattr(self, campo) or getattr(self, campo) is None:
                 erro = Erro(404, f"O atributo 'pessoa.{campo}' é obrigatório.")

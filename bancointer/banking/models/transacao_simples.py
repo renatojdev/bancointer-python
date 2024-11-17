@@ -12,3 +12,21 @@ class TransacaoSimples(object):
     valor: str
     titulo: str
     descricao: str
+
+    def __init__(
+        self,
+        cpmf: str,
+        dataEntrada: str,
+        tipoTransacao: TipoTransacao,
+        tipoOperacao: TipoOperacao,
+        valor: str,
+        titulo: str,
+        descricao: str,
+    ):
+        self.cpmf = cpmf
+        self.dataEntrada = dataEntrada
+        self.tipoTransacao = tipoTransacao
+        self.tipoOperacao = tipoOperacao
+        self.valor = valor
+        self.titulo = titulo
+        self.descricao = descricao

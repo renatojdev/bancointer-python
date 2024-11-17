@@ -67,21 +67,27 @@ class HttpUtils(object):
         print(response.status, response.reason)
         data_response = response.read().decode("utf-8")
 
-        if response.status < 200 or response.status > 299: # ! Error 200, SUCCESS
+        if response.status < 200 or response.status > 299:  # ! Error 200, SUCCESS
             data_response = json.loads(data_response)
             if "message" in data_response:
-                data_response = data_response['message']
+                data_response = data_response["message"]
             erro = Erro(response.status, data_response)
-            if 399 < response.status < 500: # Error 400
+            if 399 < response.status < 500:  # Error 400
                 self.token_util.save_token_to_file()
-                raise BancoInterException("BancoInterException.HttpUtils.make_request", erro)
+                raise BancoInterException(
+                    "BancoInterException.HttpUtils.make_request", erro
+                )
             else:
-                raise BancoInterException("BancoInterException.HttpUtils.make_request", erro)
+                raise BancoInterException(
+                    "BancoInterException.HttpUtils.make_request", erro
+                )
 
         # Convert bytes to JSON
         json_data = {}
         try:
-            json_data = json.loads(data_response)  # Decodes the bytes and loads them as JSON
+            json_data = json.loads(
+                data_response
+            )  # Decodes the bytes and loads them as JSON
 
             if "title" in json_data:
                 raise ErroApi(**json_data)

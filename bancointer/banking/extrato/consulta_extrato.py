@@ -23,7 +23,9 @@ class ConsultaExtrato(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
-        self.http_util = HttpUtils(HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert)
+        self.http_util = HttpUtils(
+            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert
+        )
         print(f"AMBIENTE: {ambiente.value}")
 
     def consultar(self, data_inicio, data_fim) -> dict | ErroApi:
@@ -37,8 +39,7 @@ class ConsultaExtrato(object):
         Returns:
             dict: json-encoded of a response, `response.json()` dict com os dados do extrato.
         """
-        du = DateUtils()
-        if du.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
+        if DateUtils.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
             raise BancoInterException(
                 "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
             )

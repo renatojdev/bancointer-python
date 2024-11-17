@@ -23,6 +23,8 @@ request_code = "ea209b84-2625-42fe-b6d5-820b496d4cc1"
 
 # Ver cancelar_cobranca.py
 
-reponse = bi.baixa(codigo_solicitacao=request_code, motivo_cancelamento=TipoBaixa.ACERTOS)
+reponse = bi.baixa(
+    codigo_solicitacao=request_code, motivo_cancelamento=TipoBaixa.ACERTOS
+)
 
 print(reponse)

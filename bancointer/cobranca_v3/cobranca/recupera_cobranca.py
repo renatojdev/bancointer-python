@@ -19,9 +19,10 @@ class RecuperaCobranca(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
-        self.http_util = HttpUtils(HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert)
+        self.http_util = HttpUtils(
+            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert
+        )
         print(f"AMBIENTE: {ambiente.value}")
-
 
     def recuperar(self, codigo_solicitacao) -> dict | ErroApi:
         """Recupera as informações detalhadas de um boleto atraves do `codigo_solicitacao`.

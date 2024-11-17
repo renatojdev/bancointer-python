@@ -44,7 +44,9 @@ class TestCancelaCobranca(unittest.TestCase):
                 mock_data_response,
             ]
 
-        cancela_cobranca = CancelaCobranca(Ambient.SANDBOX, client_id, client_secret, cert)
+        cancela_cobranca = CancelaCobranca(
+            Ambient.SANDBOX, client_id, client_secret, cert
+        )
 
         data = cancela_cobranca.cancelar(
             "4a30390a-9242-4740-bd30-d941d3678a38", TipoBaixa.ACERTOS.value
@@ -74,7 +76,9 @@ class TestCancelaCobranca(unittest.TestCase):
         # Configura o mock para a segunda chamada (dados)
         mock_https_connection.return_value.getresponse.return_value = mock_data_response
 
-        cancela_cobranca = CancelaCobranca(Ambient.SANDBOX, client_id, client_secret, cert)
+        cancela_cobranca = CancelaCobranca(
+            Ambient.SANDBOX, client_id, client_secret, cert
+        )
 
         data = cancela_cobranca.cancelar(
             "1783d19f-ab81-4a54-92a3-a0064f9b26ee", TipoBaixa.ACERTOS.value

@@ -98,7 +98,7 @@ class TokenUtils(object):
             if response.status < 200 or response.status > 299:
                 data_response = json.loads(data_response)
                 if "error_title" in data_response:
-                    data_response = data_response['error_title']
+                    data_response = data_response["error_title"]
                 erro = Erro(response.status, data_response)
                 raise BancoInterException("Request token error", erro)
 

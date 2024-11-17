@@ -97,7 +97,9 @@ class TestRecuperaCobranca(unittest.TestCase):
                 mock_data_response,
             ]
 
-        recupera_cobranca = RecuperaCobranca(Ambient.SANDBOX, client_id, client_secret, cert)
+        recupera_cobranca = RecuperaCobranca(
+            Ambient.SANDBOX, client_id, client_secret, cert
+        )
 
         data = recupera_cobranca.recuperar("4a30390a-9242-4740-bd30-d941d3678a38")
 
