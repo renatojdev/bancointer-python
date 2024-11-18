@@ -3,6 +3,7 @@
 import certifi
 import json
 import http.client
+import socket
 import ssl
 from decouple import config
 
@@ -57,15 +58,37 @@ class HttpUtils(object):
         print(f"HEADERS ::::: {self.headers}")
         print(f"Method ::::: {method}")
         print(f"Path ::::: {path}")
-        # Use connection to submit a HTTP POST request
-        self.connection.request(
-            method=method, url=path, headers=self.headers, body=payload
-        )
 
-        # Print the HTTP response from the IOT service endpoint
-        response = self.connection.getresponse()
-        print(response.status, response.reason)
-        data_response = response.read().decode("utf-8")
+        response = data_response = None
+        try:
+            # Use connection to submit a HTTP POST request
+            self.connection.request(
+                method=method, url=path, headers=self.headers, body=payload
+            )
+
+            # Print the HTTP response from the IOT service endpoint
+            response = self.connection.getresponse()
+
+            print(response.status, response.reason)
+            data_response = response.read().decode("utf-8")
+
+        except TimeoutError as te:
+            self.__close_connection()
+            erro = Erro(408, "Banco inter API request timeout.")
+            raise BancoInterException(
+                "BancoInterException.HttpUtils.make_request", erro
+            )
+        except socket.gaierror as e:
+            self.__close_connection()
+            # Captura o erro de nome de host
+            print(f"Host {self.host} - Erro: {e}")
+            erro = Erro(502, f"Connection Error: {self.host}")
+            raise BancoInterException(
+                "BancoInterException.HttpUtils.make_request", erro
+            )
+        except Exception as e:
+            print(f"make_request.Exception: {e}")
+            self.__close_connection()
 
         if response.status < 200 or response.status > 299:  # ! Error 200, SUCCESS
             data_response = json.loads(data_response)

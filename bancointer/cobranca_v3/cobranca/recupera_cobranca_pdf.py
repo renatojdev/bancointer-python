@@ -27,7 +27,7 @@ class RecuperaCobrancaPDF(object):
         )
         print(f"AMBIENTE: {ambiente.value}")
 
-    def recuperar_pdf(self, codigo_solicitacao, download_path:str='/tmp') -> bool:
+    def recuperar_pdf(self, codigo_solicitacao, download_path: str = "/tmp") -> bool:
         """Metodo para download de cobranças emitidas no formato PDF.
 
         Args:
@@ -41,8 +41,11 @@ class RecuperaCobrancaPDF(object):
         path = f"{PATH_COBRANCAS}/{codigo_solicitacao}/pdf"
 
         try:
-            if (codigo_solicitacao is None or type(codigo_solicitacao) is not str
-                    or codigo_solicitacao == ""):
+            if (
+                codigo_solicitacao is None
+                or type(codigo_solicitacao) is not str
+                or codigo_solicitacao == ""
+            ):
                 erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
                 raise BancoInterException("Ocorreu um erro no SDK", erro)
 

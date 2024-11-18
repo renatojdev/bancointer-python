@@ -24,14 +24,25 @@ def suite():
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestMulta))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestPix))
 
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobranca))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobrancaPDF))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaEmitirCobranca))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaRecuperarCobranca))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestSolicitacaoEmitirCobranca))
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobrancaPDF)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaEmitirCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaRecuperarCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestSolicitacaoEmitirCobranca)
+    )
 
     return my_suite
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     runner = unittest.TextTestRunner()
     runner.run(suite())

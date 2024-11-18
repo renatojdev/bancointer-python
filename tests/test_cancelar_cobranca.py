@@ -92,9 +92,9 @@ class TestCancelaCobranca(unittest.TestCase):
 
         assert mock_https_connection.return_value.getresponse.call_count == 1
 
-        self.assertEqual(400, data['codigo'])
+        self.assertEqual(400, data["codigo"])
         self.assertEqual(
-            data['descricao'],
+            data["descricao"],
             {
                 "title": "Requisição inválida",
                 "detail": "A cobrança não pode ser cancelada, pois se encontra na situação CANCELADO",

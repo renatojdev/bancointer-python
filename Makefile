@@ -3,7 +3,7 @@
 PE=PIPENV_IGNORE_VIRTUALENVS=1 PIPENV_VERBOSITY=-1 pipenv
 
 install:
-	$(PE) run python setup.py install
+	$(PE) run pip install '.[dev]'
 
 black:
 	$(PE) run black . --check

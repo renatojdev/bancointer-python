@@ -96,7 +96,9 @@ class TestEmitirCobranca(unittest.TestCase):
             ]
 
         # Instancia a classe EmiteCobranca (aqui pode ser necessário usar a classe real)
-        emite_cobranca = EmiteCobranca(Environment.SANDBOX, client_id, client_secret, cert)
+        emite_cobranca = EmiteCobranca(
+            Environment.SANDBOX, client_id, client_secret, cert
+        )
 
         # Chama o metodo emitir
         data = emite_cobranca.emitir(sol_cobranca)
@@ -121,7 +123,9 @@ class TestEmitirCobranca(unittest.TestCase):
         )
 
         # Instancia a classe DataFetcher
-        emite_cobranca = EmiteCobranca(Environment.SANDBOX, client_id, client_secret, cert)
+        emite_cobranca = EmiteCobranca(
+            Environment.SANDBOX, client_id, client_secret, cert
+        )
 
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:

@@ -37,8 +37,11 @@ class RecuperaCobranca(object):
         path = f"{PATH_COBRANCAS}/{codigo_solicitacao}"
 
         try:
-            if (codigo_solicitacao is None or type(codigo_solicitacao) is not str
-                    or codigo_solicitacao == ""):
+            if (
+                codigo_solicitacao is None
+                or type(codigo_solicitacao) is not str
+                or codigo_solicitacao == ""
+            ):
                 erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
                 raise BancoInterException("Ocorreu um erro no SDK", erro)
 
