@@ -1,3 +1,5 @@
+# util.py
+
 import os
 import sys
 import requests
@@ -6,7 +8,10 @@ import codecs
 from datetime import datetime, timedelta
 from decouple import config
 
+from bancointer.deprecated import deprecated
 
+
+@deprecated("Use Class HttpUtils instead")
 class Util(object):
     _TOKEN_FILE_PATH = (
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
@@ -79,7 +84,8 @@ class Util(object):
         )
 
         headers = {
-            "Accept": "application/json",
+            # "Accept": "application/json",
+            "x-conta-corrente": str(self._X_CONTA_CORRENTE),
             "Content-Type": "application/x-www-form-urlencoded",
         }
 
@@ -91,6 +97,9 @@ class Util(object):
             response.raise_for_status()
 
             return response.json()
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTPError ERROR: {e}")
+            sys.exit(1)
         except requests.exceptions.SSLError as e:
             print(f"SSL ERROR: {e}")
             sys.exit(1)
@@ -146,15 +155,17 @@ class Util(object):
     @staticmethod
     def file_save(response, file_path):
         """Method to file save to disk"""
-        if response.content:
+        if hasattr(response, "content") and response.content is not None:
             content = json.loads(response.content)
-            pdf = bytes(content["pdf"], "UTF-8")
+        else:
+            content = response
 
-            try:
-                with open(file_path, "wb") as out_file:
-                    out_file.write(codecs.decode(pdf, "base64"))
-                out_file.close()
-            except Exception as e:
-                print("bancointer.file_save.Except: ", str(e))
-                return False
-            return True
+        pdf = bytes(content["pdf"], "UTF-8")
+
+        try:
+            with open(file_path, "wb") as out_file:
+                out_file.write(codecs.decode(pdf, "base64"))
+        except Exception as e:
+            print("bancointer.file_save.Except: ", str(e))
+            return False
+        return True

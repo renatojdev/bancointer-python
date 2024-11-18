@@ -1,3 +1,9 @@
+# consulta.py
+
+##############################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: recuperar_cobranca.py
+##############################################################
+
 from bancointer.bancointer import BancoInter
 from decouple import config
 
@@ -12,8 +18,9 @@ bi = BancoInter(
     (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2")),
 )
 
-request_code = "09a0024a-836f-49ff-a9e5-a4c2c256ab0d"
+request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
 
+# Ver recuperar_cobranca.py
 response = bi.consulta(codigo_solicitacao=request_code)
 
 print(response)

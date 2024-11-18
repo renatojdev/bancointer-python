@@ -1,7 +1,12 @@
+# boleto_multa_e_mora.py
+
+########################################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: emitir_cobranca_multa_e_mora.py
+########################################################################
+
 from bancointer.bancointer import BancoInter
 from decouple import config
 from datetime import datetime, timedelta
-
 
 # Due Date
 # Get time
@@ -52,6 +57,8 @@ MORA = {"codigo": "TAXAMENSAL", "valor": 0, "taxa": 1.0}
 bi.set_multa(multa=MULTA)
 
 bi.set_mora(mora=MORA)
+
+# Ver emitir_cobranca_multa_e_mora.py
 
 reponse = bi.boleto(
     pagador=pagador,

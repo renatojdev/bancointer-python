@@ -1,5 +1,11 @@
+# baixa.py
+
+#############################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: cancelar_cobranca.py
+#############################################################
+
 from bancointer.bancointer import BancoInter
-from bancointer.baixa import Baixa
+from bancointer.cobranca_v3.models.tipo_baixa import TipoBaixa
 from decouple import config
 
 
@@ -15,6 +21,10 @@ bi = BancoInter(
 
 request_code = "ea209b84-2625-42fe-b6d5-820b496d4cc1"
 
-reponse = bi.baixa(codigo_solicitacao=request_code, motivo_cancelamento=Baixa.ACERTOS)
+# Ver cancelar_cobranca.py
+
+reponse = bi.baixa(
+    codigo_solicitacao=request_code, motivo_cancelamento=TipoBaixa.ACERTOS
+)
 
 print(reponse)

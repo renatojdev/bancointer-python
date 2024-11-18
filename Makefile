@@ -1,14 +1,22 @@
+.PHONY: install
+
+PE=PIPENV_IGNORE_VIRTUALENVS=1 PIPENV_VERBOSITY=-1 pipenv
+
 install:
-	pipenv run python setup.py sdist bdist_wheel
+	$(PE) run python setup.py install
 
 black:
-	pipenv run black . --check
+	$(PE) run black . --check
 
 coverage:
-	pipenv run coverage report -m
+	$(PE) run coverage report -m
 
 test:
-	pipenv run python tests/tests.py
+	$(PE) run python tests/tests_models.py # suite tests
+	$(PE) run python tests/test_emitir_cobranca.py
+	$(PE) run python tests/test_recuperar_cobranca.py
+	$(PE) run python tests/test_recuperar_cobranca_pdf.py
+	$(PE) run python tests/test_cancelar_cobranca.py
 
 dev:
 	make install

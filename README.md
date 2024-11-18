@@ -10,6 +10,8 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 * Crie um arquivo `.env` com os seguitntes atributos na aplicação que irá usar este projeto.
 
 ```
+    # Application Environment - SANDBOX or PRODUCTION
+    APP_ENV=SANDBOX
     CPFCNPJ_BENEF='Número CPF OU CNPJ da conta no banco inter'
     X_INTER_CONTA_CORRENTE='Numero da conta corrente'
     # SANDBOX
@@ -62,61 +64,85 @@ Exemplos de utilização da API do Banco Inter (SANDBOX) para emissão, download
 - Importe as dependências necessárias:
 
 ```
-from bancointer.bancointer import BancoInter
 from decouple import config
 
 dir_base_ssl = config("SSL_DIR_BASE")
 
 # Objeto Banco Inter para operações na API
-bi = BancoInter(
-    config("API_SBX_COBRA_V3"),
-    config("API_SBX_TOKEN_V2"),
-    config("CLIENT_ID"),
-    config("CLIENT_SECRET"),
-    (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2")),
-)
+dir_base_ssl = config("SSL_DIR_BASE")
+cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
+client_id = config("CLIENT_ID")
+client_secret = config("CLIENT_SECRET")
+
+# Environment SANDBOX or PRODUCTION
+app_env_name = config("APP_ENV")
+env = Environment.get_environment_by_value(app_env_name.upper())
 ```
 
 ###  Emissão de Boleto
 ```
-pagador = {
-"cnpjCpf": "99999999999999",
-"nome": "Nome do Pagador",
-"email": "email@pagador.com",
-"telefone": "999999999",
-"cep": "99999999",
-"numero": "999",
-"complemento": "",
-"bairro": "Bairro do Pagador",
-"endereco": "Endereço do Pagador",
-"cidade": "Cidade do Pagador",
-"uf": "PR",
-"ddd": "99",
-"tipoPessoa": "FISICA"
-}
-mensagem = {
-"linha1": "Mensagem da linha1",
-"linha2": "Mensagem da linha2",
-"linha3": "Mensagem da linha3",
-"linha4": "Mensagem da linha4",
-"linha5": "Mensagem da linha5",
-}
+payer = Pessoa(
+    "9" * 11,  # valido
+    PersonType.FISICA,
+    "NOME DO PAGADOR",
+    "ENDERECO DO PAGADOR",
+    "CIDADE DO PAGADOR",
+    "PR",
+    "80030000",
+)  # OU FISICA
+# Pagador
 
-reponse = bi.boleto(pagador=pagador, mensagem=mensagem, dataEmissao=None, dataVencimento="2024-11-21", seuNumero="00001", valorNominal=2.5)
+discount = Desconto("PERCENTUALDATAINFORMADA", 0, 1.2, 2)
+multa = Multa("VALORFIXO", 0, 100)
+mora = Mora("TAXAMENSAL", 0, 4.5)
+message = Message("message 1", "message 2", "message 3", "", "message 5")
 
-print(reponse)
+# Beneficiario final, mesmo que o pagador
+beneficiario_final = Pessoa(
+    "12345678901",
+    PersonType.FISICA,
+    "Nome do beneficiário",
+    "Avenida Brasil, 1200",
+    "Belo Horizonte",
+    "MG",
+    "30110000",
+)
+
+cobranca = Cobranca.criar_sobranca_simples("0001", 2.5, "2024-11-22", payer)
+cobranca.multa = multa
+cobranca.desconto = discount
+cobranca.beneficiarioFinal = beneficiario_final
+
+sol_new_cobranca = SolicitacaoEmitirCobranca(cobranca)
+
+emite_cobranca = EmiteCobranca(env, client_id, client_secret, cert)
+resposta = emite_cobranca.emitir(sol_new_cobranca)
+
+print(resposta)
+```
+### Consultar dados do Boleto
+```
+request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
+
+recupera_cobranca = RecuperaCobranca(env, client_id, client_secret, cert)
+
+response = recupera_cobranca.recuperar(request_code)
 ```
 ### Download de Boleto
 ```
-reponse = bi.download(codigo_solicitacao="ea209b84-2625-42fe-b6d5-820b496d4cc1", download_path=config("DOWNLOAD_PATH"))
+request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
 
-print(reponse)
+recupera_cobranca = RecuperaCobrancaPDF(env, client_id, client_secret, cert)
+
+response = recupera_cobranca.recuperar_pdf(request_code, config("DOWNLOAD_PATH"))
 ```
 ### Baixa de Boleto
 ```
-reponse = bi.baixa(codigo_solicitacao="ea209b84-2625-42fe-b6d5-820b496d4cc1", motivo=Baixa.ACERTOS)
+request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
 
-print(reponse)
+cancela_cobranca = CancelaCobranca(env, client_id, client_secret, cert)
+
+response = cancela_cobranca.cancelar(request_code, Baixa.ACERTOS.value)
 ```
 ## Contribua com este projeto
 

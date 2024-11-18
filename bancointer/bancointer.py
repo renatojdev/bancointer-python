@@ -1,9 +1,16 @@
+# bancointer.py
+
 import os
+import warnings
 
-from .baixa import Baixa
-from .util import Util
+from bancointer.cobranca_v3.models.tipo_baixa import TipoBaixa
+from bancointer.deprecated import deprecated
+from bancointer.util import Util
 
 
+@deprecated(
+    "Use Classes EmiteCobranca, RecuperaCobranca, RecuperaCobrancaPDF and CancelaCobranca instead"
+)
 class BancoInter(object):
     """Classe para transacoes (emissao, baixa, download) de boletos na API do Banco Inter PJ.
     Na emissao de boletos o padrao inicial e sem desconto, multa e juros de mora.
@@ -111,6 +118,11 @@ class BancoInter(object):
     def boleto(
         self, pagador, mensagem, dataEmissao, dataVencimento, seuNumero, valorNominal
     ):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use EmiteCobranca.emitir(SolicitacaoEmitirCobranca)",
+            DeprecationWarning,
+        )
         """Metodo para emissao de boletos bancarios na API do Banco Inter.
 
            Saiba mais em: https://developers.inter.co/references/token
@@ -167,6 +179,11 @@ class BancoInter(object):
         return response
 
     def download(self, codigo_solicitacao, download_path):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use RecuperaCobrancaPDF.recuperar_pdf(codigo_solicitacao, download_path) instead",
+            DeprecationWarning,
+        )
         """Metodo para download de boletos emitidos.
 
         Args:
@@ -186,7 +203,12 @@ class BancoInter(object):
 
         return self.util.file_save(response, file_path)
 
-    def baixa(self, codigo_solicitacao, motivo_cancelamento: Baixa):
+    def baixa(self, codigo_solicitacao, motivo_cancelamento: TipoBaixa):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use CancelaCobranca.cancela(codigo_solicitacao, motivo_cancelamento) instead",
+            DeprecationWarning,
+        )
         """Metodo para baixa (Cancelamento) de boleto emitido.
         Dominio que descreve o tipo de baixa sendo solicitado.
 
@@ -203,7 +225,7 @@ class BancoInter(object):
             codigo_solicitacao (string <uuid>): Codigo unico da cobrança
             motivo_cancelamento (string <= 50 characters): 	Motivo pelo qual a cobrança está sendo cancelada
         Returns:
-            (response): Response da requisicao
+            Response code (string): Response da requisicao. 202 se foi cancelada.
         """
         act = "cancelar"
         payload = {"motivoCancelamento": motivo_cancelamento.value}
@@ -217,6 +239,11 @@ class BancoInter(object):
         return response
 
     def consulta(self, codigo_solicitacao):
+        warnings.warn(
+            "This method has been deprecated and will be removed in future versions. "
+            "Use RecuperaCobranca.recuperar(codigo_solicitacao) instead",
+            DeprecationWarning,
+        )
         """Recupera as informações detalhadas de um boleto através do `nosso_numero`.
 
         Args:

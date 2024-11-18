@@ -1,3 +1,9 @@
+# boleto.py
+
+###########################################################
+# THIS EXAMPLE HAS BEEN DEPRECATED. SEE: emitir_cobranca.py
+###########################################################
+
 from bancointer.bancointer import BancoInter
 from decouple import config
 from datetime import datetime, timedelta
@@ -43,6 +49,8 @@ mensagem = {
     "linha4": "mensagem da linha4",
     "linha5": "mensagem da linha5",
 }
+
+# Ver emitir_cobranca.py
 
 reponse = bi.boleto(
     pagador=pagador,
