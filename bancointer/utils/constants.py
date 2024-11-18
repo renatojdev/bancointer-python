@@ -57,6 +57,7 @@ URL_COBRANCAS_WEBHOOK_CALLBACKS = f"{URL_COBRANCAS_WEBHOOK}/callbacks"
 PATH_TOKEN = f"/oauth/v2/token"
 PATH_COBRANCAS = f"/cobranca/v3/cobrancas"
 PATH_EXTRATO = f"/banking/v2/extrato"
+PATH_SALDO = f"/banking/v2/saldo"
 
 # Escopos
 ESCOPO_BOLETO_COBRANCA_READ = "boleto-cobranca.read"

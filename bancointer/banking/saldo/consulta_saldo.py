@@ -1,19 +1,16 @@
-# consulta_extrato.py
+# consulta_saldo.py
 
-from bancointer.banking.models.resposta_consultar_extrato import (
-    RespostaConsultarExtrato,
-)
+from bancointer.banking.models.resposta_consultar_saldo import RespostaConsultarSaldo
 from bancointer.utils.environment import Environment
-from bancointer.utils.date_utils import DateUtils
 from bancointer.utils import HttpUtils
-from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST
+from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST, PATH_SALDO
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
-class ConsultaExtrato(object):
+class ConsultaSaldo(object):
     def __init__(self, ambiente: Environment, client_id, client_secret, cert):
-        """Metodo construtor da classe ConsultaExtrato.
+        """Metodo construtor da classe ConsultaSaldo.
 
         Args:
             ambiente (Environment): Application Environment, SANDBOX or PRODUCTION.
@@ -29,23 +26,17 @@ class ConsultaExtrato(object):
         )
         print(f"AMBIENTE: {ambiente.value}")
 
-    def consultar(self, data_inicio, data_fim) -> dict | ErroApi:
-        """Recupera as informações do extrato do cliente durante um periodo de datas em
-        um período específico. O período máximo entre as datas é de 90 dias.
+    def consultar(self, saldo_date: str) -> dict | ErroApi:
+        """Recupera as informações do saldo posicional do cliente em uma determinada data.
 
         Args:
-            data_inicio (string <date>): Data início da consulta de extrato.
-            data_fim (string <date>): Data fim da consulta de extrato.
+            saldo_date (string <date>): Data de consulta para o saldo posicional.
 
         Returns:
-            dict: json-encoded of a response, `response.json()` dict com os dados do extrato.
+            dict: json-encoded of a response, `response.json()` dict com os dados do saldo.
         """
-        if DateUtils.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
-            raise BancoInterException(
-                "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
-            )
 
-        path = f"{PATH_EXTRATO}?dataInicio={data_inicio}&dataFim={data_fim}"
+        path = f"{PATH_SALDO}?dataSaldo={saldo_date}"
 
         try:
             # Converting the request to JSON
@@ -56,13 +47,13 @@ class ConsultaExtrato(object):
             elif "codigo" in response:
                 return response
 
-            return RespostaConsultarExtrato(**response).to_dict()
+            return RespostaConsultarSaldo(**response).to_dict()
         except ErroApi as e:
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"BancoInterException.ConsultaExtrato.consultar: {e}")
+            print(f"BancoInterException.ConsultaSaldo.consultar: {e}")
             return e.erro.to_dict()
         except Exception as e:
-            print(f"Exception.ConsultaExtrato: {e}")
+            print(f"Exception.ConsultaSaldo: {e}")
             raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))
