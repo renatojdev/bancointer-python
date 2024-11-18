@@ -11,12 +11,12 @@ authors = [{ name = "Renato P. Eduardo Jr", email = "renatojdev@outlook.com" }]
 license = { text = "MIT License" }
 dependencies = [
     "requests",
-    "python-decouple",
     "certifi",
 ]
 
 [project.optional-dependencies]
 dev = [
+    "python-decouple",
     "requests-mock",
     "black",
     "setuptools",

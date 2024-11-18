@@ -56,7 +56,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 ou
 
-```python setup.py install```
+```pip install .```
 
 ##  Exemplos de Uso
 Exemplos de utilização da API do Banco Inter (SANDBOX) para emissão, download e baixa de títulos bancários. Veja a pasta `examples/`.
@@ -151,10 +151,10 @@ Clone o repositório do projeto
 > $ git clone https://github.com/renatojdev/bancointer-python.git
 
 Se não tiver o pipenv instalado, para instalar:
-> $ pip install -U pipenv
+> ```$ pip install -U pipenv```
 
 Instale as dependências
-> $ make install
+> ```$ make install```
 
 
 ## Dependências
