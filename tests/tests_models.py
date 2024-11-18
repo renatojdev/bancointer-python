@@ -9,6 +9,8 @@ from test_resposta_emitir_cobranca import TestRespostaEmitirCobranca
 from test_resposta_recuperar_cobranca import TestRespostaRecuperarCobranca
 from test_solicitacao_emitir_cobranca import TestSolicitacaoEmitirCobranca
 from test_pix import TestPix
+from test_resposta_consultar_extrato import TestRespostaConsultarExtrato
+from test_resposta_consultar_saldo import TestRespostaConsultarSaldo
 
 
 # Tests Suites
@@ -30,6 +32,12 @@ def suite():
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestSolicitacaoEmitirCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaConsultarSaldo)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaConsultarExtrato)
     )
 
     return my_suite

@@ -12,9 +12,15 @@ from test_consultar_saldo import TestConsultarSaldo
 def suite():
     my_suite = unittest.TestSuite()
 
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarSaldo))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarExtrato))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarExtratoPDF))
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarSaldo)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarExtrato)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarExtratoPDF)
+    )
 
     return my_suite
 

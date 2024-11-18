@@ -9,7 +9,7 @@ from bancointer.banking.models.transacao_simples import TransacaoSimples
 @dataclass
 class RespostaConsultarExtrato(object):
     """
-    Código Solicitação Nosso Número, atribuído automaticamente pelo banco na emissão do título.
+    Lista de transacoes simples do extrato.
     """
 
     transacoes: List[Dict[str, TransacaoSimples]] = field(default_factory=dict)

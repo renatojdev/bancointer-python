@@ -49,11 +49,10 @@ class TestConsultarExtratoPDF(unittest.TestCase):
         )
 
         response_success = consulta_extrato_pdf.consultar_pdf(
-            "2024-01-23","2024-02-13", config("DOWNLOAD_PATH")
+            "2024-01-23", "2024-02-13", config("DOWNLOAD_PATH")
         )
 
         self.assertEqual(response_success, True)
-
 
     @patch("http.client.HTTPSConnection")
     def test_consultar_extrato_pdf_failure(self, mock_https_connection):
@@ -85,10 +84,12 @@ class TestConsultarExtratoPDF(unittest.TestCase):
         )
 
         response = consulta_extrato_pdf.consultar_pdf(
-                "", "2024-02-13", config("DOWNLOAD_PATH")
+            "", "2024-02-13", config("DOWNLOAD_PATH")
         )
 
-        self.assertEqual(response, {'codigo': 502, 'descricao': 'Periodo de datas invalido'})
+        self.assertEqual(
+            response, {"codigo": 502, "descricao": "Periodo de datas invalido"}
+        )
 
 
 if __name__ == "__main__":

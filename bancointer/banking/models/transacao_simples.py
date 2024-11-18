@@ -33,7 +33,7 @@ class TransacaoSimples(object):
 
     def to_dict(self):
         return {
-            "**dataEntrada": self.dataEntrada,
+            "dataEntrada": self.dataEntrada,
             "tipoTransacao": self.tipoTransacao,
             "tipoOperacao": self.tipoOperacao,
             "valor": self.valor,

@@ -13,11 +13,18 @@ from test_cancelar_cobranca import TestCancelaCobranca
 def suite():
     my_suite = unittest.TestSuite()
 
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestEmitirCobranca))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestCancelaCobranca))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobranca))
-    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobrancaPDF))
-
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestEmitirCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestCancelaCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobranca)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRecuperaCobrancaPDF)
+    )
 
     return my_suite
 
