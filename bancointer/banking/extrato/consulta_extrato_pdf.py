@@ -7,7 +7,6 @@ from bancointer.utils.date_utils import DateUtils
 from bancointer.utils import HttpUtils
 from bancointer.utils.constants import (
     HOST_SANDBOX,
-    PATH_EXTRATO,
     HOST,
     PATH_EXTRATO_PDF,
 )
