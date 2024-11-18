@@ -1,3 +1,6 @@
+# tests_models.py
+
+
 import unittest
 
 from test_desconto import TestDesconto
@@ -11,19 +14,19 @@ from test_solicitacao_emitir_cobranca import TestSolicitacaoEmitirCobranca
 from test_pix import TestPix
 from test_resposta_consultar_extrato import TestRespostaConsultarExtrato
 from test_resposta_consultar_saldo import TestRespostaConsultarSaldo
+from test_transacao_simples import TestTransacaoSimples
 
 
 # Tests Suites
 def suite():
     my_suite = unittest.TestSuite()
-
+    # Cobranca
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestPessoa))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestDesconto))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestMessage))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestMora))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestMulta))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestPix))
-
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaEmitirCobranca)
     )
@@ -32,6 +35,10 @@ def suite():
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestSolicitacaoEmitirCobranca)
+    )
+    # Banking
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestTransacaoSimples)
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaConsultarSaldo)
