@@ -71,7 +71,7 @@ class HttpUtils(object):
 
             print(response.status, response.reason)
             data_response = response.read().decode("utf-8")
-            print(f"data_response: {data_response}")
+            # print(f"data_response: {data_response}")
 
         except TimeoutError as te:
             self.__close_connection()

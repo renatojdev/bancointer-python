@@ -1,1 +1,2 @@
 from .consulta_extrato import ConsultaExtrato
+from .consulta_extrato_pdf import ConsultaExtratoPDF

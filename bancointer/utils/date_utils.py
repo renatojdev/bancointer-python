@@ -6,10 +6,19 @@ from datetime import datetime, timedelta
 class DateUtils(object):
 
     @staticmethod
+    def get_current_date():
+        now = datetime.now()
+        current_date = now.strftime("%y%m%d%H%M%S")
+        return current_date
+
+    @staticmethod
     def periodo_dates_extrato_e_valido(data_inicio: str, data_fim: str):
         # Definindo as datas de início e fim
         # data_inicio = '2024-01-01'  # Formato: 'YYYY-MM-DD'
         # data_fim = '2024-03-01'
+
+        if data_inicio == "" or data_fim == "":
+            return False
 
         # Convertendo as strings para objetos datetime
         inicio = datetime.strptime(data_inicio, "%Y-%m-%d")
