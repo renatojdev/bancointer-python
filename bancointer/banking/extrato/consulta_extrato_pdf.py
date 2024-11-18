@@ -46,14 +46,15 @@ class ConsultaExtratoPDF(object):
         Returns:
             dict: json-encoded of a response, `response.json()` dict com os dados do extrato.
         """
-        if DateUtils.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
-            raise BancoInterException(
-                "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
-            )
 
         path = f"{PATH_EXTRATO_PDF}?dataInicio={data_inicio}&dataFim={data_fim}"
 
         try:
+            if DateUtils.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
+                raise BancoInterException(
+                    "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
+                )
+
             # Converting the request to JSON
             response = self.http_util.make_get(path)
 
