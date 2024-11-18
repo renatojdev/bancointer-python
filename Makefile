@@ -17,6 +17,9 @@ test:
 	$(PE) run python tests/test_recuperar_cobranca.py
 	$(PE) run python tests/test_recuperar_cobranca_pdf.py
 	$(PE) run python tests/test_cancelar_cobranca.py
+	$(PE) run python tests/test_consultar_saldo.py
+	$(PE) run python tests/test_consultar_extrato.py
+	$(PE) run python tests/test_consultar_extrato_pdf.py
 
 dev:
 	make install
