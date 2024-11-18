@@ -17,7 +17,7 @@ cert = (
 )
 
 
-class TestRecuperaCobrancaPDF(unittest.TestCase):
+class TestConsultarExtratoPDF(unittest.TestCase):
 
     @patch("http.client.HTTPSConnection")
     def test_consultar_extrato_pdf_success(self, mock_https_connection):
