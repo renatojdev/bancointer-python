@@ -13,6 +13,7 @@ class TransacaoSimples(object):
     titulo: str
     descricao: str
 
+
     def __init__(
         self,
         cpmf: str,
@@ -30,3 +31,14 @@ class TransacaoSimples(object):
         self.valor = valor
         self.titulo = titulo
         self.descricao = descricao
+
+
+    def to_dict(self):
+        return {
+            '**dataEntrada': self.dataEntrada,
+            'tipoTransacao': self.tipoTransacao,
+            'tipoOperacao': self.tipoOperacao,
+            'valor': self.valor,
+            'titulo': self.titulo,
+            'descricao': self.descricao
+        }

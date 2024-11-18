@@ -44,7 +44,7 @@ class ConsultaExtrato(object):
                 "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
             )
 
-        path = f"{PATH_EXTRATO}?data_inicio={data_inicio}&data_fim={data_fim}"
+        path = f"{PATH_EXTRATO}?dataInicio={data_inicio}&dataFim={data_fim}"
 
         try:
             # Converting the request to JSON
@@ -60,7 +60,7 @@ class ConsultaExtrato(object):
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"BancoInterException.ConsultaExtrato.emitir: {e}")
+            print(f"BancoInterException.ConsultaExtrato.consultar: {e}")
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.ConsultaExtrato: {e}")

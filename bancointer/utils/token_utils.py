@@ -18,7 +18,7 @@ from bancointer.utils.constants import (
     HOST_SANDBOX,
     PATH_TOKEN,
     ESCOPO_BOLETO_COBRANCA_READ,
-    ESCOPO_BOLETO_COBRANCA_WRITE,
+    ESCOPO_BOLETO_COBRANCA_WRITE, ESCOPO_EXTRATO_READ,
 )
 
 
@@ -64,7 +64,7 @@ class TokenUtils(object):
             + self.client_id
             + "&client_secret="
             + self.client_secret
-            + f"&scope={ESCOPO_BOLETO_COBRANCA_READ}%20{ESCOPO_BOLETO_COBRANCA_WRITE}"
+            + f"&scope={ESCOPO_BOLETO_COBRANCA_READ}%20{ESCOPO_BOLETO_COBRANCA_WRITE}%20{ESCOPO_EXTRATO_READ}"
         )
         print(f"payload_token={payload}")
         print(f"host={HOST_SANDBOX}{PATH_TOKEN}")

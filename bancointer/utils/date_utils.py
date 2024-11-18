@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 class DateUtils(object):
 
     @staticmethod
-    def periodo_dates_extrato_e_valido(cls, data_inicio, data_fim):
+    def periodo_dates_extrato_e_valido(data_inicio: str, data_fim: str):
         # Definindo as datas de início e fim
         # data_inicio = '2024-01-01'  # Formato: 'YYYY-MM-DD'
         # data_fim = '2024-03-01'

@@ -12,7 +12,7 @@ class RespostaConsultarExtrato(object):
     Código Solicitação Nosso Número, atribuído automaticamente pelo banco na emissão do título.
     """
 
-    transactions: List[Dict[str, TransacaoSimples]] = field(default_factory=dict)
+    transacoes: List[Dict[str, TransacaoSimples]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         """Converte a instância da classe em um dicionário, excluindo valores None."""
