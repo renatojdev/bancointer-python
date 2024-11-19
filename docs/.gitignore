@@ -1,2 +1,5 @@
 sandbox/
 *.pdf
+*.out
+*.bk
+*.txt

@@ -131,3 +131,7 @@ token.json
 
 # Others
 .idea
+*.pdf
+*.out
+*.bk
+*.txt
