@@ -12,7 +12,7 @@ from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
 class ConsultaExtrato(object):
-    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert, conta_corrente):
         """Metodo construtor da classe ConsultaExtrato.
 
         Args:
@@ -20,12 +20,13 @@ class ConsultaExtrato(object):
             client_id (str): Client Id obtido no detalhe da tela de aplicações no IB.
             client_secret (str): Client Secret obtido no detalhe da tela de aplicações no IB.
             cert (tuple): (cert_file_path, key_file_path) PEM path do certificado digital e PEM path da chave publica.
+            conta_corrente (str): Conta corrente do cliente no banco inter.
         """
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
         self.http_util = HttpUtils(
-            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert
+            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert, conta_corrente
         )
         print(f"AMBIENTE: {ambiente.value}")
 

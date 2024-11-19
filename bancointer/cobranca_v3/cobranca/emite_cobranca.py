@@ -10,7 +10,7 @@ from bancointer.utils.http_utils import HttpUtils
 
 class EmiteCobranca(object):
 
-    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert, conta_corrente):
         """Metodo construtor da classe.
 
         Args:
@@ -22,7 +22,7 @@ class EmiteCobranca(object):
         self.client_secret = client_secret
         self.cert = cert
         self.http_util = HttpUtils(
-            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert
+            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert, conta_corrente
         )
         print(f"AMBIENTE: {ambiente.value}")
 

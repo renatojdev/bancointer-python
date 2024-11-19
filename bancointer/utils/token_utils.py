@@ -12,7 +12,6 @@ from datetime import datetime, timedelta
 from bancointer.utils.exceptions import BancoInterException
 
 from bancointer.utils.exceptions import Erro
-from decouple import config
 
 from bancointer.utils.constants import (
     HOST_SANDBOX,
@@ -50,12 +49,12 @@ class TokenUtils(object):
     TOKEN_FILE_PATH = (
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
     )
-    X_CONTA_CORRENTE = config("X_INTER_CONTA_CORRENTE")
 
-    def __init__(self, client_id, client_secret, cert):
+    def __init__(self, client_id, client_secret, cert, conta_corrente):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
+        self.conta_corrente = conta_corrente
 
     def __request_api_token(self):
         """Get a new token from Banco Inter API"""
@@ -71,12 +70,16 @@ class TokenUtils(object):
         print(f"host={HOST_SANDBOX}{PATH_TOKEN}")
 
         headers = {
-            "x-conta-corrente": str(self.X_CONTA_CORRENTE),
+            "x-conta-corrente": str(self.conta_corrente),
             "Content-Type": "application/x-www-form-urlencoded",
         }
 
         connection = None
         try:
+            if self.conta_corrente is None or "":
+                erro = Erro(404, "Field 'x-conta-corrente' is required.")
+                raise BancoInterException("Ocorreu um erro no SDK", erro)
+
             # Define the client certificate settings for https connection
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             context.load_verify_locations(certifi.where())

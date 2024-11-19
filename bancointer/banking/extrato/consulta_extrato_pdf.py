@@ -15,7 +15,7 @@ from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
 class ConsultaExtratoPDF(object):
-    def __init__(self, ambiente: Environment, client_id, client_secret, cert):
+    def __init__(self, ambiente: Environment, client_id, client_secret, cert, conta_corrente):
         """Metodo construtor da classe ConsultaExtrato.
 
         Args:
@@ -28,7 +28,7 @@ class ConsultaExtratoPDF(object):
         self.client_secret = client_secret
         self.cert = cert
         self.http_util = HttpUtils(
-            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert
+            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert, conta_corrente
         )
         print(f"AMBIENTE: {ambiente.value}")
 

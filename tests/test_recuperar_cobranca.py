@@ -16,7 +16,7 @@ cert = (
     config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
     config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
 )
-
+conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
 class TestRecuperaCobranca(unittest.TestCase):
 
@@ -98,7 +98,7 @@ class TestRecuperaCobranca(unittest.TestCase):
             ]
 
         recupera_cobranca = RecuperaCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         data = recupera_cobranca.recuperar("4a30390a-9242-4740-bd30-d941d3678a38")

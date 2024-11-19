@@ -16,7 +16,7 @@ cert = (
     config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
     config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
 )
-
+conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
 class TestCancelaCobranca(unittest.TestCase):
 
@@ -45,7 +45,7 @@ class TestCancelaCobranca(unittest.TestCase):
             ]
 
         cancela_cobranca = CancelaCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         data = cancela_cobranca.cancelar(
@@ -77,7 +77,7 @@ class TestCancelaCobranca(unittest.TestCase):
         mock_https_connection.return_value.getresponse.return_value = mock_data_response
 
         cancela_cobranca = CancelaCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         data = cancela_cobranca.cancelar(

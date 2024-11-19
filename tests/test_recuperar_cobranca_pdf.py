@@ -15,6 +15,7 @@ cert = (
     config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
     config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
 )
+conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
 
 class TestRecuperaCobrancaPDF(unittest.TestCase):
@@ -45,7 +46,7 @@ class TestRecuperaCobrancaPDF(unittest.TestCase):
             ]
 
         recupera_cobranca = RecuperaCobrancaPDF(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         response_success = recupera_cobranca.recuperar_pdf(

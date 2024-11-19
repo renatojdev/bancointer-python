@@ -27,6 +27,7 @@ cert = (
     config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
     config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
 )
+conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
 pessoa_pagador = Pessoa(
     "9" * 11,  # valido
@@ -97,7 +98,7 @@ class TestEmitirCobranca(unittest.TestCase):
 
         # Instancia a classe EmiteCobranca (aqui pode ser necessário usar a classe real)
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         # Chama o metodo emitir
@@ -124,7 +125,7 @@ class TestEmitirCobranca(unittest.TestCase):
 
         # Instancia a classe DataFetcher
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         # Verifica se a exceção é levantada corretamente

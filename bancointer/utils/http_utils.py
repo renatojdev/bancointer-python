@@ -5,28 +5,27 @@ import json
 import http.client
 import socket
 import ssl
-from decouple import config
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 from bancointer.utils.token_utils import TokenUtils
 
 
 class HttpUtils(object):
-    X_CONTA_CORRENTE = config("X_INTER_CONTA_CORRENTE")
 
-    def __init__(self, host, client_id, client_secret, cert):
+    def __init__(self, host, client_id, client_secret, cert, conta_corrente):
         """Method constructor"""
         self.host = host
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
+        self.conta_corrente = conta_corrente
         self.headers = {"Content-Type": "application/json"}
         self.bearer_token = {}
-        self.token_util = TokenUtils(client_id, client_secret, cert)
+        self.token_util = TokenUtils(client_id, client_secret, cert, conta_corrente)
 
     def add_header_authorization(self, value):
         self.headers["Authorization"] = f"Bearer {value}"
-        self.headers["x-conta-corrente"] = self.X_CONTA_CORRENTE
+        self.headers["x-conta-corrente"] = str(self.conta_corrente)
 
     def __create_connection(self):
         # Define the client certificate settings for https connection
@@ -45,6 +44,10 @@ class HttpUtils(object):
     def make_request(
         self, method, path, payload: dict, custom_headers_dict=None
     ) -> dict:
+        if self.conta_corrente is None or "":
+            erro = Erro(404, "Field 'x-conta-corrente' is required.")
+            raise BancoInterException("BancoInterException.HttpUtils.make_request", erro)
+
         self.__create_connection()
 
         if custom_headers_dict is not None:

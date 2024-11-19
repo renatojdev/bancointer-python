@@ -15,6 +15,7 @@ cert = (
     config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
     config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
 )
+conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
 
 class TestConsultarExtratoPDF(unittest.TestCase):
@@ -45,7 +46,7 @@ class TestConsultarExtratoPDF(unittest.TestCase):
             ]
 
         consulta_extrato_pdf = ConsultaExtratoPDF(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         response_success = consulta_extrato_pdf.consultar_pdf(
@@ -80,7 +81,7 @@ class TestConsultarExtratoPDF(unittest.TestCase):
             ]
 
         consulta_extrato_pdf = ConsultaExtratoPDF(
-            Environment.SANDBOX, client_id, client_secret, cert
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
         )
 
         response = consulta_extrato_pdf.consultar_pdf(
