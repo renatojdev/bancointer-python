@@ -68,8 +68,7 @@ Exemplos de utilização da API do Banco Inter (SANDBOX) para emissão, download
 
 ```
 from decouple import config
-
-dir_base_ssl = config("SSL_DIR_BASE")
+from bancointer.utils.environment import Environment
 
 # Configurações Banco Inter para operações na API (.env)
 dir_base_ssl = config("SSL_DIR_BASE")
