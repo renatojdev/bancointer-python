@@ -22,6 +22,7 @@ cert = (
 )
 conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
+
 class TestConsultarExtrato(unittest.TestCase):
 
     @patch("http.client.HTTPSConnection")

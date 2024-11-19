@@ -28,7 +28,9 @@ if len(sys.argv) > 1:
 if request_code_param is not None:
     request_code = request_code_param
 
-recupera_cobranca = RecuperaCobrancaPDF(env, client_id, client_secret, cert, conta_corrente)
+recupera_cobranca = RecuperaCobrancaPDF(
+    env, client_id, client_secret, cert, conta_corrente
+)
 
 # response = recupera_cobranca.recuperar_pdf(request_code) # download to /tmp
 response = recupera_cobranca.recuperar_pdf(request_code, config("DOWNLOAD_PATH"))

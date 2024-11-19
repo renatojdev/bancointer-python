@@ -9,7 +9,9 @@ from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
 class ConsultaSaldo(object):
-    def __init__(self, ambiente: Environment, client_id, client_secret, cert, conta_corrente):
+    def __init__(
+        self, ambiente: Environment, client_id, client_secret, cert, conta_corrente=None
+    ):
         """Metodo construtor da classe ConsultaSaldo.
 
         Args:
@@ -17,12 +19,17 @@ class ConsultaSaldo(object):
             client_id (str): Client Id obtido no detalhe da tela de aplicações no IB.
             client_secret (str): Client Secret obtido no detalhe da tela de aplicações no IB.
             cert (tuple): (cert_file_path, key_file_path) PEM path do certificado digital e PEM path da chave publica.
+            conta_corrente (str): Conta corrente que será utilizada na operação, caso faça parte da lista de contas correntes da aplicação. Enviar apenas números(incluindo o dígito), e não enviar zeros a esquerda.
         """
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
         self.http_util = HttpUtils(
-            HOST_SANDBOX if ambiente.SANDBOX else HOST, client_id, client_secret, cert, conta_corrente
+            HOST_SANDBOX if ambiente.SANDBOX else HOST,
+            client_id,
+            client_secret,
+            cert,
+            conta_corrente,
         )
         print(f"AMBIENTE: {ambiente.value}")
 

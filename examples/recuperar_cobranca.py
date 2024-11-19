@@ -11,7 +11,7 @@ dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
 client_id = config("CLIENT_ID")
 client_secret = config("CLIENT_SECRET")
-conta_corrente = config("X_INTER_CONTA_CORRENTE")
+conta_corrente = config("X_INTER_CONTA_CORRENTE", "")
 
 # Environment SANDBOX or PRODUCTION
 app_env_name = config("APP_ENV")
@@ -28,7 +28,7 @@ if len(sys.argv) > 1:
 if request_code_param is not None:
     request_code = request_code_param
 
-recupera_cobranca = RecuperaCobranca(env, client_id, client_secret, cert, conta_corrente)
+recupera_cobranca = RecuperaCobranca(env, client_id, client_secret, cert)
 
 response = recupera_cobranca.recuperar(request_code)
 

@@ -71,6 +71,7 @@ class TestEmitirCobranca(unittest.TestCase):
 
     @patch("http.client.HTTPSConnection")
     def test_01_emite_cobranca_success(self, mock_https_connection):
+        """Teste de emissão de cobrança"""
         # Mock da resposta para o token de acesso
         mock_token_response = MagicMock()
         mock_token_response.status = 200
@@ -115,8 +116,8 @@ class TestEmitirCobranca(unittest.TestCase):
 
     @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
     def test_02_emite_cobranca_failure(self, mock_https_client_class):
-        # Cria uma instância do mock para MyHttpsClient
-        # mock_https_client = mock_https_client_class.return_value
+        """Teste de lançamento de exception"""
+        mock_https_client_class = mock_https_client_class.return_value
 
         # Define o side_effect para simular uma exceção
         mock_https_client_class.return_value.getresponse.side_effect = Exception(
@@ -133,6 +134,20 @@ class TestEmitirCobranca(unittest.TestCase):
             emite_cobranca.emitir(sol_cobranca)
 
         self.assertEqual(str(context.exception), "Ocorreu um erro no SDK")
+
+    @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
+    def test_03_emite_cobranca_failure(self, mock_https_client_class):
+        """Teste de emite Cobranca com conta corrente invalida"""
+
+        emite_cobranca = EmiteCobranca(
+            Environment.SANDBOX, client_id, client_secret, cert, "1x"
+        )
+
+        response = emite_cobranca.emitir(sol_cobranca)
+
+        self.assertEqual(
+            response, {"codigo": 404, "descricao": "Formato de conta corrente inválido"}
+        )
 
 
 if __name__ == "__main__":

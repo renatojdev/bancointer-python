@@ -6,13 +6,14 @@ import http.client
 import socket
 import ssl
 
+from bancointer.utils.bancointer_validations import BancoInterValidations
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 from bancointer.utils.token_utils import TokenUtils
 
 
 class HttpUtils(object):
 
-    def __init__(self, host, client_id, client_secret, cert, conta_corrente):
+    def __init__(self, host, client_id, client_secret, cert, conta_corrente=None):
         """Method constructor"""
         self.host = host
         self.client_id = client_id
@@ -25,7 +26,12 @@ class HttpUtils(object):
 
     def add_header_authorization(self, value):
         self.headers["Authorization"] = f"Bearer {value}"
-        self.headers["x-conta-corrente"] = str(self.conta_corrente)
+        if self.conta_corrente is not None and self.conta_corrente is not "":
+            if BancoInterValidations.validate_x_conta_corrente(self.conta_corrente):
+                self.headers["x-conta-corrente"] = str(self.conta_corrente)
+            else:
+                erro = Erro(404, "Formato de conta corrente inválido")
+                raise BancoInterException("add_header_authorization.Exception", erro)
 
     def __create_connection(self):
         # Define the client certificate settings for https connection
@@ -44,10 +50,6 @@ class HttpUtils(object):
     def make_request(
         self, method, path, payload: dict, custom_headers_dict=None
     ) -> dict:
-        if self.conta_corrente is None or "":
-            erro = Erro(404, "Field 'x-conta-corrente' is required.")
-            raise BancoInterException("BancoInterException.HttpUtils.make_request", erro)
-
         self.__create_connection()
 
         if custom_headers_dict is not None:
@@ -62,7 +64,8 @@ class HttpUtils(object):
         print(f"Method ::::: {method}")
         print(f"Path ::::: {path}")
 
-        response = data_response = None
+        data_response: str = ""
+        response: http.client.HTTPResponse | None = None
         try:
             # Use connection to submit a HTTP POST request
             self.connection.request(
@@ -76,7 +79,7 @@ class HttpUtils(object):
             data_response = response.read().decode("utf-8")
             # print(f"data_response: {data_response}")
 
-        except TimeoutError as te:
+        except TimeoutError:
             self.__close_connection()
             erro = Erro(408, "Banco inter API request timeout.")
             raise BancoInterException(
@@ -94,7 +97,9 @@ class HttpUtils(object):
             print(f"make_request.Exception: {e}")
             self.__close_connection()
 
-        if response.status < 200 or response.status > 299:  # ! Error 200, SUCCESS
+        if response is not None and (
+            response.status < 200 or response.status > 299
+        ):  # ! Error 200, SUCCESS
             data_response = json.loads(data_response)
             if "message" in data_response:
                 data_response = data_response["message"]

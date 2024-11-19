@@ -1,12 +1,11 @@
 import re
 
 
-@classmethod
 class BancoInterValidations(object):
 
     @staticmethod
     def validate_txid(txid):
-        if re.match(r'^[a-zA-Z0-9]{26,35}$', txid):
+        if re.match(r"^[a-zA-Z0-9]{26,35}$", txid):
             return True
         return False
 
@@ -14,7 +13,7 @@ class BancoInterValidations(object):
     def validate_x_id_idempotente(id_idempotente):
         if re.match(
             r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
-            id_idempotente
+            id_idempotente,
         ):
             return True
         return False

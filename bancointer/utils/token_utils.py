@@ -9,9 +9,8 @@ import certifi
 import ssl
 from datetime import datetime, timedelta
 
-from bancointer.utils.exceptions import BancoInterException
-
-from bancointer.utils.exceptions import Erro
+from bancointer.utils.bancointer_validations import BancoInterValidations
+from bancointer.utils.exceptions import BancoInterException, Erro
 
 from bancointer.utils.constants import (
     HOST_SANDBOX,
@@ -50,7 +49,7 @@ class TokenUtils(object):
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
     )
 
-    def __init__(self, client_id, client_secret, cert, conta_corrente):
+    def __init__(self, client_id, client_secret, cert, conta_corrente=None):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
@@ -70,16 +69,18 @@ class TokenUtils(object):
         print(f"host={HOST_SANDBOX}{PATH_TOKEN}")
 
         headers = {
-            "x-conta-corrente": str(self.conta_corrente),
             "Content-Type": "application/x-www-form-urlencoded",
         }
 
+        if self.conta_corrente is not None and self.conta_corrente is not "":
+            if BancoInterValidations.validate_x_conta_corrente(self.conta_corrente):
+                headers["x-conta-corrente"] = str(self.conta_corrente)
+            else:
+                erro = Erro(404, "Formato de conta corrente inválido")
+                raise BancoInterException("add_header_authorization.Exception", erro)
+
         connection = None
         try:
-            if self.conta_corrente is None or "":
-                erro = Erro(404, "Field 'x-conta-corrente' is required.")
-                raise BancoInterException("Ocorreu um erro no SDK", erro)
-
             # Define the client certificate settings for https connection
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             context.load_verify_locations(certifi.where())

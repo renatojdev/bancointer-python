@@ -18,6 +18,7 @@ cert = (
 )
 conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
+
 class TestCancelaCobranca(unittest.TestCase):
 
     @patch("bancointer.utils.http_utils.http.client.HTTPSConnection")

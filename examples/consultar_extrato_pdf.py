@@ -15,7 +15,9 @@ conta_corrente = config("X_INTER_CONTA_CORRENTE")
 app_env_name = config("APP_ENV")
 env = Environment.get_environment_by_value(app_env_name.upper())
 
-consulta_extrato_pdf = ConsultaExtratoPDF(env, client_id, client_secret, cert, conta_corrente)
+consulta_extrato_pdf = ConsultaExtratoPDF(
+    env, client_id, client_secret, cert, conta_corrente
+)
 
 response = consulta_extrato_pdf.consultar_pdf(
     "2024-11-04", "2024-11-14", config("DOWNLOAD_PATH")
