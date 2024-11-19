@@ -3,7 +3,7 @@
 from bancointer.banking.models.resposta_consultar_saldo import RespostaConsultarSaldo
 from bancointer.utils.environment import Environment
 from bancointer.utils import HttpUtils
-from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST, PATH_SALDO
+from bancointer.utils.constants import HOST_SANDBOX, HOST, PATH_SALDO
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
