@@ -71,11 +71,12 @@ from decouple import config
 
 dir_base_ssl = config("SSL_DIR_BASE")
 
-# Objeto Banco Inter para operações na API
+# Configurações Banco Inter para operações na API (.env)
 dir_base_ssl = config("SSL_DIR_BASE")
 cert = (dir_base_ssl + config("PUBLIC_KEY_V2"), dir_base_ssl + config("PRIVATE_KEY_V2"))
 client_id = config("CLIENT_ID")
 client_secret = config("CLIENT_SECRET")
+conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
 # Environment SANDBOX or PRODUCTION
 app_env_name = config("APP_ENV")
@@ -118,7 +119,7 @@ cobranca.beneficiarioFinal = beneficiario_final
 
 sol_new_cobranca = SolicitacaoEmitirCobranca(cobranca)
 
-emite_cobranca = EmiteCobranca(env, client_id, client_secret, cert)
+emite_cobranca = EmiteCobranca(env, client_id, client_secret, cert, conta_corrente)
 resposta = emite_cobranca.emitir(sol_new_cobranca)
 
 print(resposta)
@@ -127,7 +128,7 @@ print(resposta)
 ```
 request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
 
-recupera_cobranca = RecuperaCobranca(env, client_id, client_secret, cert)
+recupera_cobranca = RecuperaCobranca(env, client_id, client_secret, cert, conta_corrente)
 
 response = recupera_cobranca.recuperar(request_code)
 ```
@@ -135,7 +136,7 @@ response = recupera_cobranca.recuperar(request_code)
 ```
 request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
 
-recupera_cobranca = RecuperaCobrancaPDF(env, client_id, client_secret, cert)
+recupera_cobranca = RecuperaCobrancaPDF(env, client_id, client_secret, cert, conta_corrente)
 
 response = recupera_cobranca.recuperar_pdf(request_code, config("DOWNLOAD_PATH"))
 ```
@@ -143,7 +144,7 @@ response = recupera_cobranca.recuperar_pdf(request_code, config("DOWNLOAD_PATH")
 ```
 request_code = "1783d19f-ab81-4a54-92a3-a0064f9b26ee"
 
-cancela_cobranca = CancelaCobranca(env, client_id, client_secret, cert)
+cancela_cobranca = CancelaCobranca(env, client_id, client_secret, cert, conta_corrente)
 
 response = cancela_cobranca.cancelar(request_code, Baixa.ACERTOS.value)
 ```
