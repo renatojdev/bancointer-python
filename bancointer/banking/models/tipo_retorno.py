@@ -1,0 +1,11 @@
+# tipo_retorno.py
+
+
+from enum import Enum
+
+
+class TipoRetorno(Enum):
+    PAGAMENTO = "PAGAMENTO"
+    AGENDAMENTO = "AGENDAMENTO"
+    APROVACAO_PAGAMENTO = "APROVACAO_PAGAMENTO"
+    APROVACAO_AGENDAMENTO = "APROVACAO_AGENDAMENTO"
