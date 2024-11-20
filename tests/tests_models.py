@@ -15,6 +15,7 @@ from test_pix import TestPix
 from test_resposta_consultar_extrato import TestRespostaConsultarExtrato
 from test_resposta_consultar_saldo import TestRespostaConsultarSaldo
 from test_transacao_simples import TestTransacaoSimples
+from test_cobranca import TestCobranca
 
 
 # Tests Suites
@@ -27,6 +28,7 @@ def suite():
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestMora))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestMulta))
     my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestPix))
+    my_suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(TestCobranca))
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaEmitirCobranca)
     )

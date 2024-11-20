@@ -76,7 +76,9 @@ class Cobranca(object):
                 erro = Erro(404, f"O atributo 'cobranca.{campo}' é obrigatório.")
                 raise BancoInterException("", erro)
 
-        if not BancoInterValidations.validate_string_range(self.seuNumero, max_chars=15):
+        if not BancoInterValidations.validate_string_range(
+            self.seuNumero, max_chars=15
+        ):
             erro = Erro(
                 502,
                 f"O atributo 'cobranca.seuNumero' é inválido. (de 1 a 15)",

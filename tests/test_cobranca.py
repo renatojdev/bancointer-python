@@ -42,7 +42,7 @@ class TestCobranca(unittest.TestCase):
 
     def test_to_dict_failures(self):
         # invalid seuNumero
-        cobranca = Cobranca.criar_sobranca_simples("9"*16, 2.5, "2024-11-21", {})
+        cobranca = Cobranca.criar_sobranca_simples("9" * 16, 2.5, "2024-11-21", {})
         with self.assertRaises(BancoInterException) as contexto:
             cobranca.to_dict()
         self.assertEqual(
@@ -50,7 +50,9 @@ class TestCobranca(unittest.TestCase):
             "O atributo 'cobranca.seuNumero' é inválido. (de 1 a 15)",
         )
         # invalid valorNominal
-        cobranca = Cobranca.criar_sobranca_simples("0001", 100000000.00, "2024-11-21", {})
+        cobranca = Cobranca.criar_sobranca_simples(
+            "0001", 100000000.00, "2024-11-21", {}
+        )
         with self.assertRaises(BancoInterException) as contexto:
             cobranca.to_dict()
         self.assertEqual(
