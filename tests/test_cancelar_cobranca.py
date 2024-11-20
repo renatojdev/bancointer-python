@@ -10,16 +10,17 @@ from bancointer.cobranca_v3.cobranca.cancela_cobranca import CancelaCobranca
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
-client_id = config("CLIENT_ID")
-client_secret = config("CLIENT_SECRET")
-cert = (
-    config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
-    config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
-)
-conta_corrente = config("X_INTER_CONTA_CORRENTE")
-
 
 class TestCancelaCobranca(unittest.TestCase):
+
+    def setUp(self):
+        self.client_id = config("CLIENT_ID")
+        self.client_secret = config("CLIENT_SECRET")
+        self.cert = (
+            config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
+            config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
+        )
+        self.conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
     @patch("bancointer.utils.http_utils.http.client.HTTPSConnection")
     def test_01_cancela_cobranca_success(self, mock_https_connection):
@@ -46,7 +47,11 @@ class TestCancelaCobranca(unittest.TestCase):
             ]
 
         cancela_cobranca = CancelaCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
         data = cancela_cobranca.cancelar(
@@ -78,7 +83,11 @@ class TestCancelaCobranca(unittest.TestCase):
         mock_https_connection.return_value.getresponse.return_value = mock_data_response
 
         cancela_cobranca = CancelaCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
         data = cancela_cobranca.cancelar(

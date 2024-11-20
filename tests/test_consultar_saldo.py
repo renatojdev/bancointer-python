@@ -12,16 +12,17 @@ from bancointer.banking.saldo import ConsultaSaldo
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
-client_id = config("CLIENT_ID")
-client_secret = config("CLIENT_SECRET")
-cert = (
-    config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
-    config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
-)
-conta_corrente = config("X_INTER_CONTA_CORRENTE")
-
 
 class TestConsultarSaldo(unittest.TestCase):
+
+    def setUp(self):
+        self.client_id = config("CLIENT_ID")
+        self.client_secret = config("CLIENT_SECRET")
+        self.cert = (
+            config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
+            config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
+        )
+        self.conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
     @patch("http.client.HTTPSConnection")
     def test_consultar_saldo_success(self, mock_https_connection):

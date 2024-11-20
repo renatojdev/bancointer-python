@@ -9,16 +9,17 @@ from bancointer.cobranca_v3.cobranca.recupera_cobranca_pdf import RecuperaCobran
 from bancointer.utils.token_utils import token_file_is_exist
 from bancointer.utils.environment import Environment
 
-client_id = config("CLIENT_ID")
-client_secret = config("CLIENT_SECRET")
-cert = (
-    config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
-    config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
-)
-conta_corrente = config("X_INTER_CONTA_CORRENTE")
-
 
 class TestRecuperaCobrancaPDF(unittest.TestCase):
+
+    def setUp(self):
+        self.client_id = config("CLIENT_ID")
+        self.client_secret = config("CLIENT_SECRET")
+        self.cert = (
+            config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
+            config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
+        )
+        self.conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
     @patch("http.client.HTTPSConnection")
     def test_recupera_cobranca__pdf_success(self, mock_https_connection):
@@ -46,7 +47,11 @@ class TestRecuperaCobrancaPDF(unittest.TestCase):
             ]
 
         recupera_cobranca = RecuperaCobrancaPDF(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
         response_success = recupera_cobranca.recuperar_pdf(

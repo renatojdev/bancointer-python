@@ -22,53 +22,54 @@ from bancointer.utils.constants import GENERIC_EXCEPTION_MESSAGE
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
-client_id = config("CLIENT_ID")
-client_secret = config("CLIENT_SECRET")
-cert = (
-    config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
-    config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
-)
-conta_corrente = config("X_INTER_CONTA_CORRENTE")
-
-pessoa_pagador = Pessoa(
-    "9" * 11,  # valido
-    PersonType.FISICA,
-    "NOME DO PAGADOR",
-    "ENDERECO DO PAGADOR",
-    "CIDADE DO PAGADOR",
-    "PR",
-    "80030000",
-)  # OU FISICA # Pagador
-
-desconto = Desconto("PERCENTUALDATAINFORMADA", 0, 1.2, 2)
-multa = Multa("VALORFIXO", 0, 100)
-mora = Mora("TAXAMENSAL", 0, 4.5)
-message = Message("message 1", "message 2", "message 3", "", "message 5")
-
-# Beneficiario final, mesmo que o pagador
-beneficiario_final = Pessoa(
-    "12345678901",
-    PersonType.FISICA,
-    "Nome do beneficiário",
-    "Avenida Brasil, 1200",
-    "Belo Horizonte",
-    "MG",
-    "30110000",
-)
-
-new_cobranca = Cobranca.criar_sobranca_simples(
-    "0001", 2.5, "2024-11-21", pessoa_pagador
-)
-new_cobranca.desconto = desconto
-new_cobranca.cobranca = multa
-new_cobranca.mora = mora
-new_cobranca.mensagem = message
-new_cobranca.beneficiarioFinal = beneficiario_final
-
-sol_cobranca = SolicitacaoEmitirCobranca(new_cobranca)
-
 
 class TestEmitirCobranca(unittest.TestCase):
+
+    def setUp(self):
+        self.client_id = config("CLIENT_ID")
+        self.client_secret = config("CLIENT_SECRET")
+        self.cert = (
+            config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
+            config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
+        )
+        self.conta_corrente = config("X_INTER_CONTA_CORRENTE")
+
+        pessoa_pagador = Pessoa(
+            "9" * 11,  # valido
+            PersonType.FISICA,
+            "NOME DO PAGADOR",
+            "ENDERECO DO PAGADOR",
+            "CIDADE DO PAGADOR",
+            "PR",
+            "80030000",
+        )  # OU FISICA # Pagador
+
+        desconto = Desconto("PERCENTUALDATAINFORMADA", 0, 1.2, 2)
+        multa = Multa("VALORFIXO", 0, 100)
+        mora = Mora("TAXAMENSAL", 0, 4.5)
+        message = Message("message 1", "message 2", "message 3", "", "message 5")
+
+        # Beneficiario final, mesmo que o pagador
+        beneficiario_final = Pessoa(
+            "12345678901",
+            PersonType.FISICA,
+            "Nome do beneficiário",
+            "Avenida Brasil, 1200",
+            "Belo Horizonte",
+            "MG",
+            "30110000",
+        )
+
+        new_cobranca = Cobranca.criar_sobranca_simples(
+            "0001", 2.5, "2024-11-21", pessoa_pagador
+        )
+        new_cobranca.desconto = desconto
+        new_cobranca.cobranca = multa
+        new_cobranca.mora = mora
+        new_cobranca.mensagem = message
+        new_cobranca.beneficiarioFinal = beneficiario_final
+
+        self.sol_cobranca = SolicitacaoEmitirCobranca(new_cobranca)
 
     @patch("http.client.HTTPSConnection")
     def test_01_emite_cobranca_success(self, mock_https_connection):
@@ -100,11 +101,15 @@ class TestEmitirCobranca(unittest.TestCase):
 
         # Instancia a classe EmiteCobranca (aqui pode ser necessário usar a classe real)
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
         # Chama o metodo emitir
-        data = emite_cobranca.emitir(sol_cobranca)
+        data = emite_cobranca.emitir(self.sol_cobranca)
 
         resposta = RespostaEmitirCobranca()
         resposta.codigoSolicitacao = "183e982a-34e5-4bc0-9643-def5432a"
@@ -127,12 +132,16 @@ class TestEmitirCobranca(unittest.TestCase):
 
         # Instancia a classe DataFetcher
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:
-            emite_cobranca.emitir(sol_cobranca)
+            emite_cobranca.emitir(self.sol_cobranca)
 
         self.assertEqual(str(context.exception), GENERIC_EXCEPTION_MESSAGE)
 
@@ -141,10 +150,10 @@ class TestEmitirCobranca(unittest.TestCase):
         """Teste de emite Cobranca com conta corrente invalida"""
 
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, "1x"
+            Environment.SANDBOX, self.client_id, self.client_secret, self.cert, "1x"
         )
 
-        response = emite_cobranca.emitir(sol_cobranca)
+        response = emite_cobranca.emitir(self.sol_cobranca)
 
         self.assertEqual(
             response, {"codigo": 404, "descricao": "Formato de conta corrente inválido"}
@@ -155,12 +164,16 @@ class TestEmitirCobranca(unittest.TestCase):
         """Teste de emite Cobranca com conta corrente invalida"""
 
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
-        sol_cobranca.cobranca.dataVencimento = "11/08/1989"  # invalid format
+        self.sol_cobranca.cobranca.dataVencimento = "11/08/1989"  # invalid format
 
-        response = emite_cobranca.emitir(sol_cobranca)
+        response = emite_cobranca.emitir(self.sol_cobranca)
 
         self.assertEqual(
             response,
@@ -175,13 +188,17 @@ class TestEmitirCobranca(unittest.TestCase):
         """Teste de emite Cobranca com conta corrente invalida"""
 
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
-        sol_cobranca.cobranca.dataVencimento = "2024-11-21"
-        sol_cobranca.cobranca.numDiasAgenda = 61  # invalid range 0..60
+        self.sol_cobranca.cobranca.dataVencimento = "2024-11-21"
+        self.sol_cobranca.cobranca.numDiasAgenda = 61  # invalid range 0..60
 
-        response = emite_cobranca.emitir(sol_cobranca)
+        response = emite_cobranca.emitir(self.sol_cobranca)
 
         self.assertEqual(
             response,
@@ -196,14 +213,18 @@ class TestEmitirCobranca(unittest.TestCase):
         """Teste de emite Cobranca com conta corrente invalida"""
 
         emite_cobranca = EmiteCobranca(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
-        sol_cobranca.cobranca.dataVencimento = "2024-11-21"
-        sol_cobranca.cobranca.numDiasAgenda = 60  # invalid range 0..60
-        sol_cobranca.cobranca.valorNominal = 2.4
+        self.sol_cobranca.cobranca.dataVencimento = "2024-11-21"
+        self.sol_cobranca.cobranca.numDiasAgenda = 60  # invalid range 0..60
+        self.sol_cobranca.cobranca.valorNominal = 2.4
 
-        response = emite_cobranca.emitir(sol_cobranca)
+        response = emite_cobranca.emitir(self.sol_cobranca)
 
         self.assertEqual(
             response,

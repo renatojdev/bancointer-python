@@ -14,16 +14,17 @@ from bancointer.banking.models.resposta_consultar_extrato import (
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
-client_id = config("CLIENT_ID")
-client_secret = config("CLIENT_SECRET")
-cert = (
-    config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
-    config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
-)
-conta_corrente = config("X_INTER_CONTA_CORRENTE")
-
 
 class TestConsultarExtrato(unittest.TestCase):
+
+    def setUp(self):
+        self.client_id = config("CLIENT_ID")
+        self.client_secret = config("CLIENT_SECRET")
+        self.cert = (
+            config("SSL_DIR_BASE") + config("PUBLIC_KEY_V2"),
+            config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
+        )
+        self.conta_corrente = config("X_INTER_CONTA_CORRENTE")
 
     @patch("http.client.HTTPSConnection")
     def test_consultar_extrato_success(self, mock_https_connection):
@@ -175,7 +176,11 @@ class TestConsultarExtrato(unittest.TestCase):
             ]
 
         consulta_extrato = ConsultaExtrato(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
         )
 
         data = consulta_extrato.consultar("2024-09-01", "2024-09-09")
