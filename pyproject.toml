@@ -25,6 +25,9 @@ dev = [
 ]
 
 [tool.setuptools]
+homepage = "https://github.com/renatojdev/bancointer-python"
+repository = "https://github.com/renatojdev/bancointer-python"
+documentation = "https://github.com/renatojdev/bancointer-python/blob/main/README.md"
 platforms = ["Linux", "Windows"]
 include-package-data = true
 zip-safe = false
