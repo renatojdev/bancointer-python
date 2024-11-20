@@ -2,7 +2,12 @@
 
 from bancointer import TipoBaixa
 from bancointer.utils.environment import Environment
-from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
+from bancointer.utils.constants import (
+    PATH_COBRANCAS,
+    HOST_SANDBOX,
+    HOST,
+    GENERIC_EXCEPTION_MESSAGE,
+)
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
@@ -54,7 +59,7 @@ class CancelaCobranca(object):
                 or codigo_solicitacao == ""
             ):
                 erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
-                raise BancoInterException("Ocorreu um erro no SDK", erro)
+                raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, erro)
 
             # Converting the request to JSON
             response = self.http_util.make_post(path, payload)
@@ -73,4 +78,4 @@ class CancelaCobranca(object):
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.CancelaCobranca: {e}")
-            raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))
+            raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

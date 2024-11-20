@@ -18,6 +18,7 @@ from bancointer.cobranca_v3.models.resposta_emitir_cobranca import (
 from bancointer.cobranca_v3.models.solicitacao_emitir_cobranca import (
     SolicitacaoEmitirCobranca,
 )
+from bancointer.utils.constants import GENERIC_EXCEPTION_MESSAGE
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
@@ -59,7 +60,7 @@ new_cobranca = Cobranca.criar_sobranca_simples(
     "0001", 2.5, "2024-11-21", pessoa_pagador
 )
 new_cobranca.desconto = desconto
-new_cobranca.multa = multa
+new_cobranca.cobranca = multa
 new_cobranca.mora = mora
 new_cobranca.mensagem = message
 new_cobranca.beneficiarioFinal = beneficiario_final
@@ -121,7 +122,7 @@ class TestEmitirCobranca(unittest.TestCase):
 
         # Define o side_effect para simular uma exceção
         mock_https_client_class.return_value.getresponse.side_effect = Exception(
-            "Ocorreu um erro no SDK"
+            GENERIC_EXCEPTION_MESSAGE
         )
 
         # Instancia a classe DataFetcher
@@ -133,7 +134,7 @@ class TestEmitirCobranca(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             emite_cobranca.emitir(sol_cobranca)
 
-        self.assertEqual(str(context.exception), "Ocorreu um erro no SDK")
+        self.assertEqual(str(context.exception), GENERIC_EXCEPTION_MESSAGE)
 
     @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
     def test_03_emite_cobranca_failure(self, mock_https_client_class):
@@ -147,6 +148,69 @@ class TestEmitirCobranca(unittest.TestCase):
 
         self.assertEqual(
             response, {"codigo": 404, "descricao": "Formato de conta corrente inválido"}
+        )
+
+    @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
+    def test_04_emite_cobranca_failure(self, mock_https_client_class):
+        """Teste de emite Cobranca com conta corrente invalida"""
+
+        emite_cobranca = EmiteCobranca(
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+        )
+
+        sol_cobranca.cobranca.dataVencimento = "11/08/1989"  # invalid format
+
+        response = emite_cobranca.emitir(sol_cobranca)
+
+        self.assertEqual(
+            response,
+            {
+                "codigo": 502,
+                "descricao": "O atributo 'cobranca.dataVencimento' é inválido. Formato aceito: YYYY-MM-DD",
+            },
+        )
+
+    @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
+    def test_05_emite_cobranca_failure(self, mock_https_client_class):
+        """Teste de emite Cobranca com conta corrente invalida"""
+
+        emite_cobranca = EmiteCobranca(
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+        )
+
+        sol_cobranca.cobranca.dataVencimento = "2024-11-21"
+        sol_cobranca.cobranca.numDiasAgenda = 61  # invalid range 0..60
+
+        response = emite_cobranca.emitir(sol_cobranca)
+
+        self.assertEqual(
+            response,
+            {
+                "codigo": 502,
+                "descricao": "O atributo 'cobranca.numDiasAgenda' é inválido. (de 0 até 60)",
+            },
+        )
+
+    @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
+    def test_06_emite_cobranca_failure(self, mock_https_client_class):
+        """Teste de emite Cobranca com conta corrente invalida"""
+
+        emite_cobranca = EmiteCobranca(
+            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+        )
+
+        sol_cobranca.cobranca.dataVencimento = "2024-11-21"
+        sol_cobranca.cobranca.numDiasAgenda = 60  # invalid range 0..60
+        sol_cobranca.cobranca.valorNominal = 2.4
+
+        response = emite_cobranca.emitir(sol_cobranca)
+
+        self.assertEqual(
+            response,
+            {
+                "codigo": 502,
+                "descricao": "O atributo 'cobranca.valorNominal' é inválido. (de 2.5 até 99999999.99)",
+            },
         )
 
 

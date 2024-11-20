@@ -3,6 +3,8 @@
 import json
 
 from bancointer.cobranca_v3.models.tipo_pessoa import PersonType
+from bancointer.utils.bancointer_validations import BancoInterValidations
+from bancointer.utils.constants import GENERIC_EXCEPTION_MESSAGE
 from bancointer.utils.exceptions import Erro, BancoInterException
 
 
@@ -58,7 +60,46 @@ class Pessoa(object):
         for campo in required_fields:
             if not hasattr(self, campo) or getattr(self, campo) is None:
                 erro = Erro(404, f"O atributo 'pessoa.{campo}' é obrigatório.")
-                raise BancoInterException("Ocorreu um erro no SDK", erro)
+                raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, erro)
+
+        if not BancoInterValidations.validate_cpf_cnpj(self.cpfCnpj):
+            erro = Erro(
+                502,
+                f"O atributo 'pessoa.cpfCnpj' é inválido. Formato aceito (11 a 18) characters.",
+            )
+            raise BancoInterException("Erro de validação", erro)
+
+        if not BancoInterValidations.validate_string_range(self.nome):
+            erro = Erro(
+                502,
+                f"O atributo 'pessoa.nome' é inválido. Formato aceito (1 a 100) characters.",
+            )
+            raise BancoInterException("Erro de validação", erro)
+
+        if not BancoInterValidations.validate_string_range(self.endereco):
+            erro = Erro(
+                502,
+                f"O atributo 'pessoa.endereco' é inválido. Formato aceito (1 a 100) characters.",
+            )
+            raise BancoInterException("Erro de validação", erro)
+
+        if not BancoInterValidations.validate_string_range(self.cidade, max_chars=60):
+            erro = Erro(
+                502,
+                f"O atributo 'pessoa.cidade' é inválido. Formato aceito (1 a 60) characters.",
+            )
+            raise BancoInterException("Erro de validação", erro)
+
+        if not str(
+            self.cep
+        ).isdigit() or not BancoInterValidations.validate_string_range(
+            str(self.cep), min_chars=8, max_chars=8
+        ):
+            erro = Erro(
+                502,
+                f"O atributo 'pessoa.cep' é inválido. Formato aceito (8) characters.",
+            )
+            raise BancoInterException("Erro de validação", erro)
 
         return {
             "cpfCnpj": self.cpfCnpj,

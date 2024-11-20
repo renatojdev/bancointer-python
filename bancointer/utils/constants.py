@@ -53,7 +53,7 @@ URL_COBRANCAS_SUMARIO = f"{URL_COBRANCAS}/sumario"
 URL_COBRANCAS_WEBHOOK = f"{URL_COBRANCAS}/webhook"
 URL_COBRANCAS_WEBHOOK_CALLBACKS = f"{URL_COBRANCAS_WEBHOOK}/callbacks"
 
-# PATHS
+# API PATHS
 PATH_TOKEN = f"/oauth/v2/token"
 # PATHS de Cobrancas
 PATH_COBRANCAS = f"/cobranca/v3/cobrancas"
@@ -61,6 +61,7 @@ PATH_COBRANCAS = f"/cobranca/v3/cobrancas"
 PATH_EXTRATO = f"/banking/v2/extrato"
 PATH_EXTRATO_PDF = f"/banking/v2/extrato/exportar"
 PATH_SALDO = f"/banking/v2/saldo"
+PATH_PAGAMENTO = f"/banking/v2/pagamento"
 
 # Escopos
 ESCOPO_BOLETO_COBRANCA_READ = "boleto-cobranca.read"

@@ -39,7 +39,7 @@ class HttpUtils(object):
         self.context.load_verify_locations(certifi.where())
         self.context.load_cert_chain(certfile=self.cert[0], keyfile=self.cert[1])
         # Create a connection to submit HTTP requests
-        print(f"Host ::::: {self.host}")
+        # print(f"Host ::::: {self.host}")
         self.connection = http.client.HTTPSConnection(
             self.host, port=443, context=self.context, timeout=5.0
         )
@@ -53,16 +53,16 @@ class HttpUtils(object):
         self.__create_connection()
 
         if custom_headers_dict is not None:
-            print(f"Custom HEADERS::::: {custom_headers_dict.values()}")
+            # print(f"Custom HEADERS::::: {custom_headers_dict.values()}")
             self.headers.update(custom_headers_dict)
 
         if payload is not None:
             payload = json.dumps(payload)
 
         # print(f"Payload ::::: {payload}")
-        print(f"HEADERS ::::: {self.headers}")
-        print(f"Method ::::: {method}")
-        print(f"Path ::::: {path}")
+        # print(f"HEADERS ::::: {self.headers}")
+        # print(f"Method ::::: {method}")
+        # print(f"Path ::::: {path}")
 
         data_response: str = ""
         response: http.client.HTTPResponse | None = None

@@ -9,6 +9,7 @@ from bancointer.utils.constants import (
     HOST_SANDBOX,
     HOST,
     PATH_EXTRATO_PDF,
+    GENERIC_EXCEPTION_MESSAGE,
 )
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
@@ -59,7 +60,7 @@ class ConsultaExtratoPDF(object):
         try:
             if DateUtils.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
                 raise BancoInterException(
-                    "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
+                    GENERIC_EXCEPTION_MESSAGE, Erro(502, "Periodo de datas invalido")
                 )
 
             # Converting the request to JSON

@@ -9,6 +9,7 @@ from bancointer.cobranca_v3.models.message import Message
 from bancointer.cobranca_v3.models.mora import Mora
 from bancointer.cobranca_v3.models.multa import Multa
 from bancointer.cobranca_v3.models.pessoa import Pessoa
+from bancointer.utils.bancointer_validations import BancoInterValidations
 from bancointer.utils.exceptions import Erro, BancoInterException
 
 
@@ -67,12 +68,40 @@ class Cobranca(object):
         )
 
     def to_dict(self):
+        # validations
         required_fields = ["seuNumero", "valorNominal", "dataVencimento", "pagador"]
         for campo in required_fields:
             campo_value = getattr(self, campo)
             if not hasattr(self, campo) or campo_value is None:
                 erro = Erro(404, f"O atributo 'cobranca.{campo}' é obrigatório.")
-                raise BancoInterException("Ocorreu um erro no SDK", erro)
+                raise BancoInterException("", erro)
+
+        if not BancoInterValidations.validate_string_range(self.seuNumero, max_chars=15):
+            erro = Erro(
+                502,
+                f"O atributo 'cobranca.seuNumero' é inválido. (de 1 a 15)",
+            )
+            raise BancoInterException("Erro de validação", erro)
+
+        if not BancoInterValidations.is_valid_valor_nominal(self.valorNominal):
+            erro = Erro(
+                502,
+                f"O atributo 'cobranca.valorNominal' é inválido. (de 2.5 até 99999999.99)",
+            )
+            raise BancoInterException("Erro de validação", erro)
+
+        if not BancoInterValidations.validate_date(self.dataVencimento):
+            erro = Erro(
+                502,
+                f"O atributo 'cobranca.dataVencimento' é inválido. Formato aceito: YYYY-MM-DD",
+            )
+            raise BancoInterException("", erro)
+
+        if not BancoInterValidations.is_valid_num_dias_agenda(self.numDiasAgenda):
+            erro = Erro(
+                502, f"O atributo 'cobranca.numDiasAgenda' é inválido. (de 0 até 60)"
+            )
+            raise BancoInterException("", erro)
 
         result = {
             "seuNumero": self.seuNumero,
@@ -114,4 +143,6 @@ class Cobranca(object):
 
 class CobrancaEncoder(JSONEncoder):
     def default(self, o):
-        return o.__dict__
+        if isinstance(o, Cobranca):
+            return o.to_dict()
+        return super().default(o)

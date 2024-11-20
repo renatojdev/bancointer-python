@@ -1,7 +1,5 @@
 # emitir_cobranca.py
 
-from datetime import datetime, timedelta
-
 from bancointer.cobranca_v3.cobranca import EmiteCobranca
 from bancointer.cobranca_v3.models import SolicitacaoEmitirCobranca
 

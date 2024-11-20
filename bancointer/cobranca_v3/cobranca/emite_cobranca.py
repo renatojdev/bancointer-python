@@ -3,7 +3,12 @@
 from bancointer.cobranca_v3.models import RespostaEmitirCobranca
 from bancointer.cobranca_v3.models import SolicitacaoEmitirCobranca
 from bancointer.utils.environment import Environment
-from bancointer.utils.constants import PATH_COBRANCAS, HOST_SANDBOX, HOST
+from bancointer.utils.constants import (
+    PATH_COBRANCAS,
+    HOST_SANDBOX,
+    HOST,
+    GENERIC_EXCEPTION_MESSAGE,
+)
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
@@ -57,4 +62,4 @@ class EmiteCobranca(object):
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.EmiteCobranca: {e}")
-            raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))
+            raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

@@ -37,7 +37,7 @@ def token_file_is_exist():
                     if data["expires_in"]:
                         return True
                 except KeyError as ke:
-                    print(f"token_file_is_exist.Exception: {ke}")
+                    print(f"token_file_path.exists().Exception: {ke}")
                     return False
         return True
     print("O arquivo TOKEN não existe.")

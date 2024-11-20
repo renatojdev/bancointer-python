@@ -2,9 +2,11 @@
 
 import json
 import unittest
+from copy import copy
 
 from bancointer.cobranca_v3.models.pessoa import Pessoa
 from bancointer.cobranca_v3.models.tipo_pessoa import PersonType
+from bancointer.utils.exceptions import BancoInterException
 
 
 class TestPessoa(unittest.TestCase):
@@ -56,6 +58,57 @@ class TestPessoa(unittest.TestCase):
         self.assertEqual(dict_person["telefone"], "9" * 9)
         self.assertEqual(
             dict_person["tipoPessoa"], PersonType.FISICA.get_person_type_name()
+        )
+
+    def test_to_dict_failures(self):
+        person = copy(self.person)
+        person.cpfCnpj = "1234567"
+
+        with self.assertRaises(BancoInterException) as contexto:
+            person.to_dict()
+        self.assertEqual(
+            str(contexto.exception.erro.descricao),
+            "O atributo 'pessoa.cpfCnpj' é inválido. Formato aceito (11 a 18) characters.",
+        )
+
+        person.cpfCnpj = self.person.cpfCnpj
+        person.nome = "N" * 101
+
+        with self.assertRaises(BancoInterException) as contexto:
+            person.to_dict()
+        self.assertEqual(
+            str(contexto.exception.erro.descricao),
+            "O atributo 'pessoa.nome' é inválido. Formato aceito (1 a 100) characters.",
+        )
+
+        person.nome = self.person.nome
+        person.endereco = "E" * 101
+
+        with self.assertRaises(BancoInterException) as contexto:
+            person.to_dict()
+        self.assertEqual(
+            str(contexto.exception.erro.descricao),
+            "O atributo 'pessoa.endereco' é inválido. Formato aceito (1 a 100) characters.",
+        )
+
+        person.endereco = "ENDERECO DO PAGADOR"
+        person.cidade = "C" * 61
+
+        with self.assertRaises(BancoInterException) as contexto:
+            person.to_dict()
+        self.assertEqual(
+            str(contexto.exception.erro.descricao),
+            "O atributo 'pessoa.cidade' é inválido. Formato aceito (1 a 60) characters.",
+        )
+
+        person.cidade = "CIDADE DO PAGADOR"
+        person.cep = "9" * 9
+
+        with self.assertRaises(BancoInterException) as contexto:
+            person.to_dict()
+        self.assertEqual(
+            str(contexto.exception.erro.descricao),
+            "O atributo 'pessoa.cep' é inválido. Formato aceito (8) characters.",
         )
 
     def test_to_json(self):

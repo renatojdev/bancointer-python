@@ -6,7 +6,12 @@ from bancointer.banking.models.resposta_consultar_extrato import (
 from bancointer.utils.environment import Environment
 from bancointer.utils.date_utils import DateUtils
 from bancointer.utils import HttpUtils
-from bancointer.utils.constants import HOST_SANDBOX, PATH_EXTRATO, HOST
+from bancointer.utils.constants import (
+    HOST_SANDBOX,
+    PATH_EXTRATO,
+    HOST,
+    GENERIC_EXCEPTION_MESSAGE,
+)
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
@@ -49,7 +54,7 @@ class ConsultaExtrato(object):
         """
         if DateUtils.periodo_dates_extrato_e_valido(data_inicio, data_fim) is False:
             raise BancoInterException(
-                "Ocorreu um erro no SDK", Erro(502, "Periodo de datas invalido")
+                GENERIC_EXCEPTION_MESSAGE, Erro(502, "Periodo de datas invalido")
             )
 
         path = f"{PATH_EXTRATO}?dataInicio={data_inicio}&dataFim={data_fim}"

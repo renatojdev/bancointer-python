@@ -3,7 +3,12 @@
 from bancointer.banking.models.resposta_consultar_saldo import RespostaConsultarSaldo
 from bancointer.utils.environment import Environment
 from bancointer.utils import HttpUtils
-from bancointer.utils.constants import HOST_SANDBOX, HOST, PATH_SALDO
+from bancointer.utils.constants import (
+    HOST_SANDBOX,
+    HOST,
+    PATH_SALDO,
+    GENERIC_EXCEPTION_MESSAGE,
+)
 
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
@@ -63,4 +68,4 @@ class ConsultaSaldo(object):
             return e.erro.to_dict()
         except Exception as e:
             print(f"Exception.ConsultaSaldo: {e}")
-            raise BancoInterException("Ocorreu um erro no SDK", Erro(502, e))
+            raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

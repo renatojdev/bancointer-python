@@ -1,22 +1,27 @@
-# recupera_cobranca.py
+# inclui_pagamento_codbar.py
 
-from bancointer.cobranca_v3.models import RespostaRecuperarCobranca
+
+from bancointer.banking.models.requisicao_pagamento import RequisicaoPagamento
+from bancointer.banking.models.resposta_requisicao_pagamento import (
+    RespostaRequisicaoPagamento,
+)
 from bancointer.utils.environment import Environment
 from bancointer.utils.constants import (
-    PATH_COBRANCAS,
     HOST_SANDBOX,
     HOST,
+    PATH_PAGAMENTO,
     GENERIC_EXCEPTION_MESSAGE,
 )
 from bancointer.utils.exceptions import BancoInterException, Erro, ErroApi
 from bancointer.utils.http_utils import HttpUtils
 
 
-class RecuperaCobranca(object):
+class IncluiPagamentoCodBar(object):
+
     def __init__(
         self, ambiente: Environment, client_id, client_secret, cert, conta_corrente=None
     ):
-        """Metodo construtor da classe RecuperaCobranca.
+        """Metodo construtor da classe.
 
         Args:
             client_id (str): Client Id obtido no detalhe da tela de aplicações no IB.
@@ -36,42 +41,30 @@ class RecuperaCobranca(object):
         )
         print(f"AMBIENTE: {ambiente.value}")
 
-    def recuperar(self, codigo_solicitacao) -> dict | ErroApi:
-        """Recupera as informações detalhadas de um boleto atraves do `codigo_solicitacao`.
-
-        Args:
-            codigo_solicitacao (string <uuid>): Codigo unico da cobrança.
-
-        Returns:
-            dict: json-encoded of a response, `response.json()` dict com os dados do boleto.
-        """
-
-        path = f"{PATH_COBRANCAS}/{codigo_solicitacao}"
-
+    def incluir(
+        self,
+        requisicao_pagamento: RequisicaoPagamento,
+    ) -> RespostaRequisicaoPagamento | dict:
+        """Metodo para inclusão de um pagamento imediato ou agendamento do pagamento de boleto, convênio ou tributo com código de barras.
+        Escopo requerido: pagamento-boleto.write"""
         try:
-            if (
-                codigo_solicitacao is None
-                or type(codigo_solicitacao) is not str
-                or codigo_solicitacao == ""
-            ):
-                erro = Erro(501, "Campo 'codigo_solicitacao' é requerido.'")
-                raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, erro)
-
             # Converting the request to JSON
-            response = self.http_util.make_get(path)
+            payload = requisicao_pagamento.to_dict()
+
+            response = self.http_util.make_post(PATH_PAGAMENTO, payload)
 
             if "title" in response:
                 raise ErroApi(**response)
             elif "codigo" in response:
                 return response
-
-            return RespostaRecuperarCobranca(**response).to_dict()
+            # Converting the JSON response to an IssueCollectionResponse object
+            return RespostaRequisicaoPagamento(**response)
         except ErroApi as e:
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"BancoInterException.RecuperaCobranca.recuperar: {e}")
+            print(f"BancoInterException.IncluiPagamentoCodBar.incluir: {e}")
             return e.erro.to_dict()
         except Exception as e:
-            print(f"Exception.RecuperaCobranca: {e}")
+            print(f"Exception.EmiteCobranca: {e}")
             raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))
