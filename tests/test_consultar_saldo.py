@@ -60,7 +60,7 @@ class TestConsultarSaldo(unittest.TestCase):
             ]
 
         consulta_saldo = ConsultaSaldo(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX, self.client_id, self.client_secret, self.cert, self.conta_corrente
         )
 
         data = consulta_saldo.consultar("2024-09-01")
@@ -101,7 +101,7 @@ class TestConsultarSaldo(unittest.TestCase):
             ]
 
         consulta_saldo = ConsultaSaldo(
-            Environment.SANDBOX, client_id, client_secret, cert, conta_corrente
+            Environment.SANDBOX, self.client_id, self.client_secret, self.cert, self.conta_corrente
         )
 
         data = consulta_saldo.consultar("")
