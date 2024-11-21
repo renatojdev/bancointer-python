@@ -10,7 +10,7 @@ from bancointer.banking.models.resposta_requisicao_pagamento import (
     RespostaRequisicaoPagamento,
 )
 from bancointer.banking.pagamento.inclui_pagamento_codbar import IncluiPagamentoCodBar
-from bancointer.utils.constants import HOST_SANDBOX, GENERIC_EXCEPTION_MESSAGE
+from bancointer.utils.constants import GENERIC_EXCEPTION_MESSAGE
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 

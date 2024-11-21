@@ -29,7 +29,7 @@ class BancoInterValidations(object):
 
     @staticmethod
     def validate_cpf_cnpj(cpf_cnpj):
-        if re.match(r"^[0-9]{11}$|^[0-9]{18}$", cpf_cnpj):
+        if re.match(r"^[0-9]{11}$|^[0-9]{14}$|^[0-9]{18}$", cpf_cnpj):
             return True
         return False
 
@@ -53,6 +53,8 @@ class BancoInterValidations(object):
 
     @staticmethod
     def is_valid_valor_nominal(numero):
+        if isinstance(numero, str):
+            numero = float(numero)
         if isinstance(numero, float):
             if 2.5 <= numero <= 99999999.99:
                 return True
