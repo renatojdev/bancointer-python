@@ -95,7 +95,7 @@ class TestRequisicaoPagamento(unittest.TestCase):
         # cpfCnpjBeneficiario
         self.payment_request.valorPagar = 2.5
         self.payment_request.dataVencimento = "2021-07-27"
-        self.payment_request.cpfCnpjBeneficiario = "9" * 18
+        self.payment_request.cpfCnpjBeneficiario = "9" * 19
         with self.assertRaises(BancoInterException) as contexto:
             self.payment_request.to_dict()
         self.assertEqual(
