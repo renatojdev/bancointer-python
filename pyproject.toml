@@ -14,6 +14,12 @@ dependencies = [
     "certifi",
 ]
 
+[project.urls]
+homepage = "https://github.com/renatojdev/bancointer-python"
+repository = "https://github.com/renatojdev/bancointer-python"
+documentation = "https://github.com/renatojdev/bancointer-python/blob/main/README.md"
+
+
 [project.optional-dependencies]
 dev = [
     "python-decouple",
@@ -25,9 +31,6 @@ dev = [
 ]
 
 [tool.setuptools]
-homepage = "https://github.com/renatojdev/bancointer-python"
-repository = "https://github.com/renatojdev/bancointer-python"
-documentation = "https://github.com/renatojdev/bancointer-python/blob/main/README.md"
 platforms = ["Linux", "Windows"]
 include-package-data = true
 zip-safe = false
