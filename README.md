@@ -54,7 +54,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Consultar extrato enriquecido
         * Pagamento
             - Incluir pagamento com código de barras (feito)
-            - Incluir pagamento DARF
+            - Incluir pagamento DARF (feito)
             - Cancelar agendamento do pagamento
     * Recursos da Api Pix
 

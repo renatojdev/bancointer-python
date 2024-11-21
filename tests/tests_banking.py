@@ -6,6 +6,8 @@ import unittest
 from test_consultar_extrato import TestConsultarExtrato
 from test_consultar_extrato_pdf import TestConsultarExtratoPDF
 from test_consultar_saldo import TestConsultarSaldo
+from test_incluir_pagamento import TestIncluirPagamento
+from test_incluir_pagamento_darf import TestIncluirPagamentoDarf
 
 
 # Tests Suites
@@ -20,6 +22,12 @@ def suite():
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarExtratoPDF)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestIncluirPagamento)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestIncluirPagamentoDarf)
     )
 
     return my_suite

@@ -62,6 +62,7 @@ PATH_EXTRATO = f"/banking/v2/extrato"
 PATH_EXTRATO_PDF = f"/banking/v2/extrato/exportar"
 PATH_SALDO = f"/banking/v2/saldo"
 PATH_PAGAMENTO = f"/banking/v2/pagamento"
+PATH_PAGAMENTO_DARF = f"/banking/v2/pagamento/darf"
 
 # Escopos
 ESCOPO_BOLETO_COBRANCA_READ = "boleto-cobranca.read"
