@@ -16,9 +16,10 @@ from test_resposta_consultar_extrato import TestRespostaConsultarExtrato
 from test_resposta_consultar_saldo import TestRespostaConsultarSaldo
 from test_transacao_simples import TestTransacaoSimples
 from test_cobranca import TestCobranca
+from test_requisicao_pagamento import TestRequisicaoPagamento
 
 
-# Tests Suites
+# Tests Suites - Models
 def suite():
     my_suite = unittest.TestSuite()
     # Cobranca
@@ -47,6 +48,9 @@ def suite():
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaConsultarExtrato)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRequisicaoPagamento)
     )
 
     return my_suite

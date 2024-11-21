@@ -47,10 +47,15 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 ###  Novas funcionalidades a serem implementadas
     * Recursos da Api Banking
         * Saldo
-            - Consultar saldo
+            - Consultar saldo (feito)
         * Extrato
-            - Consultar extrato
-            - Recuperar extrato em PDF
+            - Consultar extrato (feito)
+            - Recuperar extrato em PDF (feito)
+            - Consultar extrato enriquecido
+        * Pagamento
+            - Incluir pagamento com código de barras (feito)
+            - Incluir pagamento DARF
+            - Cancelar agendamento do pagamento
     * Recursos da Api Pix
 
 ##  Instalação para utilização

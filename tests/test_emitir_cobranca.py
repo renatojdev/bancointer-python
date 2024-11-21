@@ -130,7 +130,7 @@ class TestEmitirCobranca(unittest.TestCase):
             GENERIC_EXCEPTION_MESSAGE
         )
 
-        # Instancia a classe DataFetcher
+        # Instancia a classe EmiteCobranca
         emite_cobranca = EmiteCobranca(
             Environment.SANDBOX,
             self.client_id,

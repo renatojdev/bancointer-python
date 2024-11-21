@@ -66,5 +66,5 @@ class IncluiPagamentoCodBar(object):
             print(f"BancoInterException.IncluiPagamentoCodBar.incluir: {e}")
             return e.erro.to_dict()
         except Exception as e:
-            print(f"Exception.EmiteCobranca: {e}")
+            print(f"Exception.IncluiPagamentoCodBar: {e}")
             raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

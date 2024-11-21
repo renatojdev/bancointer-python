@@ -11,9 +11,9 @@ class RespostaRequisicaoPagamento(object):
     """Classe requisicao para incluir pagamentos com codigo de barras"""
 
     quantidadeAprovadores: int
-    dataAgendamento: str
     statusPagamento: StatusPagamento  # req
     codigoTransacao: str
+    dataAgendamento: str = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Converte a instância da classe em um dicionário, excluindo valores None."""
