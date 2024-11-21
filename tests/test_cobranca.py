@@ -23,11 +23,6 @@ class TestCobranca(unittest.TestCase):
         self.cobranca = Cobranca.criar_sobranca_simples(
             "0001", 2.5, "2024-11-21", pessoa_pagador
         )
-        # self.cobranca.desconto = desconto
-        # self.cobranca.cobranca = multa
-        # self.cobranca.mora = mora
-        # self.cobranca.mensagem = message
-        # self.cobranca.beneficiarioFinal = beneficiario_final
 
     def test_to_dict(self):
         dict_cobra = self.cobranca.to_dict()
