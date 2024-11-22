@@ -43,21 +43,26 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
         - Download de boletos
         - Baixa de boletos
         - Consulta detalhada de boletos
+    
+    * API Banking
+        * Saldo
+            - Consultar saldo
+        * Extrato
+            - Consultar extrato
+            - Recuperar extrato em PDF
+        * Pagamento
+            - Incluir pagamento com código de barras
+            - Incluir pagamento DARF
+            - Cancelar agendamento do pagamento
+            - Buscar pagamentos
+            - Buscar pagamentos de DARF
 
 ###  Novas funcionalidades a serem implementadas
     * Recursos da Api Banking
-        * Saldo
-            - Consultar saldo (feito)
         * Extrato
-            - Consultar extrato (feito)
-            - Recuperar extrato em PDF (feito)
             - Consultar extrato enriquecido
-        * Pagamento
-            - Incluir pagamento com código de barras (feito)
-            - Incluir pagamento DARF (feito)
-            - Cancelar agendamento do pagamento (feito)
-            - Buscar pagamentos (feito)
-            - Buscar pagamentos de DARF (feito)
+        * Pix pagamento
+            - Incluir Pagamento Pix
     * Recursos da Api Pix
 
 ##  Instalação para utilização
