@@ -64,6 +64,12 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
         * Pix pagamento
             - Incluir Pagamento Pix
     * Recursos da Api Pix
+        * Cobrança imediata
+            - Criar cobrança imediata
+            - Consultar cobrança imediata
+        * Cobrança com vencimento
+            - Criar cobrança com vencimento
+            - Consultar cobrança com vencimento
 
 ##  Instalação para utilização
 
