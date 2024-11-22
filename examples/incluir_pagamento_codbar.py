@@ -5,6 +5,7 @@ from bancointer.banking.models.requisicao_pagamento import RequisicaoPagamento
 from bancointer.banking.pagamento.inclui_pagamento_codbar import IncluiPagamentoCodBar
 from decouple import config
 
+from bancointer.utils.date_utils import DateUtils
 from bancointer.utils.environment import Environment
 
 dir_base_ssl = config("SSL_DIR_BASE")
@@ -20,7 +21,7 @@ env = Environment.get_environment_by_value(app_env_name.upper())
 # payment info
 CODBAR = "03395988500000666539201493990000372830030102"
 VALOR = 2.5
-VENCIMENTO = "2024-11-21"
+VENCIMENTO = due_date = DateUtils.add_days_to_date_from_now(2)
 CPF_CNPJ_BENEF = "9" * 14
 DATA_PAGAMENTO = VENCIMENTO
 

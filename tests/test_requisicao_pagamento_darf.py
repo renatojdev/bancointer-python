@@ -43,7 +43,7 @@ class TestRequisicaoPagamentoDarf(unittest.TestCase):
         self.assertIn("valorJuros", dict_cobra)
         self.assertIn("referencia", dict_cobra)
         # Using Assertions to Check Values
-        self.assertEqual(dict_cobra["cnpjCpf"],"90022400664")
+        self.assertEqual(dict_cobra["cnpjCpf"], "90022400664")
         self.assertEqual(dict_cobra["codigoReceita"], "0220")
         self.assertEqual(dict_cobra["dataVencimento"], "2022-01-30")
         self.assertEqual(dict_cobra["descricao"], "Pagamento DARF Janeiro")

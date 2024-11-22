@@ -3,14 +3,21 @@
 
 import unittest
 
-from bancointer.banking.models.resposta_requisicao_pagamento_darf import RespostaRequisicaoPagamentoDarf
+from bancointer.banking.models.resposta_requisicao_pagamento_darf import (
+    RespostaRequisicaoPagamentoDarf,
+)
 from bancointer.banking.models.tipo_retorno import TipoRetorno
 
 
 class TestRespostaRequisicaoPagamentoDarf(unittest.TestCase):
 
     def setUp(self):
-        self.resposta_req_pag = RespostaRequisicaoPagamentoDarf("12345678910433", "23/01/2022", TipoRetorno.PAGAMENTO.value, "8bbdede4-35db-4ec9-b652-e176841e62c8")
+        self.resposta_req_pag = RespostaRequisicaoPagamentoDarf(
+            "12345678910433",
+            "23/01/2022",
+            TipoRetorno.PAGAMENTO.value,
+            "8bbdede4-35db-4ec9-b652-e176841e62c8",
+        )
 
     def test_to_dict(self):
         resposta_req_pag_dict = self.resposta_req_pag.to_dict()
