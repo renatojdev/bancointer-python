@@ -61,7 +61,7 @@ BUSCA_PAGAMENTOS_DARF_DICT = {
 }
 
 
-class TestRespostaRespostaBuscaPagamento(unittest.TestCase):
+class TestRespostaRespostaBuscaPagamentoDarf(unittest.TestCase):
 
     def setUp(self):
         self.resposta_busca_pagamento = RespostaBuscaPagamentoDarf(
