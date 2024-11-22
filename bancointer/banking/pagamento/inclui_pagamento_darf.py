@@ -44,7 +44,7 @@ class IncluiPagamentoDarf(object):
     def incluir(
         self,
         requisicao_pagamento_darf: RequisicaoPagamentoDarf,
-    ) -> RespostaRequisicaoPagamentoDarf | dict:
+    ) -> RespostaRequisicaoPagamentoDarf | dict | ErroApi:
         """Metodo para inclusão de um pagamento imediato de DARF sem código de barras. Escopo requerido: pagamento-darf.write"""
         try:
             # Converting the request to JSON

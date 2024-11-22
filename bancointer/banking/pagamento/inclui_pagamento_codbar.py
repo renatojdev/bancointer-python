@@ -44,7 +44,7 @@ class IncluiPagamentoCodBar(object):
     def incluir(
         self,
         requisicao_pagamento: RequisicaoPagamento,
-    ) -> RespostaRequisicaoPagamento | dict:
+    ) -> RespostaRequisicaoPagamento | dict | ErroApi:
         """Metodo para inclusão de um pagamento imediato ou agendamento do pagamento de boleto, convênio ou tributo com código de barras.
         Escopo requerido: pagamento-boleto.write"""
         try:
