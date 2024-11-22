@@ -70,3 +70,18 @@ class BancoInterValidations(object):
             return True
         else:
             return False
+
+    @staticmethod
+    def validate_transaction_code(transaction_code):
+        # Pattern [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
+        if (
+            transaction_code is not None
+            and isinstance(transaction_code, str)
+            and transaction_code is not ""
+        ):
+            if re.match(
+                r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                transaction_code,
+            ):
+                return True
+        return False
