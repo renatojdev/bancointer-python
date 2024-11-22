@@ -56,8 +56,8 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Incluir pagamento com código de barras (feito)
             - Incluir pagamento DARF (feito)
             - Cancelar agendamento do pagamento (feito)
-            - Buscar pagamentos
-            - Buscar pagamentos de DARF
+            - Buscar pagamentos (feito)
+            - Buscar pagamentos de DARF (feito)
     * Recursos da Api Pix
 
 ##  Instalação para utilização
