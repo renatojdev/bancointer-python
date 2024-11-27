@@ -12,6 +12,7 @@ from test_cancelar_agendamento_pagamento import TestCancelaAgendamentoPagamento
 from test_buscar_pagamento import TestBuscarPagamento
 from test_buscar_pagamento_darf import TestBuscarPagamentoDarf
 from test_incluir_pagamento_pix import TestIncluirPagamentoPix
+from test_consultar_pagamento_pix import TestConsultarPagamentoPix
 
 
 # Tests Suites
@@ -46,6 +47,9 @@ def suite():
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestIncluirPagamentoPix)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarPagamentoPix)
     )
 
     return my_suite
