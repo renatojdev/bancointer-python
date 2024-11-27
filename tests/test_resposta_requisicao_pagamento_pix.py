@@ -29,12 +29,15 @@ class TestRespostaRequisicaoPagamentoPix(unittest.TestCase):
         self.assertIn("dataOperacao", resposta_req_pag_dict)
 
         # Using Assertions to Check Values
-        self.assertEqual(resposta_req_pag_dict["codigoSolicitacao"], "c42f0787-02cb-4b31-827e-459ec9d7ece1")
+        self.assertEqual(
+            resposta_req_pag_dict["codigoSolicitacao"],
+            "c42f0787-02cb-4b31-827e-459ec9d7ece1",
+        )
         self.assertEqual(resposta_req_pag_dict["dataPagamento"], "2022-03-15")
         self.assertEqual(
             resposta_req_pag_dict["tipoRetorno"], TipoRetornoPagamentoPix.PROCESSADO
         )
-        self.assertEqual(resposta_req_pag_dict["dataOperacao"],"2022-03-15")
+        self.assertEqual(resposta_req_pag_dict["dataOperacao"], "2022-03-15")
 
 
 if __name__ == "__main__":

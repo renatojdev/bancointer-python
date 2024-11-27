@@ -86,7 +86,9 @@ def suite():
         unittest.defaultTestLoader.loadTestsFromTestCase(TestRequisicaoPagamentoPix)
     )
     my_suite.addTests(
-        unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaRequisicaoPagamentoPix)
+        unittest.defaultTestLoader.loadTestsFromTestCase(
+            TestRespostaRequisicaoPagamentoPix
+        )
     )
 
     return my_suite

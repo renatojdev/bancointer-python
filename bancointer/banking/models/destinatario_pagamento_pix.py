@@ -78,9 +78,14 @@ class DestinatarioPagamentoPix(object):
 
             # Validations
             if self.instituicaoFinanceira:
-                if self.instituicaoFinanceira.ispb is None or self.instituicaoFinanceira.ispb == "" or len(self.instituicaoFinanceira.ispb) != 8:
+                if (
+                    self.instituicaoFinanceira.ispb is None
+                    or self.instituicaoFinanceira.ispb == ""
+                    or len(self.instituicaoFinanceira.ispb) != 8
+                ):
                     erro = Erro(
-                        502, f"O atributo 'destinatarioPagamentoPix.instituicaoFinanceira.ispb' é inválido."
+                        502,
+                        f"O atributo 'destinatarioPagamentoPix.instituicaoFinanceira.ispb' é inválido.",
                     )
                     raise BancoInterException("Erro de validação", erro)
 

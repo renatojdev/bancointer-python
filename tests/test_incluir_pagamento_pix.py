@@ -7,14 +7,18 @@ from unittest.mock import MagicMock, patch
 
 from decouple import config
 
-from bancointer.banking.models.destinatario_pagamento_pix import DestinatarioPagamentoPix
+from bancointer.banking.models.destinatario_pagamento_pix import (
+    DestinatarioPagamentoPix,
+)
 from bancointer.banking.models.instituicao_financeira import InstituicaoFinanceira
 from bancointer.banking.models.requisicao_pagamento_pix import RequisicaoPagamentoPix
 from bancointer.banking.models.resposta_requisicao_pagamento_pix import (
     RespostaRequisicaoPagamentoPix,
 )
 from bancointer.banking.models.tipo_conta import TipoConta
-from bancointer.banking.models.tipo_destinatario_pagamento_pix import TipoDestinatarioPagamentoPix
+from bancointer.banking.models.tipo_destinatario_pagamento_pix import (
+    TipoDestinatarioPagamentoPix,
+)
 from bancointer.banking.pix_pagamento.inclui_pagamento_pix import IncluiPagamentoPix
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
@@ -72,7 +76,9 @@ class TestIncluirPagamentoPix(unittest.TestCase):
 
         # Chama o metodo emitir
         req_pix_pay = RequisicaoPagamentoPix(**json.loads(self.payment_pix_request))
-        req_pix_pay.destinatario = DestinatarioPagamentoPix(TipoDestinatarioPagamentoPix.CHAVE, chave="+5541943339900")
+        req_pix_pay.destinatario = DestinatarioPagamentoPix(
+            TipoDestinatarioPagamentoPix.CHAVE, chave="+5541943339900"
+        )
         data = inclui_pagamento.incluir(req_pix_pay)
 
         payment_response = RespostaRequisicaoPagamentoPix(
@@ -81,7 +87,6 @@ class TestIncluirPagamentoPix(unittest.TestCase):
 
         # Verifica se os dados retornados estão corretos
         self.assertEqual(data, payment_response.to_dict())
-
 
     @patch("http.client.HTTPSConnection")
     def test_02_inclui_pagamento_pix_success(self, mock_https_connection):
@@ -125,9 +130,13 @@ class TestIncluirPagamentoPix(unittest.TestCase):
         req_pix_pay = RequisicaoPagamentoPix(**json.loads(self.payment_pix_request))
         req_pix_pay.destinatario = DestinatarioPagamentoPix(
             TipoDestinatarioPagamentoPix.DADOS_BANCARIOS,
-            cpfCnpj="43214321321", contaCorrente="321", agencia="0001",
-            tipoConta=TipoConta.CONTA_POUPANCA, nome="Nome da Pessoa",
-            instituicaoFinanceira=InstituicaoFinanceira("23132190"))
+            cpfCnpj="43214321321",
+            contaCorrente="321",
+            agencia="0001",
+            tipoConta=TipoConta.CONTA_POUPANCA,
+            nome="Nome da Pessoa",
+            instituicaoFinanceira=InstituicaoFinanceira("23132190"),
+        )
         data = inclui_pagamento.incluir(req_pix_pay)
 
         payment_response = RespostaRequisicaoPagamentoPix(
@@ -136,6 +145,76 @@ class TestIncluirPagamentoPix(unittest.TestCase):
 
         # Verifica se os dados retornados estão corretos
         self.assertEqual(data, payment_response.to_dict())
+
+    @patch("http.client.HTTPSConnection")
+    def test_03_inclui_pagamento_pix_failure(self, mock_https_connection):
+        """Teste de inclusão de pagamento PIX"""
+        # Instancia a classe IncluiPagamentoPix
+        inclui_pagamento = IncluiPagamentoPix(
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
+            "x-id",
+        )
+
+        # Chama o metodo emitir
+        req_pix_pay = RequisicaoPagamentoPix(**json.loads(self.payment_pix_request))
+        req_pix_pay.destinatario = DestinatarioPagamentoPix(
+            TipoDestinatarioPagamentoPix.DADOS_BANCARIOS,
+            cpfCnpj="3214321321",
+            contaCorrente="321",
+            agencia="0001",
+            tipoConta=TipoConta.CONTA_POUPANCA,
+            nome="Nome da Pessoa",
+            instituicaoFinanceira=InstituicaoFinanceira("31223122"),
+        )
+        data = inclui_pagamento.incluir(req_pix_pay)
+
+        # Verifica se os dados retornados estão corretos
+        self.assertEqual(
+            data,
+            {
+                "codigo": 502,
+                "descricao": "O atributo 'destinatarioPagamentoPix.cpfCnpj' é inválido.",
+            },
+        )
+
+    @patch("http.client.HTTPSConnection")
+    def test_04_inclui_pagamento_pix_failure(self, mock_https_connection):
+        """Teste de inclusão de pagamento PIX"""
+        # Instancia a classe IncluiPagamentoPix
+        inclui_pagamento = IncluiPagamentoPix(
+            Environment.SANDBOX,
+            self.client_id,
+            self.client_secret,
+            self.cert,
+            self.conta_corrente,
+            "x-id",
+        )
+
+        # Chama o metodo emitir
+        req_pix_pay = RequisicaoPagamentoPix(**json.loads(self.payment_pix_request))
+        req_pix_pay.destinatario = DestinatarioPagamentoPix(
+            TipoDestinatarioPagamentoPix.DADOS_BANCARIOS,
+            cpfCnpj="43214321321",
+            contaCorrente="321",
+            agencia="0001",
+            tipoConta=TipoConta.CONTA_POUPANCA,
+            nome="Nome da Pessoa",
+            instituicaoFinanceira=InstituicaoFinanceira("3122"),
+        )
+        data = inclui_pagamento.incluir(req_pix_pay)
+
+        # Verifica se os dados retornados estão corretos
+        self.assertEqual(
+            data,
+            {
+                "codigo": 502,
+                "descricao": "O atributo 'destinatarioPagamentoPix.instituicaoFinanceira.ispb' é inválido.",
+            },
+        )
 
 
 if __name__ == "__main__":

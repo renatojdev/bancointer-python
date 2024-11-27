@@ -34,9 +34,7 @@ class TestRequisicaoPagamentoPix(unittest.TestCase):
         self.assertIn("destinatario", dict_cobra)
         # Using Assertions to Check Values
         self.assertEqual(dict_cobra["valor"], 46.17)
-        self.assertEqual(
-            dict_cobra["destinatario"]["tipo"], "CHAVE"
-        )
+        self.assertEqual(dict_cobra["destinatario"]["tipo"], "CHAVE")
 
     def test_to_dict_failures(self):
         # valor required
