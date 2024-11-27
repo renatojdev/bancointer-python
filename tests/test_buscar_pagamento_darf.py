@@ -7,7 +7,9 @@ from unittest.mock import patch, MagicMock
 
 from decouple import config
 
-from bancointer.banking.models.resposta_busca_pagamento_darf import RespostaBuscaPagamentoDarf
+from bancointer.banking.models.resposta_busca_pagamento_darf import (
+    RespostaBuscaPagamentoDarf,
+)
 from bancointer.banking.pagamento.busca_pagamento_darf import BuscaPagamentoDarf
 from bancointer.utils.constants import GENERIC_EXCEPTION_MESSAGE
 from bancointer.utils.environment import Environment
@@ -36,7 +38,7 @@ class TestBuscarPagamentoDarf(unittest.TestCase):
         # mock_https_connection.return_value.getresponse.return_value = mock_token_response
 
         # Cria um mock para a resposta
-        busca_pagamento_response_bytes = b'''[{"tipoDarf": "PRETO", "valor": 47.14, "valorMulta": 0.0, "valorJuros": 0.0, "valorTotal": 47.14, "tipo": "Darf", "periodoApuracao": "2024-10-31", "dataPagamento": "2024-11-21", "referencia": "13609400849201739", "dataVencimento": "2024-11-30", "codigoReceita": "0220", "statusPagamento": "REALIZADO", "dataInclusao": "2024-11-21 15:17:58", "cnpjCpf": "90022400664", "codigoSolicitacao": "9e392015-c8a0-45c6-9dee-054f33e90ffa"}, {"tipoDarf": "PRETO", "valor": 47.14, "valorMulta": 0.0, "valorJuros": 0.0, "valorTotal": 47.14, "tipo": "Darf", "periodoApuracao": "2024-10-31", "dataPagamento": "2024-11-21", "referencia": "13609400849201739", "dataVencimento": "2024-11-30", "codigoReceita": "0220", "statusPagamento": "REALIZADO", "dataInclusao": "2024-11-21 15:19:40", "cnpjCpf": "90022400664", "codigoSolicitacao": "ea4a165c-71cc-b8aa-39db-36b9a4f4987c"}, {"tipoDarf": "PRETO", "valor": 47.14, "valorMulta": 0.0, "valorJuros": 0.0, "valorTotal": 47.14, "tipo": "Darf", "periodoApuracao": "2024-10-31", "dataPagamento": "2024-11-21", "referencia": "13609400849201739", "dataVencimento": "2024-11-30", "codigoReceita": "0220", "statusPagamento": "REALIZADO", "dataInclusao": "2024-11-21 15:21:54", "cnpjCpf": "90022400664", "codigoSolicitacao": "b3cfb393-5b50-d10f-0ba1-77cf3bd7536b"}]'''
+        busca_pagamento_response_bytes = b"""[{"tipoDarf": "PRETO", "valor": 47.14, "valorMulta": 0.0, "valorJuros": 0.0, "valorTotal": 47.14, "tipo": "Darf", "periodoApuracao": "2024-10-31", "dataPagamento": "2024-11-21", "referencia": "13609400849201739", "dataVencimento": "2024-11-30", "codigoReceita": "0220", "statusPagamento": "REALIZADO", "dataInclusao": "2024-11-21 15:17:58", "cnpjCpf": "90022400664", "codigoSolicitacao": "9e392015-c8a0-45c6-9dee-054f33e90ffa"}, {"tipoDarf": "PRETO", "valor": 47.14, "valorMulta": 0.0, "valorJuros": 0.0, "valorTotal": 47.14, "tipo": "Darf", "periodoApuracao": "2024-10-31", "dataPagamento": "2024-11-21", "referencia": "13609400849201739", "dataVencimento": "2024-11-30", "codigoReceita": "0220", "statusPagamento": "REALIZADO", "dataInclusao": "2024-11-21 15:19:40", "cnpjCpf": "90022400664", "codigoSolicitacao": "ea4a165c-71cc-b8aa-39db-36b9a4f4987c"}, {"tipoDarf": "PRETO", "valor": 47.14, "valorMulta": 0.0, "valorJuros": 0.0, "valorTotal": 47.14, "tipo": "Darf", "periodoApuracao": "2024-10-31", "dataPagamento": "2024-11-21", "referencia": "13609400849201739", "dataVencimento": "2024-11-30", "codigoReceita": "0220", "statusPagamento": "REALIZADO", "dataInclusao": "2024-11-21 15:21:54", "cnpjCpf": "90022400664", "codigoSolicitacao": "b3cfb393-5b50-d10f-0ba1-77cf3bd7536b"}]"""
 
         mock_data_response = MagicMock()
         mock_data_response.status = 200
