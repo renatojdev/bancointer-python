@@ -56,13 +56,13 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Cancelar agendamento do pagamento
             - Buscar pagamentos
             - Buscar pagamentos de DARF
+        * Pix pagamento
+            - Incluir Pagamento Pix
 
 ###  Novas funcionalidades a serem implementadas
     * Recursos da Api Banking
         * Extrato
             - Consultar extrato enriquecido
-        * Pix pagamento
-            - Incluir Pagamento Pix
     * Recursos da Api Pix
         * Cobrança imediata
             - Criar cobrança imediata

@@ -22,6 +22,8 @@ from test_requisicao_pagamento_darf import TestRequisicaoPagamentoDarf
 from test_resposta_requisicao_pagamento_darf import TestRespostaRequisicaoPagamentoDarf
 from test_resposta_busca_pagamento import TestRespostaRespostaBuscaPagamento
 from test_resposta_busca_pagamento_darf import TestRespostaRespostaBuscaPagamentoDarf
+from test_requisicao_pagamento_pix import TestRequisicaoPagamentoPix
+from test_resposta_requisicao_pagamento_pix import TestRespostaRequisicaoPagamentoPix
 
 
 # Tests Suites - Models
@@ -79,6 +81,12 @@ def suite():
         unittest.defaultTestLoader.loadTestsFromTestCase(
             TestRespostaRespostaBuscaPagamentoDarf
         )
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRequisicaoPagamentoPix)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRespostaRequisicaoPagamentoPix)
     )
 
     return my_suite

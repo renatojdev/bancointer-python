@@ -33,6 +33,9 @@ class HttpUtils(object):
                 erro = Erro(404, "Formato de conta corrente inválido")
                 raise BancoInterException("add_header_authorization.Exception", erro)
 
+    def add_custom_header(self, name: str, value: str):
+        self.headers[name] = value
+
     def __create_connection(self):
         # Define the client certificate settings for https connection
         self.context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
