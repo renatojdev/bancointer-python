@@ -8,7 +8,7 @@ from typing import Dict, Any
 @dataclass()
 class InstituicaoFinanceira(object):
 
-    ispb: str
+    ispb: str # Código ISPB, de 8 dígitos, dos bancos
 
     def to_dict(self) -> Dict[str, Any]:
         """Converte a instância da classe em um dicionário, excluindo valores None."""

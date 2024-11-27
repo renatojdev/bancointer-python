@@ -76,6 +76,14 @@ class DestinatarioPagamentoPix(object):
                 )
                 raise BancoInterException("Erro de validação", erro)
 
+            # Validations
+            if self.instituicaoFinanceira:
+                if self.instituicaoFinanceira.ispb is None or self.instituicaoFinanceira.ispb == "" or len(self.instituicaoFinanceira.ispb) != 8:
+                    erro = Erro(
+                        502, f"O atributo 'destinatarioPagamentoPix.instituicaoFinanceira.ispb' é inválido."
+                    )
+                    raise BancoInterException("Erro de validação", erro)
+
         # Pix copia e cola is required
         elif self.tipo == TipoDestinatarioPagamentoPix.PIX_COPIA_E_COLA.value:
             if (
