@@ -23,6 +23,7 @@ from bancointer.utils.constants import (
     ESCOPO_PAGAMENTO_DARF_WRITE,
     ESCOPO_PAGAMENTO_BOLETO_READ,
     ESCOPO_PAGAMENTO_PIX_WRITE,
+    ESCOPO_PAGAMENTO_PIX_READ,
 )
 
 
@@ -70,7 +71,7 @@ class TokenUtils(object):
             + self.client_secret
             + f"&scope={ESCOPO_BOLETO_COBRANCA_READ}%20{ESCOPO_BOLETO_COBRANCA_WRITE}%20{ESCOPO_EXTRATO_READ}"
             f"%20{ESCOPO_PAGAMENTO_BOLETO_READ}%20{ESCOPO_PAGAMENTO_BOLETO_WRITE}%20{ESCOPO_PAGAMENTO_DARF_WRITE}"
-            f"%20{ESCOPO_PAGAMENTO_PIX_WRITE}"
+            f"%20{ESCOPO_PAGAMENTO_PIX_WRITE}%20{ESCOPO_PAGAMENTO_PIX_READ}"
         )
         print(f"payload_token={payload}")
         print(f"host={HOST_SANDBOX}{PATH_TOKEN}")
@@ -142,7 +143,7 @@ class TokenUtils(object):
 
     def save_token_to_file(self, token_data=None):
         """Save a token to file. Add expires_at token, value date now + expires in seconds"""
-        print(f"token dataaaaa: {token_data}")
+
         if token_data is not None:
             expires_at = datetime.now() + timedelta(seconds=token_data["expires_in"])
             token_data["expires_at"] = str(expires_at)

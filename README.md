@@ -58,13 +58,12 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Buscar pagamentos de DARF
         * Pix pagamento
             - Incluir Pagamento Pix
+            - Consultar Pagamento Pix
 
 ###  Novas funcionalidades a serem implementadas
     * Recursos da Api Banking
         * Extrato
             - Consultar extrato enriquecido
-        * Pix pagamento
-            - Consultar Pagamento Pix
     * Recursos da Api Pix
         * Cobrança imediata
             - Criar cobrança imediata

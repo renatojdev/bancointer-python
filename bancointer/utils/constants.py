@@ -77,6 +77,7 @@ ESCOPO_PAGAMENTO_DARF_WRITE = "pagamento-darf.write"
 ESCOPO_PAGAMENTOS_LOTE_READ = "pagamento-lote.read"
 ESCOPO_PAGAMENTOS_LOTE_WRITE = "pagamento-lote.write"
 
+ESCOPO_PAGAMENTO_PIX_READ = "pagamento-pix.read"
 ESCOPO_PAGAMENTO_PIX_WRITE = "pagamento-pix.write"
 
 ESCOPO_BANKING_WEBHOOK_BANKING_READ = "webhook-banking.read"
