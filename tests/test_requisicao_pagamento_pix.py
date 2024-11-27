@@ -1,7 +1,6 @@
 # test_requisicao_pagamento_pix.py
 
 
-import json
 import unittest
 
 from bancointer.banking.models.destinatario_pagamento_pix import (
