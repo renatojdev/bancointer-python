@@ -64,6 +64,8 @@ PATH_SALDO = f"/banking/v2/saldo"
 PATH_PAGAMENTO = f"/banking/v2/pagamento"
 PATH_PAGAMENTO_DARF = f"/banking/v2/pagamento/darf"
 PATH_PIX_PAGAMENTO = f"/banking/v2/pix"
+# PATHS Pix
+PATH_PIX_COBRANCAS_IMEDIATAS = f"/pix/v2/cob"
 
 # Escopos
 ESCOPO_BOLETO_COBRANCA_READ = "boleto-cobranca.read"
