@@ -15,6 +15,7 @@ test:
 	$(PE) run python tests/tests_models.py # suite tests
 	$(PE) run python tests/tests_cobranca.py
 	$(PE) run python tests/tests_banking.py
+	$(PE) run python tests/tests_pix.py
 
 dev:
 	make install
