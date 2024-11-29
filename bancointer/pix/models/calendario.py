@@ -7,7 +7,7 @@ from typing import Any, Dict
 
 @dataclass()
 class Calendario(object):
-    expiracao: int
+    expiracao: int = 3600
     criacao: str = None
 
     def to_dict(self) -> Dict[str, Any]:

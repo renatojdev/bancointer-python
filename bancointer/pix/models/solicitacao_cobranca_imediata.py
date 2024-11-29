@@ -17,8 +17,8 @@ from bancointer.utils.exceptions import Erro, BancoInterException
 
 @dataclass()
 class SolicitacaoCobrancaImediata(object):
-    calendario: Calendario
-    valor: ValorCobrancaImediata
+    calendario: Calendario | dict
+    valor: ValorCobrancaImediata | dict
     chave: str
     devedor: DevedorCobrancaImediata = None
     loc: IdentificadorLocalizacaoPayload = None
@@ -45,5 +45,8 @@ class SolicitacaoCobrancaImediata(object):
                     f"O atributo 'solicitacaoCobrancaImediata.chave' é inválido.",
                 )
                 raise BancoInterException("Erro de validação", erro)
+
+        self.calendario = self.calendario.to_dict()
+        self.valor = self.valor.to_dict()
 
         return {k: v for k, v in asdict(self).items() if v is not None}
