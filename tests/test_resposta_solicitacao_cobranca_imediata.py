@@ -39,6 +39,26 @@ RESPONSE_SOL_COB_IMEDIATA = b"""{
               "nome": "Campo 1",
               "valor": "Informacao Adicional1 do PSP-Recebedor"
             }
+          ],
+          "pix": [
+            {
+              "endToEndId": "E12345678202009091221kkkkkkkkkkk",
+              "txid": "655dfdb1a4514b8fbb58254b958913fb",
+              "valor": "110.00",
+              "horario": "2020-09-09T20:15:00.358Z",
+              "infoPagador": "0123456789",
+              "devolucoes": [
+                {
+                  "id": "123ABC",
+                  "rtrId": "Dxxxxxxxx202009091221kkkkkkkkkkk",
+                  "valor": "10.00",
+                  "horario": {
+                    "solicitacao": "2020-09-09T20:15:00.358Z"
+                  },
+                  "status": "EM_PROCESSAMENTO"
+                }
+              ]
+            }
           ]
         }"""
 
@@ -58,6 +78,8 @@ class TestRespostaSolicitacaoCobrancaImediata(unittest.TestCase):
         self.assertIn("valor", resposta_sol_cob_imediata_dict)
         self.assertIn("calendario", resposta_sol_cob_imediata_dict)
         self.assertIn("txid", resposta_sol_cob_imediata_dict)
+        self.assertIn("infoAdicionais", resposta_sol_cob_imediata_dict)
+        self.assertIn("pix", resposta_sol_cob_imediata_dict)
 
         # Using Assertions to Check Values
         self.assertEqual(resposta_sol_cob_imediata_dict["status"], "ATIVA")
@@ -83,6 +105,36 @@ class TestRespostaSolicitacaoCobrancaImediata(unittest.TestCase):
         self.assertEqual(
             resposta_sol_cob_imediata_dict["infoAdicionais"][0]["nome"],
             "Campo 1",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["endToEndId"],
+            "E12345678202009091221kkkkkkkkkkk",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["txid"],
+            "655dfdb1a4514b8fbb58254b958913fb",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["valor"],
+            "110.00",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["devolucoes"][0]["id"],
+            "123ABC",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["devolucoes"][0]["rtrId"],
+            "Dxxxxxxxx202009091221kkkkkkkkkkk",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["devolucoes"][0]["horario"][
+                "solicitacao"
+            ],
+            "2020-09-09T20:15:00.358Z",
+        )
+        self.assertEqual(
+            resposta_sol_cob_imediata_dict["pix"][0]["devolucoes"][0]["status"],
+            "EM_PROCESSAMENTO",
         )
 
 

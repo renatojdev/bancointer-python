@@ -4,6 +4,7 @@
 from dataclasses import dataclass, asdict
 from typing import Any, Dict
 
+from bancointer.pix.models.pix import Pix
 from bancointer.pix.models.calendario import Calendario
 from bancointer.pix.models.devedor_cobranca_imediata import DevedorCobrancaImediata
 from bancointer.pix.models.id_loc_payload import IdentificadorLocalizacaoPayload
@@ -28,6 +29,7 @@ class RespostaSolicitacaoCobrancaImediata(object):
     pixCopiaECola: str = None
     solicitacaoPagador: str = None
     infoAdicionais: [InfoAdicionalCobrancaImediata] = None
+    pix: [Pix] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Converte a instância da classe em um dicionário, excluindo valores None."""

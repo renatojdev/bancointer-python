@@ -8,8 +8,9 @@ class BancoInterValidations(object):
 
     @staticmethod
     def validate_txid(txid):
-        if re.match(r"^[a-zA-Z0-9]{26,35}$", txid):
-            return True
+        if txid is not None and isinstance(txid, str) and txid is not "":
+            if re.match(r"^[a-zA-Z0-9]{26,35}$", txid):
+                return True
         return False
 
     @staticmethod
