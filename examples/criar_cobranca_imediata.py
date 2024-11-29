@@ -36,7 +36,7 @@ devedor_cobranca_imediata = DevedorCobrancaImediata("João da Silva", cpf="12345
 
 retirada = Retirada(saque=SaqueOuTroco("20.00", "AGPSS", "12345678"))
 
-valor_cobranca_imediata = ValorCobrancaImediata("0.00", retirada)
+valor_cobranca_imediata = ValorCobrancaImediata("46.17", retirada)
 
 info_adic_cobranca_imediata = InfoAdicionalCobrancaImediata(
     "Campo 1", "Informação Adicional1 do PSP-Recebedor"
