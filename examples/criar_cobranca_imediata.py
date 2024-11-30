@@ -3,7 +3,7 @@
 
 from decouple import config
 
-from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaComVencimento
+from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaImediata
 from bancointer.pix.models.calendario import Calendario
 from bancointer.pix.models.devedor_recebedor_cobranca import DevedorRecebedorCobranca
 from bancointer.pix.models.info_adicional_cobranca_imediata import (
@@ -51,13 +51,13 @@ solicitacao_cob_imediata = SolicitacaoCobranca(
     infoAdicionais=info_adic_cobranca_imediata,
 )
 
-cria_cobranca_imediata = CriaCobrancaComVencimento(
+cria_cobranca_imediata = CriaCobrancaImediata(
     env, client_id, client_secret, cert, conta_corrente
 )
 
-# response = cria_cobranca_imediata.criar(solicitacao_cob_imediata)
-response = cria_cobranca_imediata.criar(
-    solicitacao_cob_imediata, "yKSr6ramZAYHSHadpGfeVzektfj708an"
-)
+response = cria_cobranca_imediata.criar(solicitacao_cob_imediata)
+# response = cria_cobranca_imediata.criar(
+#     solicitacao_cob_imediata, "yKSr6ramZAYHSHadpGfeVzektfj708an"
+# )
 
 print(f"Response from API: {response}")
