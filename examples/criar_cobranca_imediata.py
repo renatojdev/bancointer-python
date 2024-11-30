@@ -55,6 +55,9 @@ cria_cobranca_imediata = CriaCobrancaImediata(
     env, client_id, client_secret, cert, conta_corrente
 )
 
-response = cria_cobranca_imediata.criar(solicitacao_cob_imediata)
+# response = cria_cobranca_imediata.criar(solicitacao_cob_imediata)
+response = cria_cobranca_imediata.criar(
+    solicitacao_cob_imediata, "yKSr6ramZAYHSHadpGfeVzektfj708an"
+)
 
 print(f"Response from API: {response}")

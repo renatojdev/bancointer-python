@@ -46,7 +46,9 @@ class SolicitacaoCobrancaImediata(object):
                 )
                 raise BancoInterException("Erro de validação", erro)
 
-        self.calendario = self.calendario.to_dict()
-        self.valor = self.valor.to_dict()
+        if type(self.calendario) is not dict:
+            self.calendario = self.calendario.to_dict()
+        if type(self.valor) is not dict:
+            self.valor = self.valor.to_dict()
 
         return {k: v for k, v in asdict(self).items() if v is not None}

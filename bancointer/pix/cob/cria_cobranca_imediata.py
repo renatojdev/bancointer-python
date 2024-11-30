@@ -16,6 +16,7 @@ from bancointer.utils.constants import (
 )
 from bancointer.utils.environment import Environment
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
+from bancointer.utils.bancointer_validations import BancoInterValidations
 
 
 class CriaCobrancaImediata(object):
@@ -49,16 +50,31 @@ class CriaCobrancaImediata(object):
         print(f"AMBIENTE: {ambiente.value}")
 
     def criar(
-        self,
-        solicitacao_cob_imediata: SolicitacaoCobrancaImediata,
+        self, solicitacao_cob_imediata: SolicitacaoCobrancaImediata, txid: str = None
     ) -> dict | ErroApi:
         """Metodo para criar uma cobrança imediata, neste caso, o txid é definido pelo PSP.
         Escopo requerido: cob.write"""
+
+        path = (
+            PATH_PIX_COBRANCAS_IMEDIATAS
+            if (not txid and txid is not "")
+            else f"{PATH_PIX_COBRANCAS_IMEDIATAS}/{txid}"
+        )
+
         try:
+            # validating txid
+            if txid and not BancoInterValidations.validate_txid(txid):
+                erro = Erro(502, "Campo 'txid' é inválido.")
+                raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, erro)
+
             # Converting the request to JSON
             payload = solicitacao_cob_imediata.to_dict()
 
-            response = self.http_util.make_post(PATH_PIX_COBRANCAS_IMEDIATAS, payload)
+            response = (
+                self.http_util.make_post(path, payload)
+                if not txid
+                else self.http_util.make_put(path, payload)  # create with txid
+            )
 
             if "title" in response:
                 raise ErroApi(**response)
