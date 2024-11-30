@@ -278,7 +278,9 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:
             cria_cobv_com_vencimento.criar(
-                SolicitacaoCobranca(**json.loads(self.cobv_com_vencimento_request_bytes))
+                SolicitacaoCobranca(
+                    **json.loads(self.cobv_com_vencimento_request_bytes)
+                )
             )
 
         self.assertEqual(str(context.exception), GENERIC_EXCEPTION_MESSAGE)

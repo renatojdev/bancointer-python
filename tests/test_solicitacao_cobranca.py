@@ -1,4 +1,4 @@
-# test_solicitacao_cobranca_imediata.py
+# test_solicitacao_cobranca.py
 
 
 import json
@@ -31,13 +31,55 @@ SOL_COB_IMMEDIATE_REQUEST = b"""{
                             }"""
 
 
-class TestSolicitacaoCobrancaImediata(unittest.TestCase):
+SOL_COBV_REQUEST = b"""{
+              "calendario": {
+                "dataDeVencimento": "2020-12-31",
+                "validadeAposVencimento": 30
+              },
+              "loc": {
+                "id": 789
+              },
+              "devedor": {
+                "logradouro": "Alameda Souza, Numero 80, Bairro Braz",
+                "cidade": "Recife",
+                "uf": "PE",
+                "cep": "70011750",
+                "cpf": "12345678909",
+                "nome": "Francisco da Silva"
+              },
+              "valor": {
+                "original": "123.45",
+                "multa": {
+                  "modalidade": "2",
+                  "valorPerc": "15.00"
+                },
+                "juros": {
+                  "modalidade": "2",
+                  "valorPerc": "2.00"
+                },
+                "desconto": {
+                  "modalidade": "1",
+                  "descontoDataFixa": [
+                    {
+                      "data": "2020-11-30",
+                      "valorPerc": "30.00"
+                    }
+                  ]
+                }
+              },
+              "chave": "5f84a4c5-c5cb-4599-9f13-7eb4d419dacc",
+              "solicitacaoPagador": "Cobranca dos servicos prestados."
+            }"""
+
+
+class TestSolicitacaoCobranca(unittest.TestCase):
 
     def setUp(self):
         """Cobranca object for test purposes."""
         self.sol_cob_immediate = SolicitacaoCobranca(
             **json.loads(SOL_COB_IMMEDIATE_REQUEST)
         )
+        self.sol_cobv_venc = SolicitacaoCobranca(**json.loads(SOL_COBV_REQUEST))
 
     def test_to_dict(self):
         dict_cobra = self.sol_cob_immediate.to_dict()
@@ -127,6 +169,43 @@ class TestSolicitacaoCobrancaImediata(unittest.TestCase):
         self.assertEqual(
             str(contexto.exception.erro.descricao),
             "O atributo 'solicitacaoCobrancaImediata.chave' é inválido.",
+        )
+
+    def test_cobv_to_dict(self):
+        dict_cobrav = self.sol_cobv_venc.to_dict()
+        # Using Assertions to Check Keys
+        self.assertIn("calendario", dict_cobrav)
+        self.assertIn("dataDeVencimento", dict_cobrav["calendario"])
+        self.assertIn("validadeAposVencimento", dict_cobrav["calendario"])
+        self.assertIn("devedor", dict_cobrav)
+        self.assertIn("valor", dict_cobrav)
+        self.assertIn("original", dict_cobrav["valor"])
+        self.assertIn("multa", dict_cobrav["valor"])
+        self.assertIn("juros", dict_cobrav["valor"])
+        self.assertIn("desconto", dict_cobrav["valor"])
+        self.assertIn("modalidade", dict_cobrav["valor"]["desconto"])
+        self.assertIn("data", dict_cobrav["valor"]["desconto"]["descontoDataFixa"][0])
+        self.assertIn("valorPerc", dict_cobrav["valor"]["desconto"]["descontoDataFixa"][0])
+        # Using Assertions to Check Values
+        self.assertEqual(
+            dict_cobrav["calendario"]["dataDeVencimento"],
+            "2020-12-31",
+        )
+        self.assertEqual(
+            dict_cobrav["devedor"]["logradouro"],
+            "Alameda Souza, Numero 80, Bairro Braz",
+        )
+        self.assertEqual(
+            dict_cobrav["valor"]["multa"]["modalidade"],
+            "2",
+        )
+        self.assertEqual(
+            dict_cobrav["valor"]["desconto"]["descontoDataFixa"][0]["valorPerc"],
+            "30.00",
+        )
+        self.assertEqual(
+            dict_cobrav["chave"],
+            "5f84a4c5-c5cb-4599-9f13-7eb4d419dacc",
         )
 
 

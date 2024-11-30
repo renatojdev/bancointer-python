@@ -12,8 +12,8 @@ from bancointer.pix.models.info_adicional_cobranca_imediata import (
 from bancointer.pix.models.solicitacao_cobranca import (
     SolicitacaoCobranca,
 )
-from bancointer.pix.models.valor_cobranca_imediata import (
-    ValorCobrancaImediata,
+from bancointer.pix.models.valor_cobranca import (
+    ValorCobranca,
     Retirada,
     SaqueOuTroco,
 )
@@ -36,7 +36,7 @@ devedor_cobranca_imediata = DevedorRecebedorCobranca("João da Silva", cpf="1234
 
 retirada = Retirada(saque=SaqueOuTroco("20.00", "AGPSS", "12345678"))
 
-valor_cobranca_imediata = ValorCobrancaImediata("46.17", retirada)
+valor_cobranca_imediata = ValorCobranca("46.17", retirada)
 
 info_adic_cobranca_imediata = InfoAdicionalCobrancaImediata(
     "Campo 1", "Informação Adicional1 do PSP-Recebedor"

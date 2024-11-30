@@ -12,7 +12,7 @@ from bancointer.pix.models.info_adicional_cobranca_imediata import (
     InfoAdicionalCobrancaImediata,
 )
 from bancointer.pix.models.status_cobranca_imediata import StatusCobrancaImediata
-from bancointer.pix.models.valor_cobranca_imediata import ValorCobrancaImediata
+from bancointer.pix.models.valor_cobranca import ValorCobranca
 
 
 @dataclass
@@ -20,7 +20,7 @@ class RespostaSolicitacaoCobranca(object):
     """Classe para resposta da solicitação de cobranca imediata ou com vencimento."""
 
     status: StatusCobrancaImediata
-    valor: ValorCobrancaImediata | dict
+    valor: ValorCobranca | dict
     calendario: Calendario | dict
     txid: str
     revisao: int

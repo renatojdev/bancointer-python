@@ -28,7 +28,7 @@ from test_resposta_consulta_pagamento_pix import TestRespostaConsultaPagamentoPi
 from test_resposta_solicitacao_cobranca_imediata import (
     TestRespostaSolicitacaoCobrancaImediata,
 )
-from test_solicitacao_cobranca_imediata import TestSolicitacaoCobrancaImediata
+from test_solicitacao_cobranca import TestSolicitacaoCobranca
 
 
 # Tests Suites - Models
@@ -101,9 +101,7 @@ def suite():
         )
     )
     my_suite.addTests(
-        unittest.defaultTestLoader.loadTestsFromTestCase(
-            TestSolicitacaoCobrancaImediata
-        )
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestSolicitacaoCobranca)
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(
