@@ -1,15 +1,15 @@
 # consulta_cobranca_imediata.py
 
 
-from bancointer.pix.models.resposta_solicitacao_cobranca_imediata import (
-    RespostaSolicitacaoCobrancaImediata,
+from bancointer.pix.models.resposta_solicitacao_cobranca import (
+    RespostaSolicitacaoCobranca,
 )
 from bancointer.utils import HttpUtils
 from bancointer.utils.bancointer_validations import BancoInterValidations
 from bancointer.utils.constants import (
     HOST,
     HOST_SANDBOX,
-    PATH_PIX_COBRANCAS_IMEDIATAS,
+    PATH_PIX_COB,
     GENERIC_EXCEPTION_MESSAGE,
 )
 from bancointer.utils.environment import Environment
@@ -60,7 +60,7 @@ class ConsultaCobrancaImediata(object):
             ou dict object ErroApi.
         """
 
-        path = f"{PATH_PIX_COBRANCAS_IMEDIATAS}/{txid}"
+        path = f"{PATH_PIX_COB}/{txid}"
 
         try:
             # validate txid
@@ -75,7 +75,7 @@ class ConsultaCobrancaImediata(object):
             elif "codigo" in response:
                 return response
             # Converting the JSON response to an IssueCollectionResponse object
-            return RespostaSolicitacaoCobrancaImediata(**response).to_dict()
+            return RespostaSolicitacaoCobranca(**response).to_dict()
         except ErroApi as e:
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()

@@ -4,8 +4,8 @@
 import json
 import unittest
 
-from bancointer.pix.models.resposta_solicitacao_cobranca_imediata import (
-    RespostaSolicitacaoCobrancaImediata,
+from bancointer.pix.models.resposta_solicitacao_cobranca import (
+    RespostaSolicitacaoCobranca,
 )
 
 RESPONSE_SOL_COB_IMEDIATA = b"""{
@@ -66,7 +66,7 @@ RESPONSE_SOL_COB_IMEDIATA = b"""{
 class TestRespostaSolicitacaoCobrancaImediata(unittest.TestCase):
 
     def setUp(self):
-        self.resposta_sol_cob_imediata = RespostaSolicitacaoCobrancaImediata(
+        self.resposta_sol_cob_imediata = RespostaSolicitacaoCobranca(
             **json.loads(RESPONSE_SOL_COB_IMEDIATA)
         )
 

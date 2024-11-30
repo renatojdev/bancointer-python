@@ -66,6 +66,8 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Revisar cobrança imediata
             - Criar cobrança imediata
             - Consultar cobrança imediata
+        * Cobrança com vencimento
+            - Criar cobrança com vencimento
 
 ###  Novas funcionalidades a serem implementadas
     * Recursos da Api Banking
@@ -73,7 +75,6 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Consultar extrato enriquecido
     * Recursos da Api Pix
         * Cobrança com vencimento
-            - Criar cobrança com vencimento
             - Consultar cobrança com vencimento
 
 ##  Instalação para utilização

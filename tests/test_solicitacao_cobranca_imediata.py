@@ -4,8 +4,8 @@
 import json
 import unittest
 
-from bancointer.pix.models.solicitacao_cobranca_imediata import (
-    SolicitacaoCobrancaImediata,
+from bancointer.pix.models.solicitacao_cobranca import (
+    SolicitacaoCobranca,
 )
 from bancointer.utils.exceptions import BancoInterException
 
@@ -35,7 +35,7 @@ class TestSolicitacaoCobrancaImediata(unittest.TestCase):
 
     def setUp(self):
         """Cobranca object for test purposes."""
-        self.sol_cob_immediate = SolicitacaoCobrancaImediata(
+        self.sol_cob_immediate = SolicitacaoCobranca(
             **json.loads(SOL_COB_IMMEDIATE_REQUEST)
         )
 

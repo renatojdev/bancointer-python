@@ -8,8 +8,8 @@ from unittest.mock import patch, MagicMock
 from decouple import config
 
 from bancointer.pix.cob.consulta_cobranca_imediata import ConsultaCobrancaImediata
-from bancointer.pix.models.resposta_solicitacao_cobranca_imediata import (
-    RespostaSolicitacaoCobrancaImediata,
+from bancointer.pix.models.resposta_solicitacao_cobranca import (
+    RespostaSolicitacaoCobranca,
 )
 from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
@@ -107,7 +107,7 @@ class TestConsultarCobrancaImediata(unittest.TestCase):
         # Chama o metodo emitir
         data = consulta_cob_imediata.consultar("655dfdb1a4514b8fbb58254b958913fb")
 
-        payment_response = RespostaSolicitacaoCobrancaImediata(
+        payment_response = RespostaSolicitacaoCobranca(
             **json.loads(cob_imediata_response_bytes)
         ).to_dict()
 

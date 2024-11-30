@@ -1,4 +1,4 @@
-# cria_cobranca_imediata.py
+# cria_cobranca_com_vencimento.py
 
 
 from bancointer.pix.models.resposta_solicitacao_cobranca import (
@@ -19,7 +19,7 @@ from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 from bancointer.utils.bancointer_validations import BancoInterValidations
 
 
-class CriaCobrancaImediata(object):
+class CriaCobrancaComVencimento(object):
 
     def __init__(
         self,
@@ -50,29 +50,32 @@ class CriaCobrancaImediata(object):
         print(f"AMBIENTE: {ambiente.value}")
 
     def criar(
-        self, solicitacao_cob_imediata: SolicitacaoCobranca, txid: str = None
+        self, solicitacao_cobv_com_vencimento: SolicitacaoCobranca, txid: str
     ) -> dict | ErroApi:
-        """Metodo para criar uma cobrança imediata, neste caso, o txid é definido pelo PSP.
-        Escopo requerido: cob.write"""
+        """Metodo para criar uma cobrança com vencimento, neste caso, o txid é definido pelo PSP.
+        Na cobrança com vencimento é possível parametrizar uma data de vencimento e com isso o pagamento
+        pode ser realizado em data futura, pode também incluir outras informações como juros, multas,
+        outros acréscimos, descontos e outros abatimentos, semelhante ao boleto.
+        Escopo requerido: cob.write
 
-        path = (
-            PATH_PIX_COB if (not txid and txid is not "") else f"{PATH_PIX_COB}/{txid}"
-        )
+        Args:
+            solicitacao_cobv_com_vencimento (SolicitacaoCobrancaImediata): Object solicitacao de cobranca com vencimento.
+            txid (str): O campo txid determina o identificador da transação.
+
+        Returns:
+            dict | ErroApi: Resposta da solicitação de cobrança.
+        """
 
         try:
             # validating txid
-            if txid and not BancoInterValidations.validate_txid(txid):
+            if not BancoInterValidations.validate_txid(txid):
                 erro = Erro(502, "Campo 'txid' é inválido.")
                 raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, erro)
 
             # Converting the request to JSON
-            payload = solicitacao_cob_imediata.to_dict()
+            payload = solicitacao_cobv_com_vencimento.to_dict()
 
-            response = (
-                self.http_util.make_post(path, payload)
-                if not txid
-                else self.http_util.make_put(path, payload)  # create with txid
-            )
+            response = self.http_util.make_put(f"{PATH_PIX_COB}/{txid}", payload)
 
             if "title" in response:
                 raise ErroApi(**response)
@@ -84,8 +87,8 @@ class CriaCobrancaImediata(object):
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"BancoInterException.CriaCobrancaImediata.criar: {e}")
+            print(f"BancoInterException.CriaCobrancaComVencimento.criar: {e}")
             return e.erro.to_dict()
         except Exception as e:
-            print(f"Exception.CriaCobrancaImediata: {e}")
+            print(f"Exception.CriaCobrancaComVencimento: {e}")
             raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

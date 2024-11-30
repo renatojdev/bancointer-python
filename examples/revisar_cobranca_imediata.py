@@ -5,12 +5,12 @@ from decouple import config
 
 from bancointer.pix.cob.revisa_cobranca_imediata import RevisaCobrancaImediata
 from bancointer.pix.models.calendario import Calendario
-from bancointer.pix.models.devedor_cobranca_imediata import DevedorCobrancaImediata
+from bancointer.pix.models.devedor_recebedor_cobranca import DevedorRecebedorCobranca
 from bancointer.pix.models.info_adicional_cobranca_imediata import (
     InfoAdicionalCobrancaImediata,
 )
-from bancointer.pix.models.solicitacao_cobranca_imediata import (
-    SolicitacaoCobrancaImediata,
+from bancointer.pix.models.solicitacao_cobranca import (
+    SolicitacaoCobranca,
 )
 from bancointer.pix.models.valor_cobranca_imediata import (
     ValorCobrancaImediata,
@@ -32,7 +32,7 @@ env = Environment.get_environment_by_value(app_env_name.upper())
 # Create immediate cob
 calendario = Calendario()  # default: 3600
 
-devedor_cobranca_imediata = DevedorCobrancaImediata("João da Silva", cpf="12345678901")
+devedor_cobranca_imediata = DevedorRecebedorCobranca("João da Silva", cpf="12345678901")
 
 retirada = Retirada(saque=SaqueOuTroco("20.00", "AGPSS", "12345678"))
 
@@ -42,7 +42,7 @@ info_adic_cobranca_imediata = InfoAdicionalCobrancaImediata(
     "Campo 1", "Informação Adicional1 do PSP-Recebedor"
 )
 
-solicitacao_cob_imediata = SolicitacaoCobrancaImediata(
+solicitacao_cob_imediata = SolicitacaoCobranca(
     calendario,
     valor_cobranca_imediata,
     "+5551983334490",

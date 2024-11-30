@@ -1,4 +1,4 @@
-# cria_cobranca_imediata.py
+# cria_cobranca_com_vencimento.py
 
 
 from bancointer.pix.models.resposta_solicitacao_cobranca import (
@@ -11,15 +11,15 @@ from bancointer.utils import HttpUtils
 from bancointer.utils.constants import (
     HOST,
     HOST_SANDBOX,
-    PATH_PIX_COB,
     GENERIC_EXCEPTION_MESSAGE,
+    PATH_PIX_COBV,
 )
 from bancointer.utils.environment import Environment
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 from bancointer.utils.bancointer_validations import BancoInterValidations
 
 
-class CriaCobrancaImediata(object):
+class CriaCobrancaComVencimento(object):
 
     def __init__(
         self,
@@ -52,11 +52,13 @@ class CriaCobrancaImediata(object):
     def criar(
         self, solicitacao_cob_imediata: SolicitacaoCobranca, txid: str = None
     ) -> dict | ErroApi:
-        """Metodo para criar uma cobrança imediata, neste caso, o txid é definido pelo PSP.
+        """Metodo para criar uma cobrança com vencimento, neste caso, o txid é definido pelo PSP.
         Escopo requerido: cob.write"""
 
         path = (
-            PATH_PIX_COB if (not txid and txid is not "") else f"{PATH_PIX_COB}/{txid}"
+            PATH_PIX_COBV
+            if (not txid and txid is not "")
+            else f"{PATH_PIX_COBV}/{txid}"
         )
 
         try:
@@ -66,12 +68,8 @@ class CriaCobrancaImediata(object):
                 raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, erro)
 
             # Converting the request to JSON
-            payload = solicitacao_cob_imediata.to_dict()
-
-            response = (
-                self.http_util.make_post(path, payload)
-                if not txid
-                else self.http_util.make_put(path, payload)  # create with txid
+            response = self.http_util.make_put(
+                path, payload=solicitacao_cob_imediata.to_dict()
             )
 
             if "title" in response:
@@ -84,8 +82,8 @@ class CriaCobrancaImediata(object):
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"BancoInterException.CriaCobrancaImediata.criar: {e}")
+            print(f"BancoInterException.CriaCobrancaComVencimento.criar: {e}")
             return e.erro.to_dict()
         except Exception as e:
-            print(f"Exception.CriaCobrancaImediata: {e}")
+            print(f"Exception.CriaCobrancaComVencimento: {e}")
             raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

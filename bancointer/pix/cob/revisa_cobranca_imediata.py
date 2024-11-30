@@ -1,17 +1,17 @@
 # revisa_cobranca_imediata.py
 
 
-from bancointer.pix.models.resposta_solicitacao_cobranca_imediata import (
-    RespostaSolicitacaoCobrancaImediata,
+from bancointer.pix.models.resposta_solicitacao_cobranca import (
+    RespostaSolicitacaoCobranca,
 )
-from bancointer.pix.models.solicitacao_cobranca_imediata import (
-    SolicitacaoCobrancaImediata,
+from bancointer.pix.models.solicitacao_cobranca import (
+    SolicitacaoCobranca,
 )
 from bancointer.utils import HttpUtils
 from bancointer.utils.constants import (
     HOST,
     HOST_SANDBOX,
-    PATH_PIX_COBRANCAS_IMEDIATAS,
+    PATH_PIX_COB,
     GENERIC_EXCEPTION_MESSAGE,
 )
 from bancointer.utils.environment import Environment
@@ -50,7 +50,7 @@ class RevisaCobrancaImediata(object):
         print(f"AMBIENTE: {ambiente.value}")
 
     def revisar(
-        self, solicitacao_cob_imediata: SolicitacaoCobrancaImediata, txid: str
+        self, solicitacao_cob_imediata: SolicitacaoCobranca, txid: str
     ) -> dict | ErroApi:
         """Metodo para revisar uma cobrança imediata, neste caso, o txid é definido pelo PSP.
         Escopo requerido: cob.write"""
@@ -64,16 +64,14 @@ class RevisaCobrancaImediata(object):
             # Converting the request to JSON
             payload = solicitacao_cob_imediata.to_dict()
 
-            response = self.http_util.make_patch(
-                f"{PATH_PIX_COBRANCAS_IMEDIATAS}/{txid}", payload
-            )
+            response = self.http_util.make_patch(f"{PATH_PIX_COB}/{txid}", payload)
 
             if "title" in response:
                 raise ErroApi(**response)
             elif "codigo" in response:
                 return response
             # Converting the JSON response to an IssueCollectionResponse object
-            return RespostaSolicitacaoCobrancaImediata(**response).to_dict()
+            return RespostaSolicitacaoCobranca(**response).to_dict()
         except ErroApi as e:
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()

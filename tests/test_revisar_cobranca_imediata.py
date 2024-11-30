@@ -7,13 +7,13 @@ from unittest.mock import MagicMock, patch
 
 from decouple import config
 
-from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaImediata
+from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaComVencimento
 from bancointer.pix.cob.revisa_cobranca_imediata import RevisaCobrancaImediata
-from bancointer.pix.models.resposta_solicitacao_cobranca_imediata import (
-    RespostaSolicitacaoCobrancaImediata,
+from bancointer.pix.models.resposta_solicitacao_cobranca import (
+    RespostaSolicitacaoCobranca,
 )
-from bancointer.pix.models.solicitacao_cobranca_imediata import (
-    SolicitacaoCobrancaImediata,
+from bancointer.pix.models.solicitacao_cobranca import (
+    SolicitacaoCobranca,
 )
 from bancointer.utils.constants import GENERIC_EXCEPTION_MESSAGE
 from bancointer.utils.environment import Environment
@@ -135,11 +135,11 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
 
         # Chama o metodo emitir
         data = revisa_cob_imediata.revisar(
-            SolicitacaoCobrancaImediata(**json.loads(self.cob_imediata_request_bytes)),
+            SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
             "yKSr6ramZAYHSHadpGfeVzektfj708an",
         )
 
-        payment_response = RespostaSolicitacaoCobrancaImediata(
+        payment_response = RespostaSolicitacaoCobranca(
             **json.loads(cob_imediata_response_bytes)
         ).to_dict()
 
@@ -157,7 +157,7 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
         )
 
         # Instancia a classe IncluiPagamentoCodBar
-        cria_cob_imediata = CriaCobrancaImediata(
+        cria_cob_imediata = CriaCobrancaComVencimento(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
@@ -167,7 +167,7 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
 
         # Verifica se a exceção é levantada corretamente
         response = cria_cob_imediata.criar(
-            SolicitacaoCobrancaImediata(**json.loads(self.cob_imediata_request_bytes)),
+            SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
             "txid_invalid",
         )
 
@@ -197,9 +197,7 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:
             revisa_cob_imediata.revisar(
-                SolicitacaoCobrancaImediata(
-                    **json.loads(self.cob_imediata_request_bytes)
-                ),
+                SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
                 "",
             )
 
@@ -223,7 +221,7 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
 
         # Verifica se a exceção é levantada corretamente
         response = revisa_cob_imediata.revisar(
-            SolicitacaoCobrancaImediata(**cob_imediata_request), ""
+            SolicitacaoCobranca(**cob_imediata_request), ""
         )
 
         self.assertEqual(
@@ -238,7 +236,7 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
         cob_imediata_request["chave"] = "xpto"
 
         response = revisa_cob_imediata.revisar(
-            SolicitacaoCobrancaImediata(**cob_imediata_request), ""
+            SolicitacaoCobranca(**cob_imediata_request), ""
         )
 
         self.assertEqual(

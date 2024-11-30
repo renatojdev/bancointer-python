@@ -1,11 +1,11 @@
-# solicitacao_cobranca_imediata.py
+# solicitacao_cobranca.py
 
 
 from dataclasses import dataclass, asdict
 from typing import Any, Dict
 
 from bancointer.pix.models.calendario import Calendario
-from bancointer.pix.models.devedor_cobranca_imediata import DevedorCobrancaImediata
+from bancointer.pix.models.devedor_recebedor_cobranca import DevedorRecebedorCobranca
 from bancointer.pix.models.id_loc_payload import IdentificadorLocalizacaoPayload
 from bancointer.pix.models.info_adicional_cobranca_imediata import (
     InfoAdicionalCobrancaImediata,
@@ -15,12 +15,14 @@ from bancointer.utils.bancointer_validations import BancoInterValidations
 from bancointer.utils.exceptions import Erro, BancoInterException
 
 
-@dataclass()
-class SolicitacaoCobrancaImediata(object):
+@dataclass
+class SolicitacaoCobranca(object):
+    """Classe para solicitação de cobranca imediata ou com vencimento."""
+
     calendario: Calendario | dict
     valor: ValorCobrancaImediata | dict
     chave: str
-    devedor: DevedorCobrancaImediata = None
+    devedor: DevedorRecebedorCobranca = None
     loc: IdentificadorLocalizacaoPayload = None
     solicitacaoPagador: str = None
     infoAdicionais: [InfoAdicionalCobrancaImediata] = None

@@ -1,9 +1,9 @@
-# criar_cobranca_imediata.py
+# criar_cobranca_com_vencimento.py
 
 
 from decouple import config
 
-from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaComVencimento
+from bancointer.pix.cobv.cria_cobranca_com_vencimento import CriaCobrancaComVencimento
 from bancointer.pix.models.calendario import Calendario
 from bancointer.pix.models.devedor_recebedor_cobranca import DevedorRecebedorCobranca
 from bancointer.pix.models.info_adicional_cobranca_imediata import (
@@ -30,7 +30,7 @@ app_env_name = config("APP_ENV")
 env = Environment.get_environment_by_value(app_env_name.upper())
 
 # Create immediate cob
-calendario = Calendario()  # default: 3600
+calendario = Calendario(dataDeVencimento="2024-12-31")  # expiracao default: 3600
 
 devedor_cobranca_imediata = DevedorRecebedorCobranca("João da Silva", cpf="12345678901")
 
@@ -51,13 +51,12 @@ solicitacao_cob_imediata = SolicitacaoCobranca(
     infoAdicionais=info_adic_cobranca_imediata,
 )
 
-cria_cobranca_imediata = CriaCobrancaComVencimento(
+cria_cobranca_com_vencimento = CriaCobrancaComVencimento(
     env, client_id, client_secret, cert, conta_corrente
 )
 
-# response = cria_cobranca_imediata.criar(solicitacao_cob_imediata)
-response = cria_cobranca_imediata.criar(
-    solicitacao_cob_imediata, "yKSr6ramZAYHSHadpGfeVzektfj708an"
+response = cria_cobranca_com_vencimento.criar(
+    solicitacao_cob_imediata, "OA3uMSCRI4sgWBaifS6mP2Fnrv8h6"
 )
 
 print(f"Response from API: {response}")

@@ -1,4 +1,4 @@
-# devedor_cobranca_imediata.py
+# devedor_recebedor_cobranca.py
 
 
 from dataclasses import dataclass, asdict
@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 
 @dataclass()
-class DevedorCobrancaImediata(object):
+class DevedorRecebedorCobranca(object):
     nome: str
     cpf: str = None
     cnpj: str = None

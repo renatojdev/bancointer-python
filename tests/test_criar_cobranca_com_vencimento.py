@@ -1,4 +1,4 @@
-# test_criar_cobranca_imediata.py
+# test_criar_cobranca_com_vencimento.py
 
 
 import json
@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 from decouple import config
 
-from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaImediata
+from bancointer.pix.cob.cria_cobranca_com_vencimento import CriaCobrancaComVencimento
 from bancointer.pix.models.resposta_solicitacao_cobranca import (
     RespostaSolicitacaoCobranca,
 )
@@ -19,7 +19,7 @@ from bancointer.utils.environment import Environment
 from bancointer.utils.token_utils import token_file_is_exist
 
 
-class TestCriarCobrancaImediata(unittest.TestCase):
+class TestCriarCobrancaComVencimento(unittest.TestCase):
 
     def setUp(self):
         self.client_id = config("CLIENT_ID")
@@ -56,7 +56,7 @@ class TestCriarCobrancaImediata(unittest.TestCase):
                                 }"""
 
     @patch("http.client.HTTPSConnection")
-    def test_01_criar_cobranca_imediata_success(self, mock_https_connection):
+    def test_01_criar_cobranca_com_vencimento_success(self, mock_https_connection):
         """Teste de emissão de cobrança"""
         # Mock da resposta para o token de acesso
         mock_token_response = MagicMock()
@@ -66,35 +66,46 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         # mock_https_connection.return_value.getresponse.return_value = mock_token_response
 
         # Cria um mock para a resposta
-        cob_imediata_response_bytes = b"""{
-                              "calendario": {
-                                "criacao": "2020-09-09T20:15:00.358Z",
-                                "expiracao": 3600
-                              },
-                              "txid": "7978c0c97ea847e78e8849634473c1f1",
-                              "revisao": 0,
-                              "loc": {
-                                "id": 789,
-                                "location": "pix.example.com/qr/9d36b84fc70b478fb95c12729b90ca25",
-                                "tipoCob": "cob"
-                              },
-                              "location": "pix.example.com/qr/9d36b84fc70b478fb95c12729b90ca25",
-                              "status": "ATIVA",
-                              "devedor": {
-                                "cnpj": "12345678000195",
-                                "nome": "Empresa de Servicos SA"
-                              },
-                              "valor": {
-                                "original": "567.89",
-                                "modalidadeAlteracao": 1
-                              },
-                              "chave": "a1f4102e-a446-4a57-bcce-6fa48899c1d1",
-                              "solicitacaoPagador": "Informar cartao fidelidade"
-                            }"""
+        cobv_venc_response_bytes = b"""{
+          "calendario": {
+            "criacao": "2020-09-09T20:15:00.358Z",
+            "dataDeVencimento": "2020-12-31",
+            "validadeAposVencimento": 30
+          },
+          "txid": "7978c0c97ea847e78e8849634473c1f1",
+          "revisao": 0,
+          "loc": {
+            "id": 789,
+            "location": "pix.example.com/qr/v2/cobv/9d36b84fc70b478fb95c12729b90ca25",
+            "tipoCob": "cobv"
+          },
+          "status": "ATIVA",
+          "devedor": {
+            "logradouro": "Rua 15, Numero 1, Bairro Luz",
+            "cidade": "Belo Horizonte",
+            "uf": "MG",
+            "cep": "99000750",
+            "cnpj": "12345678000195",
+            "nome": "Empresa de Servicos SA"
+          },
+          "recebedor": {
+            "logradouro": "Rua 15 Numero 1200, Bairro Sao Luiz",
+            "cidade": "Sao Paulo",
+            "uf": "SP",
+            "cep": "70800100",
+            "cnpj": "56989000019533",
+            "nome": "Empresa de Logistica SA"
+          },
+          "valor": {
+            "original": "567.89"
+          },
+          "chave": "a1f4102e-a446-4a57-bcce-6fa48899c1d1",
+          "solicitacaoPagador": "Informar cartao fidelidade"
+        }"""
 
         mock_data_response = MagicMock()
         mock_data_response.status = 200
-        mock_data_response.read.return_value = cob_imediata_response_bytes
+        mock_data_response.read.return_value = cobv_venc_response_bytes
 
         # Configura o mock para a segunda chamada (dados), se token nao existe configura side_effect
         if token_file_is_exist():
@@ -107,8 +118,8 @@ class TestCriarCobrancaImediata(unittest.TestCase):
                 mock_data_response,
             ]
 
-        # Instancia a classe IncluiPagamentoCodBar
-        cria_cob_imediata = CriaCobrancaImediata(
+        # Instancia a classe CriaCobrancaComVencimento
+        cria_cobv_com_vencimento = CriaCobrancaComVencimento(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
@@ -116,20 +127,20 @@ class TestCriarCobrancaImediata(unittest.TestCase):
             self.conta_corrente,
         )
 
-        # Chama o metodo emitir
-        data = cria_cob_imediata.criar(
+        # Chama o metodo criar cobrança com vencimento
+        data = cria_cobv_com_vencimento.criar(
             SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes))
         )
 
         payment_response = RespostaSolicitacaoCobranca(
-            **json.loads(cob_imediata_response_bytes)
+            **json.loads(cobv_venc_response_bytes)
         ).to_dict()
 
         # Verifica se os dados retornados estão corretos
         self.assertEqual(data, payment_response)
 
     @patch("http.client.HTTPSConnection")
-    def test_02_criar_cobranca_imediata_txid_success(self, mock_https_connection):
+    def test_02_criar_cobranca_com_vencimento_txid_success(self, mock_https_connection):
         """Teste de emissão de cobrança"""
         # Mock da resposta para o token de acesso
         mock_token_response = MagicMock()
@@ -139,35 +150,46 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         # mock_https_connection.return_value.getresponse.return_value = mock_token_response
 
         # Cria um mock para a resposta
-        cob_imediata_response_bytes = b"""{
-                                  "calendario": {
-                                    "criacao": "2020-09-09T20:15:00.358Z",
-                                    "expiracao": 3600
-                                  },
-                                  "txid": "7978c0c97ea847e78e8849634473c1f1",
-                                  "revisao": 0,
-                                  "loc": {
-                                    "id": 789,
-                                    "location": "pix.example.com/qr/9d36b84fc70b478fb95c12729b90ca25",
-                                    "tipoCob": "cob"
-                                  },
-                                  "location": "pix.example.com/qr/9d36b84fc70b478fb95c12729b90ca25",
-                                  "status": "ATIVA",
-                                  "devedor": {
-                                    "cnpj": "12345678000195",
-                                    "nome": "Empresa de Servicos SA"
-                                  },
-                                  "valor": {
-                                    "original": "567.89",
-                                    "modalidadeAlteracao": 1
-                                  },
-                                  "chave": "a1f4102e-a446-4a57-bcce-6fa48899c1d1",
-                                  "solicitacaoPagador": "Informar cartao fidelidade"
-                                }"""
+        cobv_venc_response_bytes = b"""{
+          "calendario": {
+            "criacao": "2020-09-09T20:15:00.358Z",
+            "dataDeVencimento": "2020-12-31",
+            "validadeAposVencimento": 30
+          },
+          "txid": "7978c0c97ea847e78e8849634473c1f1",
+          "revisao": 0,
+          "loc": {
+            "id": 789,
+            "location": "pix.example.com/qr/v2/cobv/9d36b84fc70b478fb95c12729b90ca25",
+            "tipoCob": "cobv"
+          },
+          "status": "ATIVA",
+          "devedor": {
+            "logradouro": "Rua 15, Numero 1, Bairro Luz",
+            "cidade": "Belo Horizonte",
+            "uf": "MG",
+            "cep": "99000750",
+            "cnpj": "12345678000195",
+            "nome": "Empresa de Servicos SA"
+          },
+          "recebedor": {
+            "logradouro": "Rua 15 Numero 1200, Bairro Sao Luiz",
+            "cidade": "Sao Paulo",
+            "uf": "SP",
+            "cep": "70800100",
+            "cnpj": "56989000019533",
+            "nome": "Empresa de Logistica SA"
+          },
+          "valor": {
+            "original": "567.89"
+          },
+          "chave": "a1f4102e-a446-4a57-bcce-6fa48899c1d1",
+          "solicitacaoPagador": "Informar cartao fidelidade"
+        }"""
 
         mock_data_response = MagicMock()
         mock_data_response.status = 200
-        mock_data_response.read.return_value = cob_imediata_response_bytes
+        mock_data_response.read.return_value = cobv_venc_response_bytes
 
         # Configura o mock para a segunda chamada (dados), se token nao existe configura side_effect
         if token_file_is_exist():
@@ -180,8 +202,8 @@ class TestCriarCobrancaImediata(unittest.TestCase):
                 mock_data_response,
             ]
 
-        # Instancia a classe IncluiPagamentoCodBar
-        cria_cob_imediata = CriaCobrancaImediata(
+        # Instancia a classe CriaCobrancaComVencimento
+        cria_cobv_com_vencimento = CriaCobrancaComVencimento(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
@@ -190,20 +212,22 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         )
 
         # Chama o metodo criar cobranca imediata com txid
-        data = cria_cob_imediata.criar(
+        data = cria_cobv_com_vencimento.criar(
             SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
             "7978c0c97ea847e78e8849634473c1f1",
         )
 
         payment_response = RespostaSolicitacaoCobranca(
-            **json.loads(cob_imediata_response_bytes)
+            **json.loads(cobv_venc_response_bytes)
         ).to_dict()
 
         # Verifica se os dados retornados estão corretos
         self.assertEqual(data, payment_response)
 
     @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
-    def test_03_criar_cobranca_imediata_txid_failure(self, mock_https_client_class):
+    def test_03_criar_cobranca_com_vencimento_txid_failure(
+        self, mock_https_client_class
+    ):
         """Teste de lançamento de exception"""
         mock_https_client_class = mock_https_client_class.return_value
 
@@ -212,8 +236,8 @@ class TestCriarCobrancaImediata(unittest.TestCase):
             GENERIC_EXCEPTION_MESSAGE
         )
 
-        # Instancia a classe IncluiPagamentoCodBar
-        cria_cob_imediata = CriaCobrancaImediata(
+        # Instancia a classe CriaCobrancaComVencimento
+        cria_cobv_com_vencimento = CriaCobrancaComVencimento(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
@@ -222,7 +246,7 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         )
 
         # Verifica se a exceção é levantada corretamente
-        response = cria_cob_imediata.criar(
+        response = cria_cobv_com_vencimento.criar(
             SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
             "txid_invalid",
         )
@@ -232,7 +256,7 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         )
 
     @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
-    def test_04_criar_cobranca_imediata_failure(self, mock_https_client_class):
+    def test_04_criar_cobranca_com_vencimento_failure(self, mock_https_client_class):
         """Teste de lançamento de exception"""
         mock_https_client_class = mock_https_client_class.return_value
 
@@ -241,8 +265,8 @@ class TestCriarCobrancaImediata(unittest.TestCase):
             GENERIC_EXCEPTION_MESSAGE
         )
 
-        # Instancia a classe IncluiPagamentoCodBar
-        cria_cob_imediata = CriaCobrancaImediata(
+        # Instancia a classe CriaCobrancaComVencimento
+        cria_cobv_com_vencimento = CriaCobrancaComVencimento(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
@@ -252,17 +276,19 @@ class TestCriarCobrancaImediata(unittest.TestCase):
 
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:
-            cria_cob_imediata.criar(
+            cria_cobv_com_vencimento.criar(
                 SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes))
             )
 
         self.assertEqual(str(context.exception), GENERIC_EXCEPTION_MESSAGE)
 
     @patch("http.client.HTTPSConnection")  # Mocka a classe MyHttpsClient
-    def test_05_criar_cobranca_imediata_chave_failure(self, mock_https_client_class):
+    def test_05_criar_cobranca_com_vencimento_chave_failure(
+        self, mock_https_client_class
+    ):
         """Teste de lançamento de exception"""
-        # Instancia a classe CriaCobrancaImediata
-        cria_cob_imediata = CriaCobrancaImediata(
+        # Instancia a classe CriaCobrancaComVencimento
+        cria_cobv_com_vencimento = CriaCobrancaComVencimento(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
@@ -275,7 +301,9 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         cob_imediata_request["chave"] = ""
 
         # Verifica se a exceção é levantada corretamente
-        response = cria_cob_imediata.criar(SolicitacaoCobranca(**cob_imediata_request))
+        response = cria_cobv_com_vencimento.criar(
+            SolicitacaoCobranca(**cob_imediata_request)
+        )
 
         self.assertEqual(
             response,
@@ -288,7 +316,9 @@ class TestCriarCobrancaImediata(unittest.TestCase):
         # invalid
         cob_imediata_request["chave"] = "xpto"
 
-        response = cria_cob_imediata.criar(SolicitacaoCobranca(**cob_imediata_request))
+        response = cria_cobv_com_vencimento.criar(
+            SolicitacaoCobranca(**cob_imediata_request)
+        )
 
         self.assertEqual(
             response,
