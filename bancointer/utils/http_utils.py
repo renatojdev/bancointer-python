@@ -154,3 +154,6 @@ class HttpUtils(object):
 
     def make_put(self, path, payload: dict, custom_headers_dict: dict = None):
         return self.make_request_with_token("PUT", path, payload, custom_headers_dict)
+
+    def make_patch(self, path, payload: dict, custom_headers_dict: dict = None):
+        return self.make_request_with_token("PATCH", path, payload, custom_headers_dict)

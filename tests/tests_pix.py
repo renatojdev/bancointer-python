@@ -5,6 +5,7 @@ import unittest
 
 from test_criar_cobranca_imediata import TestCriarCobrancaImediata
 from test_consultar_cobranca_imediata import TestConsultarCobrancaImediata
+from test_revisar_cobranca_imediata import TestRevisarCobrancaImediata
 
 
 # Tests Suites
@@ -13,6 +14,9 @@ def suite():
 
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestCriarCobrancaImediata)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestRevisarCobrancaImediata)
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarCobrancaImediata)
