@@ -29,9 +29,10 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
             config("SSL_DIR_BASE") + config("PRIVATE_KEY_V2"),
         )
         self.conta_corrente = config("X_INTER_CONTA_CORRENTE")
-        self.cob_imediata_request_bytes = b"""{
+        self.cobv_com_vencimento_request_bytes = b"""{
                                   "calendario": {
-                                    "expiracao": 3600
+                                    "dataDeVencimento": "2020-12-31",
+                                    "validadeAposVencimento": 30
                                   },
                                   "devedor": {
                                     "cnpj": "12345678000195",
@@ -129,7 +130,7 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
 
         # Chama o metodo criar cobrança com vencimento
         data = cria_cobv_com_vencimento.criar(
-            SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes))
+            SolicitacaoCobranca(**json.loads(self.cobv_com_vencimento_request_bytes))
         )
 
         payment_response = RespostaSolicitacaoCobranca(
@@ -213,7 +214,7 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
 
         # Chama o metodo criar cobranca imediata com txid
         data = cria_cobv_com_vencimento.criar(
-            SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
+            SolicitacaoCobranca(**json.loads(self.cobv_com_vencimento_request_bytes)),
             "7978c0c97ea847e78e8849634473c1f1",
         )
 
@@ -247,7 +248,7 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
 
         # Verifica se a exceção é levantada corretamente
         response = cria_cobv_com_vencimento.criar(
-            SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes)),
+            SolicitacaoCobranca(**json.loads(self.cobv_com_vencimento_request_bytes)),
             "txid_invalid",
         )
 
@@ -277,7 +278,7 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
         # Verifica se a exceção é levantada corretamente
         with self.assertRaises(Exception) as context:
             cria_cobv_com_vencimento.criar(
-                SolicitacaoCobranca(**json.loads(self.cob_imediata_request_bytes))
+                SolicitacaoCobranca(**json.loads(self.cobv_com_vencimento_request_bytes))
             )
 
         self.assertEqual(str(context.exception), GENERIC_EXCEPTION_MESSAGE)
@@ -297,7 +298,7 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
         )
 
         # required
-        cob_imediata_request = json.loads(self.cob_imediata_request_bytes)
+        cob_imediata_request = json.loads(self.cobv_com_vencimento_request_bytes)
         cob_imediata_request["chave"] = ""
 
         # Verifica se a exceção é levantada corretamente
