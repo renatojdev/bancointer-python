@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 from decouple import config
 
-from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaComVencimento
+from bancointer.pix.cob.cria_cobranca_imediata import CriaCobrancaImediata
 from bancointer.pix.cob.revisa_cobranca_imediata import RevisaCobrancaImediata
 from bancointer.pix.models.resposta_solicitacao_cobranca import (
     RespostaSolicitacaoCobranca,
@@ -156,8 +156,8 @@ class TestRevisarCobrancaImediata(unittest.TestCase):
             GENERIC_EXCEPTION_MESSAGE
         )
 
-        # Instancia a classe IncluiPagamentoCodBar
-        cria_cob_imediata = CriaCobrancaComVencimento(
+        # Instancia a classe CriaCobrancaImediata
+        cria_cob_imediata = CriaCobrancaImediata(
             Environment.SANDBOX,
             self.client_id,
             self.client_secret,
