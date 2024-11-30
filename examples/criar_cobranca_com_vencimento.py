@@ -42,7 +42,7 @@ info_adic_cobranca_imediata = InfoAdicionalCobrancaImediata(
     "Campo 1", "Informação Adicional1 do PSP-Recebedor"
 )
 
-solicitacao_cob_imediata = SolicitacaoCobranca(
+solicitacao_cob = SolicitacaoCobranca(
     calendario,
     valor_cobranca_imediata,
     "+5551983334490",
@@ -56,7 +56,7 @@ cria_cobranca_com_vencimento = CriaCobrancaComVencimento(
 )
 
 response = cria_cobranca_com_vencimento.criar(
-    solicitacao_cob_imediata, "OA3uMSCRI4sgWBaifS6mP2Fnrv8h6"
+    solicitacao_cob, "OA3uMSCRI4sgWBaifS6mP2Fnrv8h6"
 )
 
 print(f"Response from API: {response}")
