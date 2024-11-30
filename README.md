@@ -75,6 +75,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Consultar extrato enriquecido
     * Recursos da Api Pix
         * Cobrança com vencimento
+            - Revisar cobrança com vencimento
             - Consultar cobrança com vencimento
 
 ##  Instalação para utilização
