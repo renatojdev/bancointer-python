@@ -148,17 +148,14 @@ class TokenUtils(object):
 
     def save_token_to_file(self, token_data=None):
         """Save a token to file. Add expires_at token, value date now + expires in seconds"""
-
         if token_data is not None:
             expires_at = datetime.now() + timedelta(seconds=token_data["expires_in"])
             token_data["expires_at"] = str(expires_at)
-        else:
-            pass
 
-        # Directly from dictionary
-        with open(self.TOKEN_FILE_PATH, "w+") as outfile:
-            json.dump(token_data, outfile)
-        outfile.close()
+            # Directly from dictionary
+            with open(self.TOKEN_FILE_PATH, "w+") as outfile:
+                json.dump(token_data, outfile)
+            outfile.close()
 
     def get_api_token(self):
         """Get token if valid from file or get new token from API.
@@ -177,6 +174,7 @@ class TokenUtils(object):
         current_date = datetime.now()
         if current_date > datetime.fromisoformat(token_data["expires_at"]):
             token_data = self.__request_api_token()
-            self.save_token_to_file(token_data=token_data)
+            if token_data is not None and token_data != {}:
+                self.save_token_to_file(token_data=token_data)
 
         return token_data["access_token"]

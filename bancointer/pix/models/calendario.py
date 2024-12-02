@@ -29,9 +29,7 @@ class Calendario(object):
                 )
                 raise BancoInterException("Erro de validação", erro)
 
-        if not BancoInterValidations.validate_date(
-            self.dataDeVencimento
-        ):
+        if not BancoInterValidations.validate_date(self.dataDeVencimento):
             erro = Erro(
                 502,
                 f"O atributo 'calendario.dataDeVencimento' é inválido.",
