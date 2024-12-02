@@ -185,7 +185,9 @@ class TestSolicitacaoCobranca(unittest.TestCase):
         self.assertIn("desconto", dict_cobrav["valor"])
         self.assertIn("modalidade", dict_cobrav["valor"]["desconto"])
         self.assertIn("data", dict_cobrav["valor"]["desconto"]["descontoDataFixa"][0])
-        self.assertIn("valorPerc", dict_cobrav["valor"]["desconto"]["descontoDataFixa"][0])
+        self.assertIn(
+            "valorPerc", dict_cobrav["valor"]["desconto"]["descontoDataFixa"][0]
+        )
         # Using Assertions to Check Values
         self.assertEqual(
             dict_cobrav["calendario"]["dataDeVencimento"],

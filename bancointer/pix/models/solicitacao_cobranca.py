@@ -26,6 +26,7 @@ class SolicitacaoCobranca(object):
     loc: IdentificadorLocalizacaoPayload = None
     solicitacaoPagador: str = None
     infoAdicionais: [InfoAdicionalCobrancaImediata] = None
+    status: str = None  # str 'REMOVIDA_PELO_USUARIO_RECEBEDOR'
 
     def to_dict(self) -> Dict[str, Any]:
         """Converte a instância da classe em um dicionário, excluindo valores None."""
