@@ -52,8 +52,10 @@ class RevisaCobrancaComVencimento(object):
     def revisar(
         self, solicitacao_cob_imediata: SolicitacaoCobranca, txid: str
     ) -> dict | ErroApi:
-        """Metodo para revisar uma cobrança imediata, neste caso, o txid é definido pelo PSP.
-        Escopo requerido: cob.write"""
+        """Metodo para revisar uma cobrança com vencimento, neste caso, o txid (chave) é definido pelo PSP
+        e será utilizado para revisar a cobrança com vencimento.
+
+        Escopo requerido: cobv.write"""
 
         try:
             # validating txid
@@ -76,8 +78,8 @@ class RevisaCobrancaComVencimento(object):
             print(f"ErroApi: {e.title}: {e.detail} - violacoes: {e.violacoes}")
             return e.to_dict()
         except BancoInterException as e:
-            print(f"BancoInterException.RevisaCobrancaImediata.revisar: {e}")
+            print(f"BancoInterException.RevisaCobrancaComVencimento.revisar: {e}")
             return e.erro.to_dict()
         except Exception as e:
-            print(f"Exception.RevisaCobrancaImediata: {e}")
+            print(f"Exception.RevisaCobrancaComVencimento: {e}")
             raise BancoInterException(GENERIC_EXCEPTION_MESSAGE, Erro(502, e))

@@ -56,7 +56,7 @@ class CriaCobrancaComVencimento(object):
         Na cobrança com vencimento é possível parametrizar uma data de vencimento e com isso o pagamento
         pode ser realizado em data futura, pode também incluir outras informações como juros, multas,
         outros acréscimos, descontos e outros abatimentos, semelhante ao boleto.
-        Escopo requerido: cob.write
+        Escopo requerido: cobv.write
 
         Args:
             solicitacao_cobv_com_vencimento (SolicitacaoCobrancaImediata): Object solicitacao de cobranca com vencimento.
