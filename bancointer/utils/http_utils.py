@@ -53,6 +53,17 @@ class HttpUtils(object):
     def make_request(
         self, method, path, payload: dict, custom_headers_dict=None
     ) -> dict:
+        """Make http method, execute the request.
+
+        Args:
+            method (str): Http method, GET, POST, DELETE, etc.
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data, if exceptions occurs or no response, `{}` is returned.
+        """
         self.__create_connection()
 
         if custom_headers_dict is not None:
@@ -137,23 +148,84 @@ class HttpUtils(object):
     def make_request_with_token(
         self, method, path, payload: dict, custom_headers_dict: dict = None
     ):
-        # get token
+        """Make http method. Invoke the make request.
+
+        Args:
+            method (str): Http method, GET, POST, DELETE, etc.
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data.
+        """
+        # get api token
         self.add_header_authorization(self.token_util.get_api_token())
         return self.make_request(method, path, payload, custom_headers_dict)
 
     def make_get(self, path, payload: dict = None, custom_headers_dict: dict = None):
+        """Make http GET method. Invoke the make request with token.
+
+        Args:
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data.
+        """
         return self.make_request_with_token("GET", path, payload, custom_headers_dict)
 
     def make_post(self, path, payload: dict, custom_headers_dict: dict = None):
+        """Make http POST method. Invoke the make request with token.
+
+        Args:
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data.
+        """
         return self.make_request_with_token("POST", path, payload, custom_headers_dict)
 
     def make_delete(self, path, payload: dict = None, custom_headers_dict: dict = None):
+        """Make http DELETE method. Invoke the make request with token.
+
+        Args:
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data.
+        """
         return self.make_request_with_token(
             "DELETE", path, payload, custom_headers_dict
         )
 
     def make_put(self, path, payload: dict, custom_headers_dict: dict = None):
+        """Make http PUT method. Invoke the make request with token.
+
+        Args:
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data.
+        """
         return self.make_request_with_token("PUT", path, payload, custom_headers_dict)
 
     def make_patch(self, path, payload: dict, custom_headers_dict: dict = None):
+        """Make http PATCH method. Invoke the make request with token.
+
+        Args:
+            path (str): String path to endpoint.
+            payload (dict): Payload data to send to api.
+            custom_headers_dict (dict): Custom data headers.
+
+        Returns:
+            dict object response data.
+        """
         return self.make_request_with_token("PATCH", path, payload, custom_headers_dict)
