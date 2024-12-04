@@ -1,4 +1,6 @@
-import requests
+# extrato.py
+
+
 from decouple import config
 
 dir_base_ssl = config("SSL_DIR_BASE")
