@@ -95,20 +95,23 @@ class BancoInterValidations(object):
         Se EVP: 123e4567-e12b-12d1-a456-426655440000
         Reference: (https://www.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT.html#tag/Key)
         """
-        email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        cpf_regex = r"^[0-9]{11}$"
-        cnpj_regex = r"^[0-9]{14}$"
-        telefone_regex = r"^(?:\+55|55)\d{2}9\d{8}$"  # r"^\+[1-9]\d{1,14}$"
-        evp_regex = r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        if (
+            chave is not None
+            and isinstance(chave, str)
+            and chave is not ""
+            and (0 < len(chave) < 78)
+        ):
+            email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            cpf_regex = r"^[0-9]{11}$"
+            cnpj_regex = r"^[0-9]{14}$"
+            telefone_regex = r"^(?:\+55|55)\d{2}9\d{8}$"  # r"^\+[1-9]\d{1,14}$"
+            evp_regex = r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
-        pattern = (
-            rf"({email_regex}|{cpf_regex}|{cnpj_regex}|{telefone_regex}|{evp_regex})"
-        )
+            pattern = rf"({email_regex}|{cpf_regex}|{cnpj_regex}|{telefone_regex}|{evp_regex})"
 
-        if re.match(pattern, chave):
-            return True
-        else:
-            return False
+            if re.match(pattern, chave):
+                return True
+        return False
 
     @staticmethod
     def validate_webhook_url(webhook_url):
