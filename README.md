@@ -75,6 +75,11 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
     * Recursos da Api Banking
         * Extrato
             - Consultar extrato enriquecido
+    * Recursos da Api Pix
+        * Webhook
+            - Criar webhook
+            - Obter webhook cadastrado
+            - Excluir webhook
 
 
 ##  Instalação para utilização
