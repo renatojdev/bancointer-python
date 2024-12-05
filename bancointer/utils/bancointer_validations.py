@@ -93,11 +93,12 @@ class BancoInterValidations(object):
         Valida tipo de chaves PIX. Exemplos de tipos: Se email: email do recebedor (ex: fulano.da.silva@example.com)
         Se CPF/CNPJ: 12345678900 / 00038166000105 Se número do telefone celular: +55DD9XXXXXXXX (formato internacional)
         Se EVP: 123e4567-e12b-12d1-a456-426655440000
+        Reference: (https://www.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT.html#tag/Key)
         """
         email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        cpf_regex = r"^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$"
-        cnpj_regex = r"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$|^\d{14}$"
-        telefone_regex = r"^(?:\+55|55)\d{2}9\d{8}$"
+        cpf_regex = r"^[0-9]{11}$"
+        cnpj_regex = r"^[0-9]{14}$"
+        telefone_regex = r"^(?:\+55|55)\d{2}9\d{8}$"  # r"^\+[1-9]\d{1,14}$"
         evp_regex = r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
         pattern = (
