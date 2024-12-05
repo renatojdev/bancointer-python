@@ -61,7 +61,7 @@ class TestExcluirWebhook(unittest.TestCase):
 
         data = exclui_webhook.excluir("5511999999999")
 
-        self.assertEqual(data,{})
+        self.assertEqual(data, {})
 
     @patch("http.client.HTTPSConnection")
     def test_excluir_webhook_key_failure(self, mock_https_connection):
