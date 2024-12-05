@@ -97,7 +97,7 @@ class BancoInterValidations(object):
         email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         cpf_regex = r"^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$"
         cnpj_regex = r"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$|^\d{14}$"
-        telefone_regex = r"^\+55\d{2}9\d{8}$"
+        telefone_regex = r"^55\d{2}9\d{8}$"
         evp_regex = r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
         pattern = (
@@ -105,6 +105,16 @@ class BancoInterValidations(object):
         )
 
         if re.match(pattern, chave):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def validate_webhook_url(webhook_url):
+        """URL de configuração do webhook. Deve iniciar obrigatoriamente com https://"""
+        uri_regex = f"^https://[^\s]*$"
+
+        if re.match(uri_regex, webhook_url):
             return True
         else:
             return False
