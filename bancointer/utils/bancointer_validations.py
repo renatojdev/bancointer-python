@@ -122,3 +122,10 @@ class BancoInterValidations(object):
             return True
         else:
             return False
+
+    @staticmethod
+    def validate_e2eid(e2e_id):
+        if e2e_id is not None and isinstance(e2e_id, str) and e2e_id is not "":
+            e2e_id_regex = f"[a-zA-Z0-9]{32}"
+            return re.match(e2e_id_regex, e2e_id)
+        return False
