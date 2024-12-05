@@ -97,7 +97,7 @@ class BancoInterValidations(object):
         email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         cpf_regex = r"^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$"
         cnpj_regex = r"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$|^\d{14}$"
-        telefone_regex = r"^55\d{2}9\d{8}$"
+        telefone_regex = r"^(?:\+55|55)\d{2}9\d{8}$"
         evp_regex = r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
         pattern = (
