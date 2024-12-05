@@ -331,6 +331,20 @@ class TestCriarCobrancaComVencimento(unittest.TestCase):
             },
         )
 
+        cob_imediata_request["chave"] = "9" * 78
+
+        response = cria_cobv_com_vencimento.criar(
+            SolicitacaoCobranca(**cob_imediata_request)
+        )
+
+        self.assertEqual(
+            response,
+            {
+                "codigo": 502,
+                "descricao": "O atributo 'solicitacaoCobrancaImediata.chave' é inválido.",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
