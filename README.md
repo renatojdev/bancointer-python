@@ -70,16 +70,21 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Criar cobrança com vencimento
             - Revisar cobrança com vencimento
             - Consultar cobrança com vencimento
+        * Webhook
+            - Criar webhook
+            - Obter webhook cadastrado
+            - Excluir webhook
 
 ###  Novas funcionalidades a serem implementadas
     * Recursos da Api Banking
         * Extrato
             - Consultar extrato enriquecido
     * Recursos da Api Pix
-        * Webhook
-            - Criar webhook
-            - Obter webhook cadastrado
-            - Excluir webhook
+        * Pix
+            - Consultar pix
+            - Consultar pix recebidos
+            - Solicitar devolução
+            - Consultar devolução
 
 
 ##  Instalação para utilização
