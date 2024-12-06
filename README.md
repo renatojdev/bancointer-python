@@ -39,10 +39,11 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 ##  Funcionalidades disponíveis
     * API Cobrança (Boleto com Pix)
-        - Emissão de boletos
-        - Download de boletos
-        - Baixa de boletos
-        - Consulta detalhada de boletos
+        * Cobrança        
+            - Emissão de boletos
+            - Download de boletos
+            - Baixa de boletos
+            - Consulta detalhada de boletos
     
     * API Banking
         * Saldo
@@ -60,7 +61,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Incluir Pagamento Pix
             - Consultar Pagamento Pix
     
-    * Recursos da Api Pix
+    * Api Pix
         * Cobrança imediata
             - Criar cobrança imediata com txid
             - Revisar cobrança imediata
@@ -76,9 +77,16 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Excluir webhook
 
 ###  Novas funcionalidades a serem implementadas
+    * Recursos da API Cobrança (Boleto com Pix)
+        * Webhook
+            - Criar ou editar um webhook
+            - Obter webhook cadastrado
+            - Excluir webhook
+
     * Recursos da Api Banking
         * Extrato
             - Consultar extrato enriquecido
+
     * Recursos da Api Pix
         * Pix
             - Consultar pix
