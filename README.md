@@ -67,6 +67,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Revisar cobrança imediata
             - Criar cobrança imediata
             - Consultar cobrança imediata
+            - Pagar Pix de cobrança imediata (Sandbox)
         * Cobrança com vencimento
             - Criar cobrança com vencimento
             - Revisar cobrança com vencimento
