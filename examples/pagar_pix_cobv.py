@@ -3,8 +3,7 @@
 
 from decouple import config
 
-from bancointer.pix.cob.paga_pix_cob import PagaPixCobrancaImediata
-from bancointer.pix.pix.paga_pix_cobv import PagaPixCobrancaComVencimento
+from bancointer.pix.cobv.paga_pix_cobv import PagaPixCobrancaComVencimento
 from bancointer.utils.environment import Environment
 
 dir_base_ssl = config("SSL_DIR_BASE")
