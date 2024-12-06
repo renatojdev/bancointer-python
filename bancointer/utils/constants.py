@@ -67,6 +67,7 @@ PATH_PIX_PAGAMENTO = f"/banking/v2/pix"
 # PATHS Pix
 PATH_PIX_COB = f"/pix/v2/cob"
 PATH_PIX_COBV = f"/pix/v2/cobv"
+PATH_PIX_PIX = f"/pix/v2/pix"
 PATH_PIX_WEBHOOK = f"/pix/v2/webhook"
 
 # Escopos

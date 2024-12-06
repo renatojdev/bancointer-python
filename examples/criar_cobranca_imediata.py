@@ -30,7 +30,7 @@ app_env_name = config("APP_ENV")
 env = Environment.get_environment_by_value(app_env_name.upper())
 
 # Create immediate cob
-calendario = Calendario()  # default: 3600
+calendario = Calendario("2024-12-31")  # default: 3600
 
 devedor_cobranca_imediata = DevedorRecebedorCobranca("João da Silva", cpf="12345678901")
 
