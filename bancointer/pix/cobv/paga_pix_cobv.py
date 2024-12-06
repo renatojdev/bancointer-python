@@ -5,7 +5,8 @@ from bancointer.utils import HttpUtils
 from bancointer.utils.constants import (
     GENERIC_EXCEPTION_MESSAGE,
     HOST,
-    HOST_SANDBOX, PATH_PIX_COBV,
+    HOST_SANDBOX,
+    PATH_PIX_COBV,
 )
 from bancointer.utils.environment import Environment
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro

@@ -44,11 +44,11 @@ class PagaPixCobrancaImediata(object):
 
     def pagar(self, valor: str, txid: str):
         """Metodo para pagar uma cobrança imediata via Pagamento Pix. (Exclusivo para o ambiente Sandbox)
-                Escopo requerido: pix.write
+        Escopo requerido: pix.write
 
-                Returns:
-                    e2e (str): Id único para identificação do Pix Cobrança.
-                """
+        Returns:
+            e2e (str): Id único para identificação do Pix Cobrança.
+        """
         try:
 
             response = self.http_util.make_post(
