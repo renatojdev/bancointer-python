@@ -39,7 +39,7 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
 ##  Funcionalidades disponíveis
     * API Cobrança (Boleto com Pix)
-        * Cobrança        
+        * Cobrança
             - Emissão de boletos
             - Download de boletos
             - Baixa de boletos
