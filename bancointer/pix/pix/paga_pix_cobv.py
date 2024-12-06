@@ -1,19 +1,18 @@
-# paga_pix_cob.py
+# paga_pix_cobv.py
 
 
 from bancointer.utils import HttpUtils
 from bancointer.utils.constants import (
-    PATH_PIX_COB,
     GENERIC_EXCEPTION_MESSAGE,
     HOST,
-    HOST_SANDBOX,
+    HOST_SANDBOX, PATH_PIX_COBV,
 )
 from bancointer.utils.environment import Environment
 from bancointer.utils.exceptions import ErroApi, BancoInterException, Erro
 
 
-# Pagar Pix de cobrança imediata (SANDBOX)
-class PagaPixCobrancaImediata(object):
+# Pagar Pix de cobrança com vencimento (Sandbox)
+class PagaPixCobrancaComVencimento(object):
     def __init__(
         self,
         ambiente: Environment,
@@ -43,16 +42,16 @@ class PagaPixCobrancaImediata(object):
         print(f"AMBIENTE: {ambiente.value}")
 
     def pagar(self, valor: str, txid: str):
-        """Metodo para pagar uma cobrança imediata via Pagamento Pix. (Exclusivo para o ambiente Sandbox)
-                Escopo requerido: pix.write
+        """Metodo para pagar uma cobrança com vencimento via Pagamento Pix. (Exclusivo para o ambiente Sandbox)
+        Escopo requerido: pix.write
 
-                Returns:
-                    e2e (str): Id único para identificação do Pix Cobrança.
-                """
+        Returns:
+            e2e (str): Id único para identificação do Pix Cobrança.
+        """
         try:
 
             response = self.http_util.make_post(
-                f"{PATH_PIX_COB}/pagar/{txid}", {"valor": valor}
+                f"{PATH_PIX_COBV}/pagar/{txid}", {"valor": valor}
             )
 
             if "title" in response:
