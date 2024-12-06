@@ -12,6 +12,7 @@ from test_consultar_cobranca_com_vencimento import TestConsultarCobrancaComVenci
 from test_criar_webhook import TestCriarWebhook
 from test_excluir_webhook import TestExcluirWebhook
 from test_obter_webhook_cadastrado import TestObterWebhookCadastrado
+from test_consultar_pix import TestConsultarPix
 
 
 # Tests Suites
@@ -48,6 +49,9 @@ def suite():
     )
     my_suite.addTests(
         unittest.defaultTestLoader.loadTestsFromTestCase(TestExcluirWebhook)
+    )
+    my_suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestConsultarPix)
     )
 
     return my_suite
