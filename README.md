@@ -92,7 +92,6 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
 
     * Recursos da Api Pix
         * Pix
-            - Consultar pix
             - Consultar pix recebidos
             - Solicitar devolução
             - Consultar devolução
