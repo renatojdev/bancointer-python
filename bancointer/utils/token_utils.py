@@ -15,6 +15,7 @@ from bancointer.utils.exceptions import BancoInterException, Erro
 
 from bancointer.utils.constants import (
     HOST_SANDBOX,
+    HOST,
     PATH_TOKEN,
     ESCOPO_BOLETO_COBRANCA_READ,
     ESCOPO_BOLETO_COBRANCA_WRITE,
@@ -63,11 +64,12 @@ class TokenUtils(object):
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
     )
 
-    def __init__(self, client_id, client_secret, cert, conta_corrente=None):
+    def __init__(self, client_id, client_secret, cert, conta_corrente=None, host=HOST_SANDBOX):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert
         self.conta_corrente = conta_corrente
+        self.host = host
 
     def __request_api_token(self):
         """Get a new token from Banco Inter API"""
@@ -85,7 +87,7 @@ class TokenUtils(object):
             f"%20{ESCOPO_PIX_WEBHOOK_WRITE}"
         )
         print(f"payload_token={payload}")
-        print(f"host={HOST_SANDBOX}{PATH_TOKEN}")
+        print(f"host={self.host}{PATH_TOKEN}")
 
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -107,7 +109,7 @@ class TokenUtils(object):
 
             # Create a connection to submit HTTP requests
             connection = http.client.HTTPSConnection(
-                HOST_SANDBOX, port=443, context=context
+                self.host, port=443, context=context
             )
             # Use connection to submit a HTTP POST request
             connection.request(
