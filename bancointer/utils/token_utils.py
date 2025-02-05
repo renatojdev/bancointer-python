@@ -63,7 +63,9 @@ class TokenUtils(object):
         os.path.dirname(os.path.realpath(__file__)) + os.sep + "token.json"
     )
 
-    def __init__(self, client_id, client_secret, cert, conta_corrente=None, host=HOST_SANDBOX):
+    def __init__(
+        self, client_id, client_secret, cert, conta_corrente=None, host=HOST_SANDBOX
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
         self.cert = cert

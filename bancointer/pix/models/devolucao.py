@@ -12,6 +12,7 @@ class NaturezaDevolucao(Enum):
     ORIGINAL = "ORIGINAL"
     RETIRADA = "RETIRADA"
 
+
 @dataclass  # Devolucao Pix
 class Devolucao(object):
     id: str  # req string (Id da Devolução) [a-zA-Z0-9]{1,35}

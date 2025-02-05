@@ -63,7 +63,9 @@ class TestSolicitarDevolucao(unittest.TestCase):
         )
 
         # Chama o metodo solicitar devolução
-        data_response = solicita_devolucao.solicitar("E00416968202412061443oJmW8hQsV3b", "1", "20.00")
+        data_response = solicita_devolucao.solicitar(
+            "E00416968202412061443oJmW8hQsV3b", "1", "20.00"
+        )
 
         dict_response = json.loads(busca_pagamento_response_bytes)
         devolucao_response = Devolucao(**dict_response).to_dict()
