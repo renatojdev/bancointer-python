@@ -42,7 +42,7 @@ class ConsultaDevolucao(object):
         self.client_secret = client_secret
         self.cert = cert
         self.http_util = HttpUtils(
-            HOST_SANDBOX if ambiente.SANDBOX else HOST,
+            HOST_SANDBOX if ambiente.is_sandbox else HOST,
             client_id,
             client_secret,
             cert,

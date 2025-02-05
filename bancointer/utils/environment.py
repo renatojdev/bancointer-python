@@ -7,6 +7,12 @@ class Environment(Enum):
     SANDBOX = "SANDBOX"  # for development and tests
     PRODUCTION = "PRODUCTION"
 
+    @property
+    def is_sandbox(self):
+        """Return True if the environment is sandbox."""
+        return self == Environment.SANDBOX
+
+    @staticmethod
     def get_environment_by_value(value):
         for env in Environment:
             if env.value == value:
