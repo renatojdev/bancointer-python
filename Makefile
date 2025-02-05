@@ -20,3 +20,15 @@ test:
 dev:
 	make install
 	make test
+
+clean:
+	@echo "Limpando arquivos gerados..."
+	find . -type d -name '__pycache__' -exec rm -rf {} +
+	find . -type f -name '*.py[co]' -exec rm -f {} +
+	rm -rf build/
+	rm -rf dist/
+	rm -rf *.egg-info/
+	rm -rf .eggs/
+	rm -rf .pytest_cache/
+	rm -rf .mypy_cache/
+	@echo "Limpeza concluída!"
