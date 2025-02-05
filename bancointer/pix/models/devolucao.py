@@ -1,9 +1,16 @@
 # devolucao.py
 
 
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+from enum import Enum
+from typing import Dict, Any
+
 from bancointer.pix.models.horario_devolucao import HorarioDevolucao
 
+
+class NaturezaDevolucao(Enum):
+    ORIGINAL = "ORIGINAL"
+    RETIRADA = "RETIRADA"
 
 @dataclass  # Devolucao Pix
 class Devolucao(object):
@@ -13,3 +20,8 @@ class Devolucao(object):
     horario: HorarioDevolucao  # req
     status: str  #  req Enum: "EM_PROCESSAMENTO" "DEVOLVIDO" "NAO_REALIZADO"
     motivo: str = None  # string (Descrição do status.) <= 140 characters
+    natureza: NaturezaDevolucao = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Converte a instância da classe em um dicionário, excluindo valores None."""
+        return {k: v for k, v in asdict(self).items() if v is not None}

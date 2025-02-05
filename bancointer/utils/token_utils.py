@@ -71,6 +71,7 @@ class TokenUtils(object):
 
     def __request_api_token(self):
         """Get a new token from Banco Inter API"""
+        token_data_dict = None
 
         payload = (
             "grant_type=client_credentials&client_id="
@@ -123,12 +124,11 @@ class TokenUtils(object):
                 data_response = json.loads(data_response)
                 if "error_title" in data_response:
                     data_response = data_response["error_title"]
-                erro = Erro(response.status, data_response)
-                raise BancoInterException("Request token error", erro)
+                    erro = Erro(response.status, data_response)
+                    raise BancoInterException("Request token error", erro)
 
             token_data_dict = json.loads(data_response)
 
-            return token_data_dict
         except BancoInterException as e:
             raise BancoInterException(e, e.erro)
         except Exception as e:
@@ -136,6 +136,8 @@ class TokenUtils(object):
         finally:
             if connection is not None:
                 connection.close()
+
+        return token_data_dict
 
     def __read_token_from_file(self):
         """Read a token value and return a dict from file"""
