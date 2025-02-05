@@ -15,7 +15,6 @@ from bancointer.utils.exceptions import BancoInterException, Erro
 
 from bancointer.utils.constants import (
     HOST_SANDBOX,
-    HOST,
     PATH_TOKEN,
     ESCOPO_BOLETO_COBRANCA_READ,
     ESCOPO_BOLETO_COBRANCA_WRITE,
