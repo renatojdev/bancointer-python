@@ -74,6 +74,8 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
             - Consultar cobrança com vencimento
         * Pix
             - Consultar pix
+            - Solicitar devolução
+            - Consultar devolução
         * Webhook
             - Criar webhook
             - Obter webhook cadastrado
@@ -93,8 +95,6 @@ Este projeto consome a API do Banco Inter PJ de boletos registrados. Para acesso
     * Recursos da Api Pix
         * Pix
             - Consultar pix recebidos
-            - Solicitar devolução
-            - Consultar devolução
 
 
 ##  Instalação para utilização
