@@ -22,7 +22,7 @@ class HttpUtils(object):
         self.conta_corrente = conta_corrente
         self.headers = {"Content-Type": "application/json"}
         self.bearer_token = {}
-        self.token_util = TokenUtils(client_id, client_secret, cert, conta_corrente)
+        self.token_util = TokenUtils(client_id, client_secret, cert, conta_corrente, host)
 
     def add_header_authorization(self, value):
         self.headers["Authorization"] = f"Bearer {value}"
